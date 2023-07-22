@@ -1,0 +1,55 @@
+# Dossiers
+/node_modules/
+/dist/
+/build/
+/.vscode/
+/.idea/
+/.env/
+
+# Fichiers
+.env
+.DS_Store
+/.env.local
+/.env.development.local
+/.env.test.local
+/.env.production.local
+
+# Fichiers de sauvegarde
+*~
+*.swp
+*.swo
+
+# Fichiers de log
+/log/*.log
+
+# Fichiers de dépendances
+/package-lock.json
+/yarn.lock
+
+# Fichiers de génération
+/*.log
+/*.pot
+*.potx
+*.potm
+*.xlsx
+*.xls
+*.docx
+*.doc
+*.pdf
+*.jpeg
+*.png
+*.svg
+*.ico
+*.eot
+*.ttf
+*.woff
+*.woff2
+
+# Extensions spécifiques à certains langages
+# Exemple pour Python
+*.pyc
+*.pyo
+
+# Exemple pour JavaScript / TypeScript
+/dist/
+/node_modules/

@@ -1,0 +1,20 @@
+version: "3.6"
+services:
+  mongo:
+    container_name: mongo
+    image: mongo
+    ports:
+      - 27017:27017
+  postgres-user:
+    image: postgres
+    environment:
+      - POSTGRES_USER=api42
+      - POSTGRES_PASSWORD=jean1904
+      - POSTGRES_MULTIPLE_DATABASES="api_42Bets","42apiBets_testing"
+    volumes:
+      - ./docker-utils:/docker-entrypoint-initdb.d
+      - test_api_data:/data/postgres
+    ports:
+      - 5432:5432
+volumes:
+  test_api_data: {}   

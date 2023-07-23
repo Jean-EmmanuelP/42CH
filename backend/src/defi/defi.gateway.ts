@@ -1,8 +1,9 @@
 import { WebSocketGateway, SubscribeMessage, MessageBody } from '@nestjs/websockets';
+import { DefiService } from './defi.service';
 
 @WebSocketGateway(3130, { cors: true })
 export class DefiGateway {
-  constructor() {
+  constructor(private defiService: DefiService) {
     const io = require('socket.io')(3111, {
       cors: {
         origin: '*',
@@ -13,6 +14,7 @@ export class DefiGateway {
 
       socket.on('join', (data) => {
         socket.join(data.room);
+        // this.defiService.createDefi(data.room, data.username, data.opponentUsername);
         console.log(socket.id + ' joined room ' + data.room);
       });
 

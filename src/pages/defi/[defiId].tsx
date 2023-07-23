@@ -86,7 +86,7 @@ function DefiPage() {
       setSelectedGame(message.newGame);
     });
 
-    socket.emit('join', { room: 123 });
+    socket.emit('join', { room: 123 })//, username: UserResponse?.name, opponentUsername: OpponentResponse?.name });
 
     return () => {
       socket.emit('leave', { room: 123 });

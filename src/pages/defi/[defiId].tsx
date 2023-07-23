@@ -7,6 +7,7 @@ import GlobalContext from "~/context/GlobalContext";
 import vsImage from "../../utils/images/vs.jpg";
 import { api } from "~/utils/api";
 import Image from "next/image";
+import io from 'socket.io-client';
 
 function DefiPage() {
   const { challengeData } = useContext(GlobalContext);
@@ -16,15 +17,21 @@ function DefiPage() {
   const [opponentBet, setOpponentBet] = useState<number>(0);
   const [mutualContract, setMutualContract] = useState<string>("");
   const [selectedGame, setSelectedGame] = useState<string>('');
-const handleGameChange = (event: React.ChangeEvent<HTMLSelectElement>) => setSelectedGame(event.target.value);
-const [honorBet, setHonorBet] = useState<boolean>(false);
-const handleHonorBetChange = (event: React.ChangeEvent<HTMLInputElement>) => setHonorBet(event.target.checked);
-const [userAccepted, setUserAccepted] = useState<boolean>(false);
-const [opponentAccepted, setOpponentAccepted] = useState<boolean>(false);
-const [opponentId, setOpponnentId] = useState<string>("");
+  const handleGameChange = (event: React.ChangeEvent<HTMLSelectElement>) => setSelectedGame(event.target.value);
+  const [honorBet, setHonorBet] = useState<boolean>(false);
+  const handleHonorBetChange = (event: React.ChangeEvent<HTMLInputElement>) => setHonorBet(event.target.checked);
+  const [userAccepted, setUserAccepted] = useState<boolean>(false);
+  const [opponentAccepted, setOpponentAccepted] = useState<boolean>(false);
+  const [opponentId, setOpponnentId] = useState<string>("");
+  const [socket, setSocket] = useState<any>(null);
+
+  let roomNumber = 123;
 
 
-  console.log(challengeData);
+  // backend in nextjs port 3000, file handling socket /api/socket
+
+
+  // console.log(challengeData);
 
   const notifyUserAccepted = api.defi.notifyUserAccepted.useMutation({
     onSuccess: () => {
@@ -50,7 +57,36 @@ const [opponentId, setOpponnentId] = useState<string>("");
 
   useEffect(() => {
     setIsClient(true);
+
+    const socket = io(`http://localhost:3111`, {
+      transports: ['websocket'],
+    });
+
+    setSocket(socket);
+
   }, []);
+
+  useEffect(() => {
+    if (socket == null) return;
+
+    socket.on('joinedRoom', (message: any) => {
+      console.log(message);
+    });
+
+    socket.on('changeBet', (message: { newBet: number, id: string }) => {
+      console.log("received", message.newBet)
+      setOpponentBet(message.newBet);
+      console.log('opponent bet', opponentBet)
+    });
+
+    socket.emit('join', { room: 123 });
+
+    return () => {
+      socket.emit('leave', { room: 123 });
+      socket.off('message');
+    };
+  }, [socket]);
+
 
   useEffect(() => {
     if (UserResponse) {
@@ -60,7 +96,7 @@ const [opponentId, setOpponnentId] = useState<string>("");
     }
     if (OpponentResponse) {
       console.log(OpponentResponse);
-      console.log(`this is the OpponnentId:`,  OpponentResponse.id);
+      console.log(`this is the OpponnentId:`, OpponentResponse.id);
       setOpponnentId(OpponentResponse.id);
       console.log(`this is my opponent image link:`, OpponentResponse.image);
       console.log(`this is my balance:`, OpponentResponse.balance);
@@ -78,7 +114,7 @@ const [opponentId, setOpponnentId] = useState<string>("");
         setOpponentAccepted(true);
       }
     };
-  
+
     return () => {
       eventSource.close();
     };
@@ -92,6 +128,7 @@ const [opponentId, setOpponnentId] = useState<string>("");
 
   const handleUserBetChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     setUserBet(Number(event.target.value));
+    socket.emit('changeBet', { newBet: Number(event.target.value), room: roomNumber })
   };
 
   const handleOpponentBetChange = (
@@ -105,6 +142,12 @@ const [opponentId, setOpponnentId] = useState<string>("");
   ) => {
     setMutualContract(event.target.value);
   };
+
+
+
+  // useEffect(() => {
+  //   socket.emit('changeBet', { newBet: userBet })
+  // }, [userBet])
 
   const placeholder = "Loading...";
 
@@ -141,7 +184,7 @@ const [opponentId, setOpponnentId] = useState<string>("");
                   onChange={handleUserBetChange}
                 />
                 <label htmlFor="honorBet">Miser sur l'honneur</label>
-<input type="checkbox" id="honorBet" name="honorBet" onChange={handleHonorBetChange} />
+                <input type="checkbox" id="honorBet" name="honorBet" onChange={handleHonorBetChange} />
                 <button
                   type="button"
                   className="mt-40 rounded bg-blue-500 p-2 text-white"
@@ -150,7 +193,7 @@ const [opponentId, setOpponnentId] = useState<string>("");
                     // notifyUserAccepted.mutate({userId:  user})
                   }}
                 >
-                  {userAccepted ? "En attente de l'adversaire": "Accepter"}
+                  {userAccepted ? "En attente de l'adversaire" : "Accepter"}
                 </button>
               </form>
             </div>
@@ -162,11 +205,11 @@ const [opponentId, setOpponnentId] = useState<string>("");
               />
               <label htmlFor="game">Quel jeu allez-vous jouer ?</label>
               <select className="mt-2 rounded" id="game" name="game" required onChange={handleGameChange}>
-  <option value="">--Sélectionnez un jeu--</option>
-  <option value="game1">Jeu de carte</option>
-  <option value="game2">Jeu de flechette</option>
-  <option value="game3">Echec</option>
-</select>
+                <option value="">--Sélectionnez un jeu--</option>
+                <option value="game1">Jeu de carte</option>
+                <option value="game2">Jeu de flechette</option>
+                <option value="game3">Echec</option>
+              </select>
               <div className="rounded border border-black bg-white p-2 text-center">
                 <h1 className="underline">Gain total:</h1>
                 <p>{gainTotal}</p>
@@ -208,9 +251,11 @@ const [opponentId, setOpponnentId] = useState<string>("");
                   placeholder="1"
                   className="mt-2 rounded p-2"
                   onChange={handleOpponentBetChange}
+                  /*value that changes with the opponentBet state*/
+                  value={opponentBet}
                 />
                 <label htmlFor="honorBet">Miser sur l'honneur</label>
-<input type="checkbox" id="honorBet" name="honorBet" onChange={handleHonorBetChange} />
+                <input type="checkbox" id="honorBet" name="honorBet" onChange={handleHonorBetChange} />
                 <button
                   type="button"
                   className="mt-40 rounded bg-blue-500 p-2 text-white"

@@ -28,6 +28,6 @@
     "**/*.tsx",
     "**/*.cjs",
     "**/*.mjs"
-  ],
+, "src/pages/api/socket.ts"  ],
   "exclude": ["node_modules"]
 }

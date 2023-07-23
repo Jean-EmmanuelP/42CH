@@ -4,10 +4,8 @@
 /build/
 /.vscode/
 /.idea/
-/.env/
 
 # Fichiers
-.env
 .DS_Store
 /.env.local
 /.env.development.local

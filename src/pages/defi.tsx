@@ -1,37 +1,35 @@
 import { useSession } from "next-auth/react";
 import Navbar from "~/components/Navbar";
-
 import { useState, useEffect, useContext } from "react";
-import { api, type RouterOutputs } from "../utils/api";
-import _ from "lodash";
+import { api } from "../utils/api";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { useRouter } from "next/navigation";
 import GlobalContext from "~/context/GlobalContext";
+import Pusher from "pusher-js";
+
+Pusher.logToConsole = true;
 
 export default function Defi() {
   const { data: sessionData } = useSession();
   const { setChallengeData, challengeData } = useContext(GlobalContext);
   const my_username = sessionData?.user.name;
   const [inviteeName, setInviteeName] = useState("");
-  const userId = sessionData?.user.id;
-  console.log(userId);
+  const userId = sessionData?.user.id || "";
   const router = useRouter();
   const [username, setUsername] = useState("");
   const { data: users, refetch: refetchUsers } = api.defi.getUsers.useQuery(
     { query: username },
     {
-      // Only perform the query if there is a user session and the username is not empty
       enabled: sessionData?.user !== undefined && username !== "",
     }
   );
 
-  // New code
   const { data: usernameCheckResult, refetch: refetchUsernameCheck } =
     api.defi.checkUsername.useQuery(
       { username, my_username: my_username || "" },
       {
-        enabled: false, // don't run the query initially
+        enabled: false,
       }
     );
 
@@ -43,23 +41,15 @@ export default function Defi() {
 
   const handleDefiSubmit = async (e: any) => {
     e.preventDefault();
-
-    // Refetch the username check
     refetchUsernameCheck().then((queryResult) => {
       if (queryResult.isSuccess) {
         const usernameCheckResult = queryResult.data;
         if (usernameCheckResult?.success) {
           const userName = usernameCheckResult.invitee || "";
-          console.log(`this is the username`, userName);
-
-          // Move setChallengeData here with updated userName
           setChallengeData([userId, my_username, userName]);
-
           setInviteeName(userName);
-          console.log(usernameCheckResult.message);
           toast.success(usernameCheckResult.message);
         } else {
-          console.log(usernameCheckResult.message);
           toast.error(usernameCheckResult.message);
         }
       }
@@ -67,18 +57,21 @@ export default function Defi() {
   };
 
   useEffect(() => {
-    const sse = new EventSource(`/api/sse?userId=${userId}`);
+    const pusher = new Pusher('374519cdfad60d3b237f', {
+      cluster: 'eu',
+    });
 
-    sse.addEventListener("message", (e) => {
-      console.log(e.data);
-      const eventData = e.data.split("\n");
-      const uniqueChallengeId = eventData[0];
-      console.log(challengeData);
+    const channel = pusher.subscribe(userId.toString());
+
+    channel.bind("my-channel", (data: any) => {
+      // console.log("Received data: ", data);
+      const uniqueChallengeId = data.message; // adjust this line based on the format of `data`
       router.push(`/defi/${uniqueChallengeId}`);
     });
 
     return () => {
-      sse.close();
+      pusher.unsubscribe(userId.toString());
+      pusher.disconnect();
     };
   }, [userId]);
 

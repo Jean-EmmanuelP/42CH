@@ -2,9 +2,9 @@ import { useSession } from "next-auth/react";
 import { useRouter } from "next/router";
 import { useContext, useEffect, useState } from "react";
 import Navbar from "~/components/Navbar";
-import { connections } from "./api/sse";
 import { api } from "~/utils/api";
 import GlobalContext from "~/context/GlobalContext";
+import Pusher from 'pusher-js';
 
 export default function HomePage() {
   const { data: session } = useSession();
@@ -29,14 +29,18 @@ export default function HomePage() {
   });
 
   useEffect(() => {
-    const sse = new EventSource(`/api/sse?userId=${userId}`);
+    var pusher = new Pusher('374519cdfad60d3b237f', {
+      cluster: 'eu'
+    });
 
-    sse.addEventListener("message", (e) => {
-      console.log(e.data);
+    var channel = pusher.subscribe(userId);
 
-      const eventData = e.data.split("|");
+    channel.bind('my-channel', function(data:any) {
+      console.log(data.message);
+    
+      const eventData = data.message.split("|");
       const challengeData = eventData[0];
-      const creatorIdentity = eventData[1].trim();
+      const creatorIdentity = eventData[1]?.trim() || "";
       setCreatorId(creatorIdentity);
       setChallenges((prevChallenges) => {
         const updatedChallenges = [...prevChallenges, challengeData];
@@ -51,23 +55,9 @@ export default function HomePage() {
     }
 
     return () => {
-      sse.close();
+      pusher.unsubscribe(userId);
     };
   }, [userId]);
-
-  useEffect(() => {
-    const handleNewChallenge = (e: Event) => {
-      const event = e as CustomEvent;  // Here's the type assertion
-      setChallenges((prevChallenges) => [...prevChallenges, event.detail]);
-    };
-
-    window.addEventListener("newChallenge", handleNewChallenge);
-
-    return () => {
-      window.removeEventListener("newChallenge", handleNewChallenge);
-    };
-}, []);
-
 
   const router = useRouter();
 

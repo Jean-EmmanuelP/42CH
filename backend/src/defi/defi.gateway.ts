@@ -22,9 +22,21 @@ export class DefiGateway {
       });
 
       socket.on('changeBet', (data) => {
-        console.log('changeBet', data)
-        socket.to(data.room).emit('changeBet', { newBet: data.newBet, id: socket.id })
+        socket.to(data.room).emit('changeBet', { newBet: data.newBet })
       })
+
+      socket.on('changeHonorBet', (data) => {
+        socket.to(data.room).emit('changeHonorBet', { newHonorBet: data.newHonorBet })
+      })
+
+      socket.on('changeContract', (data) => {
+        socket.to(data.room).emit('changeContract', { newContract: data.newContract })
+      })
+
+      socket.on('changeGame', (data) => {
+        socket.to(data.room).emit('changeGame', { newGame: data.newGame })
+      })
+
     });
   }
 }

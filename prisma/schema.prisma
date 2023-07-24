@@ -2,7 +2,7 @@
 // learn more about it in the docs: https://pris.ly/d/prisma-schema
 
 generator client {
-    provider = "prisma-client-js"
+    provider        = "prisma-client-js"
     previewFeatures = ["jsonProtocol"]
 }
 
@@ -43,32 +43,50 @@ model Session {
 }
 
 model User {
-    id               String    @id @default(cuid())
-    name             String?   @unique
-    email            String?   @unique
-    emailVerified    DateTime?
-    image            String?
-    password         String?
-    accounts         Account[]
-    sessions         Session[]
-    balance          Int       @default(0)  
-    challenges       Challenge[]  @relation("CreatedChallenges") 
-    participations   Challenge[]  @relation("ParticipatedChallenges")
-    wonChallenges    Challenge[]  @relation("WonChallenges")  // Nouveau champ pour les défis gagnés
+    id             String      @id @default(cuid())
+    name           String?     @unique
+    email          String?     @unique
+    emailVerified  DateTime?
+    image          String?
+    password       String?
+    accounts       Account[]
+    sessions       Session[]
+    balance        Int         @default(0)
+    challenges     Challenge[] @relation("CreatedChallenges")
+    participations Challenge[] @relation("ParticipatedChallenges")
+    wonChallenges  Challenge[] @relation("WonChallenges") // Nouveau champ pour les défis gagnés
 }
-  
-model Challenge { 
-    id            String   @id @default(cuid())
-    createdAt     DateTime @default(now())
+
+model Challenge {
+    id            String    @id @default(cuid())
+    createdAt     DateTime  @default(now())
     completedAt   DateTime?
-    winnerId      String?  
-    winner        User?    @relation("WonChallenges", fields: [winnerId], references: [id]) // Changement de la relation ici
+    winnerId      String?
+    winner        User?     @relation("WonChallenges", fields: [winnerId], references: [id]) // Changement de la relation ici
     creatorId     String
-    creator       User     @relation("CreatedChallenges", fields: [creatorId], references: [id])
+    creator       User      @relation("CreatedChallenges", fields: [creatorId], references: [id])
     participantId String
-    participant   User     @relation("ParticipatedChallenges", fields: [participantId], references: [id])
-    amount        Int      
-    description   String   
+    participant   User      @relation("ParticipatedChallenges", fields: [participantId], references: [id])
+    amount        Int
+    description   String
+}
+
+model Defi {
+    id        String   @id @default(cuid())
+    createdAt DateTime @default(now())
+
+    creatorId  String
+    opponentId String
+
+    creatorHonor  Boolean
+    opponentHonor Boolean
+
+    creatorBid  Int
+    opponentBid Int
+
+    contractTerms String
+
+    gameSelected String
 }
 
 model VerificationToken {

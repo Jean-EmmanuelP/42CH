@@ -19,7 +19,7 @@ export default function Navbar() {
     data: UsernameData,
     error: UserError,
     isLoading: UserIsLoading,
-  } = api.defi.getUserDataByName.useQuery({j
+  } = api.defi.getUserDataByName.useQuery({
     name: session?.user?.name || "",
   });
 

@@ -32,11 +32,6 @@
       "static/chunks/main.js",
       "static/chunks/pages/calendrier.js"
     ],
-    "/classement": [
-      "static/chunks/webpack.js",
-      "static/chunks/main.js",
-      "static/chunks/pages/classement.js"
-    ],
     "/defi": [
       "static/chunks/webpack.js",
       "static/chunks/main.js",

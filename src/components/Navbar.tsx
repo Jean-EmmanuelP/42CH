@@ -1,7 +1,8 @@
 "use client";
 
-import { useSession } from 'next-auth/react';
+import { useSession } from "next-auth/react";
 import Link from "next/link";
+import { api } from "~/utils/api";
 
 function extractUsername(email: string) {
   return email.split(" ")[0];
@@ -14,26 +15,37 @@ export default function Navbar() {
     ? extractUsername(session.user.name)
     : null;
 
+  const {
+    data: UsernameData,
+    error: UserError,
+    isLoading: UserIsLoading,
+  } = api.defi.getUserDataByName.useQuery({j
+    name: session?.user?.name || "",
+  });
+
   return (
-    <div className="bg-gray-100/20 shadow-md flex justify-between items-center w-full h-20">
-      <Link href="/" className="font-mono p-5">
+    <div className="flex h-20 w-full items-center justify-between bg-gray-100/20 shadow-md">
+      <Link href="/" className="p-5">
         42Bets
       </Link>
 
       <div className="flex">
-        <Link href="/classement" className="button font-mono p-5 mr-7">
+        <Link href="/classement" className="button mr-7 p-5">
           Classement
         </Link>
-        <Link href="/calendrier" className="button font-mono p-5">
+        <Link href="/calendrier" className="button p-5">
           Calendrier
         </Link>
-        <Link href={`api/auth/${sessionUrl}`} className="button font-mono p-5">
+        <Link href={`api/auth/${sessionUrl}`} className="button p-5">
           {session ? "Logout" : "Login"}
         </Link>
       </div>
 
-      <a className="flex items-center mr-10 p-4 hover:text-blue-700 space-x-3">
-        <span className="font-mono py-1">{username}</span>
+      <a className="mr-10 flex items-center space-x-3 p-4 hover:text-blue-700">
+        <div className="flex flex-col">
+          <span className="py-1">{username}</span>
+          <span className="py-1">Wallet : {UsernameData && UsernameData.balance}</span>
+        </div>
         <img
           src={`${session?.user.image}`}
           alt="Profile"

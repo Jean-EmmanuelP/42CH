@@ -30,7 +30,6 @@ const data: DataItem[] = [
 export default function Classement() {
   return (
     <>
-      <Navbar />
       <div className="h-screen flex flex-col items-center justify-center bg-white-100 p-4 font-mono">
         <table className="table-auto w-full h-full border-collapse border-1 border-gray-300 shadow-md font-mono">
           <thead>

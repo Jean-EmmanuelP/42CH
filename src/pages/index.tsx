@@ -1,142 +1,133 @@
-import { useSession } from "next-auth/react";
-import { useRouter } from "next/router";
-import { useContext, useEffect, useState } from "react";
-import Navbar from "~/components/Navbar";
-import { api } from "~/utils/api";
+import { useContext } from "react";
 import GlobalContext from "~/context/GlobalContext";
-import Pusher from 'pusher-js';
+
+interface Event {
+  title: string;
+  description: string;
+  label: string;
+  day: number;
+  id: number;
+}
 
 export default function HomePage() {
-  const { data: session } = useSession();
-  const { setChallengeData, challengeData } = useContext(GlobalContext);
-  const userId = session?.user.id || "";
-  const username = session?.user.name || "";
-  const [challenges, setChallenges] = useState<string[]>([]);
-  const [creatorId, setCreatorId] = useState<string>("");
+  // Context
+  const { weeklyEvents } = useContext(GlobalContext);
 
-  const acceptChallengeMutation = api.defi.acceptChallenge.useMutation({
-    onSuccess: (result) => {
-      if (result.success) {
-        const creatorUsername = result.creatorUsername;
-        setChallengeData([userId, username, creatorUsername]);
-        console.log(challengeData);
-        router.push(`/defi/${result.message}`);
-      }
+  // Hardcoded best and worst players
+  const bestPlayers = [
+    {
+      name: "Player 1",
+      img: "https://www.didierdrogbafoundation.org/sites/default/files/didier-drogba.jpg",
+
     },
-    onError: (error) => {
-      console.error(error);
+    {
+      name: "Player 2",
+      img: "https://img.freepik.com/photos-gratuite/portrait-beau-jeune-homme-gros-plan_176420-15568.jpg",
     },
-  });
+    {
+      name: "Player 3",
+      img: "https://www.superprof.fr/images/annonces/professeur-home-jeune-ingenieur-chinois-paris-capable-parler-francais-chinois-anglais.jpg",
+    },
+  ];
 
-  useEffect(() => {
-    var pusher = new Pusher('374519cdfad60d3b237f', {
-      cluster: 'eu'
-    });
+  const worstPlayers = [
+    {
+      name: "Player 6",
+      img: "https://i.pinimg.com/736x/35/4e/16/354e1641081f40480fcb7236f3e7d7ea.jpg",
+    },
+    {
+      name: "Player 7",
+      img: "https://upload.wikimedia.org/wikipedia/commons/6/65/20180610_FIFA_Friendly_Match_Austria_vs._Brazil_Neymar_850_1705.jpg",
+    },
+    {
+      name: "Player 8",
+      img: "https://images.psg.media/media/192520/nasser-al-khelaifi-square.jpg?bgcolor=ffffff",
+    },
+  ];
 
-    var channel = pusher.subscribe(userId);
-
-    channel.bind('my-channel', function(data:any) {
-      console.log(data.message);
-    
-      const eventData = data.message.split("|");
-      const challengeData = eventData[0];
-      const creatorIdentity = eventData[1]?.trim() || "";
-      setCreatorId(creatorIdentity);
-      setChallenges((prevChallenges) => {
-        const updatedChallenges = [...prevChallenges, challengeData];
-        localStorage.setItem("challenges", JSON.stringify(updatedChallenges));
-        return updatedChallenges;
-      });
-    });
-
-    const savedChallenges = localStorage.getItem("challenges");
-    if (savedChallenges) {
-      setChallenges(JSON.parse(savedChallenges));
-    }
-
-    return () => {
-      pusher.unsubscribe(userId);
-    };
-  }, [userId]);
-
-  const router = useRouter();
-
-  function handleChallenge() {
-    router.push("/defi");
+  function BiggestEvent() {
+    console.log(`you clicked on the image`);
+    /*
+      -> Mettre le pop up pour s'inscrire au big event
+    */
   }
 
-  const {
-    data: creatorIdResponse,
-    error,
-    isLoading,
-  } = api.defi.getUser.useQuery({ id: creatorId });
-
-  const handleAcceptChallenge = (challengeIndex: number) => {
-    if (!isLoading && !error) {
-      const uniqueChallengeId = Date.now().toString();
-      const creatorUsername = creatorIdResponse;
-
-      acceptChallengeMutation.mutate({
-        creatorId,
-        creatorUsername,
-        uniqueChallengeId,
-        userId,
-        username,
-      });
-    }
-    setChallenges((prevChallenges) => {
-      const newChallenges = prevChallenges.filter(
-        (_, index) => index !== challengeIndex
-      );
-      localStorage.setItem("challenges", JSON.stringify(newChallenges));
-      return newChallenges;
-    });
-  };
-
-  const handleRejectChallenge = (challengeIndex: number) => {
-    setChallenges((prevChallenges) => {
-      const newChallenges = prevChallenges.filter(
-        (_, index) => index !== challengeIndex
-      );
-      localStorage.setItem("challenges", JSON.stringify(newChallenges));
-      return newChallenges;
-    });
-  };
-
+  // Render
   return (
-    <>
-      <Navbar />
-      {challenges.map((challenge, index) => (
-        <div
-          key={index}
-          className="m-5 flex flex-col items-center gap-2 rounded bg-gray-500/10 p-2 font-mono shadow-md"
-        >
-          <p>Nouveau challenge : {challenge}</p>
-          <div>
-            <button
-              className="border-gray mr-2 border bg-green-500/10 p-2 shadow-md"
-              onClick={() => handleAcceptChallenge(index)}
-            >
-              Accepter
-            </button>
-            <button
-              className="border-gray border bg-red-500/10 p-2 shadow-md"
-              onClick={() => handleRejectChallenge(index)}
-            >
-              Refuser
-            </button>
+    <div className="flex h-5/6 flex-col">
+      <button onClick={() => BiggestEvent()} className="mb-auto mr-4">
+        <img
+          src="https://elie.net/static/images/banner/fuller-house-exposing-high-end-poker-cheating-devices.jpg"
+          alt="BiggestEvent"
+          className="ml-4 mt-4 w-full rounded-md object-cover shadow-md"
+        />
+      </button>
+      <div className="flex flex-row">
+        <div className="m-4 w-1/2 rounded-md border border-black bg-white p-2">
+          <h2 className="mb-2 text-2xl font-semibold">Agenda</h2>
+          <div className="h-80 overflow-auto rounded p-2">
+            {weeklyEvents.map((event: Event, index: number) => (
+              <div
+                key={index}
+                className="my-2 flex overflow-hidden rounded border border-black bg-white"
+              >
+                <div
+                  className={`w-1/3 ${event.label} p-4 text-center text-white`}
+                >
+                  <p className="text-2xl">{new Date(event.day).getDate()}</p>
+                  <p>
+                    {new Date(event.day).toLocaleString("default", {
+                      month: "long",
+                    })}
+                  </p>
+                </div>
+                <div className="w-2/3 p-4 pl-4">
+                  <h3 className="text-xl font-bold text-black">
+                    {event.title}
+                  </h3>
+                  <p className="text-gray-500">{event.description}</p>
+                </div>
+              </div>
+            ))}
           </div>
         </div>
-      ))}
-      <div className="flex h-screen items-center justify-center">
-        <button
-          type="button"
-          className="rounded-md bg-red-600 px-6 py-3 text-sm font-semibold tracking-widest text-white shadow-sm hover:bg-red-700 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
-          onClick={handleChallenge}
-        >
-          DEFI
-        </button>
+        <div className="m-4 flex w-1/2 flex-row rounded-md border shadow-md">
+          <div className="flex-1 border-r border-gray/25 bg-green-200/25 p-2">
+            <h2 className="mb-4 text-center text-2xl font-semibold">
+              Best Players
+            </h2>
+            <ul className="text-center">
+              {bestPlayers.map((player, index) => (
+                <li key={index} className="pb-4">
+                  <img
+                    src={player.img}
+                    alt={player.name}
+                    className="mr-2 inline-block h-14 w-14 rounded-full object-cover border border-gray shadow-md hover:border-green-500"
+                  />
+                  {player.name}
+                </li>
+              ))}
+            </ul>
+          </div>
+          <div className="flex-1 p-2 bg-red-200/25">
+            <h2 className="mb-4 text-center text-2xl font-semibold">
+              Worst Players
+            </h2>
+            <ul className="text-center">
+              {worstPlayers.map((player, index) => (
+                <li key={index} className="pb-4">
+                  <img
+                    src={player.img}
+                    alt={player.name}
+                    className="mr-2 inline-block h-14 w-14 rounded-full object-cover border border-gray shadow-md hover:border-red-500"
+                  />
+                  {player.name}
+                </li>
+              ))}
+            </ul>
+          </div>
+        </div>
       </div>
-    </>
+    </div>
   );
 }

@@ -33,7 +33,7 @@ const [opponentId, setOpponnentId] = useState<string>("");
   })
 
   const {
-    data: UserResponse,
+  data: UserResponse,
     error: UserError,
     isLoading: UserIsLoading,
   } = api.defi.getUserDataByName.useQuery({
@@ -112,7 +112,6 @@ const [opponentId, setOpponnentId] = useState<string>("");
     <div>
       {isClient ? (
         <>
-          <Navbar />
           <div className="ml-2 mr-2 mt-4 flex space-x-4 bg-gray-500">
             <div className="flex flex-1 flex-col items-center justify-center bg-gray-400/95 p-10">
               <img

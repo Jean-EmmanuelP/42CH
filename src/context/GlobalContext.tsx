@@ -1,6 +1,7 @@
 import { Dayjs } from "dayjs";
 import React, { Dispatch } from "react";
 
+
 interface EventAction {
   type: string;
   payload: any;
@@ -10,6 +11,14 @@ export type LabelType = {
   label: string;
   checked: boolean;
 };
+
+interface Event {
+  title: string;
+  description: string;
+  label: string;
+  day: number;
+  id: number;
+}
 interface GlobalContextType {
   monthIndex: number;
   setMonthIndex: Dispatch<number>;
@@ -29,6 +38,8 @@ interface GlobalContextType {
   filteredEvents: any[];
   challengeData: any;
   setChallengeData: Dispatch<any>;
+  weeklyEvents: Event[];
+  setWeeklyEvents: Dispatch<Event[]>;
 }
 
 const GlobalContext = React.createContext<GlobalContextType>({
@@ -50,6 +61,8 @@ const GlobalContext = React.createContext<GlobalContextType>({
   filteredEvents: [],
   challengeData: null,
   setChallengeData: () => {},
+  weeklyEvents: [],
+  setWeeklyEvents: () => {},
 });
 
 export default GlobalContext;

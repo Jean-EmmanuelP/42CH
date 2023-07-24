@@ -1,6 +1,10 @@
 import { z } from "zod";
-import { createTRPCRouter, publicProcedure, protectedProcedure } from "~/server/api/trpc";
-const Pusher = require('pusher');
+import {
+  createTRPCRouter,
+  publicProcedure,
+  protectedProcedure,
+} from "~/server/api/trpc";
+const Pusher = require("pusher");
 
 const pusher = new Pusher({
   appId: "1639465",
@@ -44,7 +48,7 @@ export const defiRouter = createTRPCRouter({
       });
       return user;
     }),
-    
+
   checkUsername: protectedProcedure
     .input(z.object({ username: z.string(), my_username: z.string() }))
     .query(async ({ input, ctx }) => {
@@ -62,8 +66,8 @@ export const defiRouter = createTRPCRouter({
       const UserCreatorId = userDefiCreator?.id;
       if (user) {
         const userId = typeof user.id === "string" ? user.id : undefined;
-        pusher.trigger(userId, 'my-channel', {
-          "message": `defi de ${input.my_username} | ${UserCreatorId}`
+        pusher.trigger(userId, "my-channel", {
+          message: `defi de ${input.my_username} | ${UserCreatorId}`,
         });
       }
       return user
@@ -95,8 +99,8 @@ export const defiRouter = createTRPCRouter({
         username,
         creatorUsername,
       } = input;
-      pusher.trigger(creatorId, 'my-channel', { "message": uniqueChallengeId });
-      pusher.trigger(userId, 'my-channel', { "message": uniqueChallengeId });
+      pusher.trigger(creatorId, "my-channel", { message: uniqueChallengeId });
+      pusher.trigger(userId, "my-channel", { message: uniqueChallengeId });
 
       return {
         success: true,
@@ -106,10 +110,10 @@ export const defiRouter = createTRPCRouter({
         creatorUsername: `${creatorUsername}`,
       };
     }),
-    notifyUserAccepted: protectedProcedure
-.input(z.object({ userId: z.string() }))
-.mutation(async ({ input, ctx }) => {
-  pusher.trigger(input.userId, 'my-channel', { "message": 'user accepted' });
-  return { success: true };
-}),
+  notifyUserAccepted: protectedProcedure
+    .input(z.object({ userId: z.string() }))
+    .mutation(async ({ input, ctx }) => {
+      pusher.trigger(input.userId, "my-channel", { message: "user accepted" });
+      return { success: true };
+    }),
 });

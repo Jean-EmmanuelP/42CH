@@ -6,6 +6,14 @@ import dayjs from "dayjs";
 
 type LabelType = { label: string; checked: boolean };
 
+interface Event {
+  title: string;
+  description: string;
+  label: string;
+  day: number;
+  id: number;
+}
+
 function savedEventsReducer(state: any, { type, payload }: any) {
   switch (type) {
     case "push":
@@ -44,6 +52,7 @@ export default function ContextWrapper(props: any) {
   const [showEventModal, setShowEventModal] = useState(false);
   const [selectedEvent, setSelectedEvent] = useState(null);
   const [labels, setLabels] = useState<LabelType[]>([]);
+  const [weeklyEvents, setWeeklyEvents] = useState<Event[]>([]);
   const [savedEvents, dispatchCalEvent] = useReducer(
     savedEventsReducer,
     [],
@@ -125,6 +134,8 @@ export default function ContextWrapper(props: any) {
           filteredEvents,
           challengeData,
           setChallengeData,
+          setWeeklyEvents,
+          weeklyEvents
         }}
       >
         {props.children}

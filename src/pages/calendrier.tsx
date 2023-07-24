@@ -5,7 +5,6 @@ import Navbar from "~/components/Navbar";
 export default function Calendrier() {
   return (
     <div className="h-screen flex flex-col">
-      <Navbar />
       <Calendar/>
     </div>
   );

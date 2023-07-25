@@ -43,18 +43,18 @@ model Session {
 }
 
 model User {
-    id            String    @id @default(cuid())
-    name          String?   @unique
-    email         String?   @unique
-    emailVerified DateTime?
-    image         String?
-    password      String?
-    accounts      Account[]
-    sessions      Session[]
-    balance       Int       @default(0)
-    // challenges     Challenge[] @relation("CreatedChallenges")
-    // participations Challenge[] @relation("ParticipatedChallenges")
-    // wonChallenges  Challenge[] @relation("WonChallenges") // Nouveau champ pour les défis gagnés
+    id             String      @id @default(cuid())
+    name           String?     @unique
+    email          String?     @unique
+    emailVerified  DateTime?
+    image          String?
+    password       String?
+    accounts       Account[]
+    sessions       Session[]
+    balance        Int         @default(0)
+    challenges     Challenge[] @relation("CreatedChallenges")
+    participations Challenge[] @relation("ParticipatedChallenges")
+    wonChallenges  Challenge[] @relation("WonChallenges") // Nouveau champ pour les défis gagnés
 }
 
 model Challenge {
@@ -73,13 +73,15 @@ model Challenge {
 
     status String
 
-    contractsTerms String?
-    gameSelected   String
+    contractTerms String?
+    gameSelected  String
 
-    // description String
-    // winner        User?     @relation("WonChallenges", fields: [winnerId], references: [id]) // Changement de la relation ici
-    // participant   User      @relation("ParticipatedChallenges", fields: [participantId], references: [id])
-    // creator       User      @relation("CreatedChallenges", fields: [creatorId], references: [id])
+    description   String?
+    participantId String?
+    amount        Int?
+    winner        User?   @relation("WonChallenges", fields: [winnerId], references: [id]) // Changement de la relation ici
+    participant   User?   @relation("ParticipatedChallenges", fields: [participantId], references: [id])
+    creator       User?   @relation("CreatedChallenges", fields: [creatorId], references: [id])
 }
 
 model Defi {

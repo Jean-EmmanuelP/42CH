@@ -6,7 +6,24 @@ export class DefiService {
     constructor(private prismaService: PrismaService) { }
 
     async createChallenge(username: string, creatorOrOpponent: string) {
-
+        let defi;
+        const user = await this.prismaService.user.findUnique({ where: { name: username } });
+        if (creatorOrOpponent == "creator")
+            defi = await this.prismaService.defi.findUnique({ where: { creatorId: user.id } });
+        else
+            defi = await this.prismaService.defi.findUnique({ where: { opponentId: user.id } });
+        await this.prismaService.challenge.create({
+            data: {
+                creatorId: defi.creatorId,
+                opponentId: defi.opponentId,
+                creatorBid: defi.creatorBid,
+                opponentBid: defi.opponentBid,
+                gameSelected: defi.gameSelected,
+                contractTerms: defi.contractTerms,
+                status: "pending",
+            }
+        })
+        await this.prismaService.defi.delete({ where: { id: defi.id } });
     }
 
     async getInfos(username: string) {
@@ -65,6 +82,7 @@ export class DefiService {
                 });
                 if (newDefi.creatorAccepted && newDefi.opponentAccepted) {
                     this.createChallenge(username, "opponent");
+                    return { success: true, challengeAccepted: true }
                 }
                 return { success: true };
             }
@@ -76,6 +94,7 @@ export class DefiService {
             });
             if (newDefi.creatorAccepted && newDefi.opponentAccepted) {
                 this.createChallenge(username, "creator");
+                return { success: true, challengeAccepted: true }
             }
             return { success: true };
         }

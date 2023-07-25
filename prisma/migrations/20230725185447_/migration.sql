@@ -33,6 +33,7 @@ CREATE TABLE "User" (
     "email" TEXT,
     "emailVerified" TIMESTAMP(3),
     "image" TEXT,
+    "password" TEXT,
     "balance" INTEGER NOT NULL DEFAULT 0,
 
     CONSTRAINT "User_pkey" PRIMARY KEY ("id")
@@ -44,12 +45,34 @@ CREATE TABLE "Challenge" (
     "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "completedAt" TIMESTAMP(3),
     "winnerId" TEXT,
+    "loserId" TEXT,
     "creatorId" TEXT NOT NULL,
-    "participantId" TEXT NOT NULL,
-    "amount" INTEGER NOT NULL,
-    "description" TEXT NOT NULL,
+    "opponentId" TEXT NOT NULL,
+    "creatorBid" INTEGER NOT NULL,
+    "opponentBid" INTEGER NOT NULL,
+    "status" TEXT NOT NULL,
+    "contractTerms" TEXT,
+    "gameSelected" TEXT NOT NULL,
 
     CONSTRAINT "Challenge_pkey" PRIMARY KEY ("id")
+);
+
+-- CreateTable
+CREATE TABLE "Defi" (
+    "id" TEXT NOT NULL,
+    "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    "creatorId" TEXT NOT NULL,
+    "opponentId" TEXT NOT NULL,
+    "creatorHonor" BOOLEAN NOT NULL,
+    "opponentHonor" BOOLEAN NOT NULL,
+    "creatorBid" INTEGER NOT NULL,
+    "opponentBid" INTEGER NOT NULL,
+    "contractTerms" TEXT NOT NULL,
+    "gameSelected" TEXT NOT NULL,
+    "creatorAccepted" BOOLEAN NOT NULL DEFAULT false,
+    "opponentAccepted" BOOLEAN NOT NULL DEFAULT false,
+
+    CONSTRAINT "Defi_pkey" PRIMARY KEY ("id")
 );
 
 -- CreateTable
@@ -66,7 +89,16 @@ CREATE UNIQUE INDEX "Account_provider_providerAccountId_key" ON "Account"("provi
 CREATE UNIQUE INDEX "Session_sessionToken_key" ON "Session"("sessionToken");
 
 -- CreateIndex
+CREATE UNIQUE INDEX "User_name_key" ON "User"("name");
+
+-- CreateIndex
 CREATE UNIQUE INDEX "User_email_key" ON "User"("email");
+
+-- CreateIndex
+CREATE UNIQUE INDEX "Defi_creatorId_key" ON "Defi"("creatorId");
+
+-- CreateIndex
+CREATE UNIQUE INDEX "Defi_opponentId_key" ON "Defi"("opponentId");
 
 -- CreateIndex
 CREATE UNIQUE INDEX "VerificationToken_token_key" ON "VerificationToken"("token");
@@ -79,12 +111,3 @@ ALTER TABLE "Account" ADD CONSTRAINT "Account_userId_fkey" FOREIGN KEY ("userId"
 
 -- AddForeignKey
 ALTER TABLE "Session" ADD CONSTRAINT "Session_userId_fkey" FOREIGN KEY ("userId") REFERENCES "User"("id") ON DELETE CASCADE ON UPDATE CASCADE;
-
--- AddForeignKey
-ALTER TABLE "Challenge" ADD CONSTRAINT "Challenge_winnerId_fkey" FOREIGN KEY ("winnerId") REFERENCES "User"("id") ON DELETE SET NULL ON UPDATE CASCADE;
-
--- AddForeignKey
-ALTER TABLE "Challenge" ADD CONSTRAINT "Challenge_creatorId_fkey" FOREIGN KEY ("creatorId") REFERENCES "User"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
-
--- AddForeignKey
-ALTER TABLE "Challenge" ADD CONSTRAINT "Challenge_participantId_fkey" FOREIGN KEY ("participantId") REFERENCES "User"("id") ON DELETE RESTRICT ON UPDATE CASCADE;

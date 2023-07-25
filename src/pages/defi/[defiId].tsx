@@ -107,6 +107,10 @@ function DefiPage() {
       setOpponentAccepted(true);
     })
 
+    socket.on('challengeAccepted', () => {
+      window.location.href = "/"
+    })
+
     socket.emit('join', { room: 123 })
 
     return () => {

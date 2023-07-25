@@ -20,13 +20,13 @@ function DefiPage() {
   const [selectedGame, setSelectedGame] = useState<string>('');
   const handleGameChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
     setSelectedGame(event.target.value)
-    socket.emit('changeGame', { newGame: event.target.value, room: roomNumber })
+    socket.emit('changeGame', { newGame: event.target.value, room: roomNumber, username: sessionStorage.getItem('username') })
   };
   const [honorBet, setHonorBet] = useState<boolean>(false);
   const [opponentHonorBet, setOpponentHonorBet] = useState<boolean>(false);
   const handleHonorBetChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     setHonorBet(event.target.checked)
-    socket.emit('changeHonorBet', { newHonorBet: event.target.checked, room: roomNumber })
+    socket.emit('changeHonorBet', { newHonorBet: event.target.checked, room: roomNumber, username: sessionStorage.getItem('username') })
   };
   const [userAccepted, setUserAccepted] = useState<boolean>(false);
   const [opponentAccepted, setOpponentAccepted] = useState<boolean>(false);
@@ -37,7 +37,7 @@ function DefiPage() {
 
 
   const {
-  data: UserResponse,
+    data: UserResponse,
     error: UserError,
     isLoading: UserIsLoading,
   } = api.defi.getUserDataByName.useQuery({
@@ -106,12 +106,12 @@ function DefiPage() {
 
   const handleUserBetChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     setUserBet(Number(event.target.value));
-    socket.emit('changeBet', { newBet: Number(event.target.value), room: roomNumber })
+    socket.emit('changeBet', { newBet: Number(event.target.value), room: roomNumber, username: sessionStorage.getItem('username') })
   };
 
   const handleContractChange = (event: React.ChangeEvent<HTMLTextAreaElement>) => {
     setMutualContract(event.target.value);
-    socket.emit('changeContract', { newContract: event.target.value, room: roomNumber })
+    socket.emit('changeContract', { newContract: event.target.value, room: roomNumber, username: sessionStorage.getItem('username') })
   };
 
   const placeholder = "Loading...";

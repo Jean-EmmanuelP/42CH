@@ -75,8 +75,8 @@ model Defi {
     id        String   @id @default(cuid())
     createdAt DateTime @default(now())
 
-    creatorId  String
-    opponentId String
+    creatorId  String @unique
+    opponentId String @unique
 
     creatorHonor  Boolean
     opponentHonor Boolean

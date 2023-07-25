@@ -14,16 +14,14 @@ export class DefiGateway {
 
       socket.on('join', (data) => {
         socket.join(data.room);
-        // this.defiService.createDefi(data.room, data.username, data.opponentUsername);
-        console.log(socket.id + ' joined room ' + data.room);
       });
 
       socket.on('leave', (data) => {
         socket.leave(data.room);
-        console.log(socket.id + ' left room ' + data.room);
       });
 
       socket.on('changeBet', (data) => {
+        this.defiService.changeBet(data.username, data.newBet);
         socket.to(data.room).emit('changeBet', { newBet: data.newBet })
       })
 

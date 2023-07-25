@@ -4,6 +4,7 @@ import { useRouter } from "next/navigation";
 import GlobalContext from "~/context/GlobalContext";
 import Pusher from "pusher-js";
 import { api } from "~/utils/api";
+import axios from "axios";
 
 const DefiRightBar: React.FC = () => {
   const router = useRouter();
@@ -63,7 +64,17 @@ const DefiRightBar: React.FC = () => {
       if (result.success) {
         const creatorUsername = result.creatorUsername;
         setChallengeData([userId, username, creatorUsername]);
-        router.push(`/defi/${result.message}`);
+        sessionStorage.setItem('username', username);
+        sessionStorage.setItem('userId', userId);
+        (async () => {
+          const request = await axios.post('localhost:3333/defi/create', {
+            creatorUsername: creatorUsername,
+            opponentUsername: username,
+          })
+          if (request.data.success == true) {
+            router.push(`/defi/${result.message}`);
+          }
+        })
       }
     },
     onError: (error) => {

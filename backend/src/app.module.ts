@@ -6,9 +6,10 @@ import { DefiGateway } from './defi/defi.gateway';
 import { DefiService } from './defi/defi.service';
 import { PrismaModule } from './prisma/prisma.module';
 import { PrismaService } from './prisma/prisma.service';
+import { DefiModule } from './defi/defi.module';
 
 @Module({
-  imports: [PrismaModule],
+  imports: [PrismaModule, DefiModule],
   controllers: [AppController, DefiController],
   providers: [AppService, DefiGateway, DefiService, PrismaService],
 })

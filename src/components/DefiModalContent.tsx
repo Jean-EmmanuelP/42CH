@@ -16,7 +16,7 @@ import "react-toastify/dist/ReactToastify.css";
 Pusher.logToConsole = true;
 
 // Composant principal Defi
-export default function Defi() {
+export default function DefiModalContent() {
   // Utilisation des hooks et du contexte
   const { data: sessionData } = useSession();
   const { setChallengeData, challengeData } = useContext(GlobalContext);

@@ -6,11 +6,14 @@ import Pusher from "pusher-js";
 import { api } from "~/utils/api";
 import axios from "axios";
 import { createReactProxyDecoration } from "@trpc/react-query/shared";
+import Modal from "./Modal";
+import DefiModalContent from "./DefiModalContent";
 
 const DefiRightBar: React.FC = () => {
   const router = useRouter();
   const { data: session } = useSession();
   const { setChallengeData } = useContext(GlobalContext);
+  const [showModal, setShowModal] = useState<boolean>(false);
 
   // State
   const userId = session?.user.id || "";
@@ -115,10 +118,6 @@ const DefiRightBar: React.FC = () => {
     });
   };
 
-  const handleChallenge = () => {
-    router.push("/defi");
-  };
-
   // Render
   return (
     <div className="flex h-full w-full flex-col justify-between rounded-md mt-4 shadow-md bg-white p-5">
@@ -164,11 +163,14 @@ const DefiRightBar: React.FC = () => {
         <button
           type="button"
           className="rounded-full bg-red-600 px-6 py-3 text-sm font-semibold text-white shadow-md hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-red-500 focus:ring-offset-2"
-          onClick={handleChallenge}
+          onClick={() => setShowModal(true)}
         >
           DEFI
         </button>
       </div>
+      <Modal isVisible={showModal} onClose={() => setShowModal(false)}>
+        <DefiModalContent />
+      </Modal>
     </div>
   );
 };

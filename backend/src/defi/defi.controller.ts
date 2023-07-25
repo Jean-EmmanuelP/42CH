@@ -15,4 +15,9 @@ export class DefiController {
     async getInfos(@Body() data: { username: string }) {
         return await this.defiService.getInfos(data.username);
     }
+
+    @Post('get_all_challenges')
+    async getAllChallenges(@Body() data: { username: string }) {
+        return await this.defiService.getAllChallenges(data.username);
+    }
 }

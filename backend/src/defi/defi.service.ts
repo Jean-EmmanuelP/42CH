@@ -5,6 +5,40 @@ import { PrismaService } from 'src/prisma/prisma.service';
 export class DefiService {
     constructor(private prismaService: PrismaService) { }
 
+    async getAllChallenges(username: string) {
+        const user = await this.prismaService.user.findUnique({ where: { name: username } });
+        if (!user) {
+            return { success: false, error: 'User not found' };
+        }
+        const id = user.id;
+        const challenges = await this.prismaService.challenge.findMany({
+            where: {
+                OR: [
+                    { creatorId: id },
+                    { opponentId: id },
+                ],
+            },
+        });
+        if (!challenges) {
+            return { success: false, error: 'No challenges found', challenges: null };
+        }
+        let challengesInfos = [];
+        for (let i = 0; i < challenges.length; i++) {
+            let creator = await this.prismaService.user.findUnique({ where: { id: challenges[i].creatorId } });
+            let opponent = await this.prismaService.user.findUnique({ where: { id: challenges[i].opponentId } });
+            challengesInfos.push({
+                creatorName: creator.name,
+                opponentName: opponent.name,
+                creatorBid: challenges[i].creatorBid,
+                opponentBid: challenges[i].opponentBid,
+                gameSelected: challenges[i].gameSelected,
+                contractTerms: challenges[i].contractTerms,
+                status: challenges[i].status,
+            });
+        }
+        return { success: true, challenges: challengesInfos };
+    }
+
     async createChallenge(username: string, creatorOrOpponent: string) {
         let defi;
         const user = await this.prismaService.user.findUnique({ where: { name: username } });

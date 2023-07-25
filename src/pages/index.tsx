@@ -1,4 +1,4 @@
-import { useContext } from "react";
+import { useContext, useState } from "react";
 import GlobalContext from "~/context/GlobalContext";
 import Image from "next/image";
 import EventOfTheWeek from "../utils/images/profileEvent.png";
@@ -110,4 +110,3 @@ export default function HomePage() {
     </div>
   );
 }
-/*items-center text-center overflow-hidden focus:outline-none padding-0 border-0*/

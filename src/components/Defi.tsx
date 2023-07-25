@@ -112,7 +112,7 @@ const DefiRightBar: React.FC = () => {
 
   // Render
   return (
-    <div className="ml-4 mb-2 mt-4 flex h-5/6 flex-col justify-between rounded bg-white p-5 shadow-md md:w-1/5">
+    <div className="flex h-full w-full flex-col justify-between rounded-md mt-4 shadow-md bg-white p-5">
       <div>
         <h2 className="text-2xl font-bold mb-4">Mes defis</h2>
         <p className="mb-2 text-gray-600">Mon historique</p>
@@ -151,7 +151,7 @@ const DefiRightBar: React.FC = () => {
           })}
         </div>
       </div>
-      <div className="self-center">
+      <div className="self-center mb-4">
         <button
           type="button"
           className="rounded-full bg-red-600 px-6 py-3 text-sm font-semibold text-white shadow-md hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-red-500 focus:ring-offset-2"

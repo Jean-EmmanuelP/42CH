@@ -4,6 +4,8 @@
 /build/
 /.vscode/
 /.idea/
+.next/
+
 
 # Fichiers
 .DS_Store

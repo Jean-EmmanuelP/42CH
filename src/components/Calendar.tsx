@@ -18,7 +18,7 @@ export default function Calendar() {
   }, [monthIndex]);
 
   return (
-    <>
+    <div className="mt-4 ml-2 h-full">
       {showEventModal && <EventModal />}
         <div className="font-mono bg-gray-500/5 flex flex-col h-full flex-grow shadow-lg">
           <CalendarHeader />
@@ -27,6 +27,6 @@ export default function Calendar() {
             <Month month={currentMonth} />
           </div>
         </div>
-    </>
+    </div>
   );
 }

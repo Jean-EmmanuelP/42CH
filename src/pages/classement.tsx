@@ -29,8 +29,7 @@ const data: DataItem[] = [
 
 export default function Classement() {
   return (
-    <>
-      <div className="h-screen flex flex-col items-center justify-center bg-white-100 p-4 font-mono">
+      <div className="h-full w-full flex flex-col items-center justify-center bg-white-100 mt-4 font-mono">
         <table className="table-auto w-full h-full border-collapse border-1 border-gray-300 shadow-md font-mono">
           <thead>
             <tr className="bg-gray-500/50 text-white font-mono">
@@ -54,6 +53,5 @@ export default function Classement() {
           </tbody>
         </table>
       </div>
-    </>
   );
 }

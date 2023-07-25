@@ -14,12 +14,18 @@ const MyApp: AppType<{ session: Session | null }> = ({
   return (
     <SessionProvider session={session}>
       <ContextWrapper>
-        <Navbar />
-        <div className="h-full flex flex-row max-h-screen overflow-auto bg-gray-300/20">
-          <div className="h-full w-4/5 overflow-auto">
-            <Component {...pageProps} />
+        <div className="flex h-screen flex-col">
+          <div className="h-20">
+            <Navbar />
           </div>
-          <DefiRightBar />
+          <div className="flex flex-grow bg-gray-300/20">
+            <div className="w-4/5">
+              <Component {...pageProps} />
+            </div>
+            <div className="w-1/5">
+              <DefiRightBar />
+            </div>
+          </div>
         </div>
       </ContextWrapper>
     </SessionProvider>

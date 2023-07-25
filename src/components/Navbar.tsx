@@ -24,7 +24,7 @@ export default function Navbar() {
   });
 
   return (
-    <div className="flex h-20 w-full items-center justify-between bg-gray-100/20 shadow-md">
+    <div className="flex w-full h-full items-center justify-between shadow-md">
       <Link href="/" className="p-5">
         42Bets
       </Link>

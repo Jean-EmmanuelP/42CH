@@ -15,8 +15,12 @@ import "react-toastify/dist/ReactToastify.css";
 
 Pusher.logToConsole = true;
 
+interface DefiModalContentProps {
+  onClose: () => void;
+}
+
 // Composant principal Defi
-export default function DefiModalContent() {
+export default function DefiModalContent(onClose: DefiModalContentProps) {
   // Utilisation des hooks et du contexte
   const { data: sessionData } = useSession();
   const { setChallengeData, challengeData } = useContext(GlobalContext);
@@ -135,6 +139,7 @@ export default function DefiModalContent() {
           <button
             type="submit"
             className="mb-2 mb-4 rounded border border-black bg-green-500 p-2 font-mono"
+            onClick={() => onClose}
           >
             Envoyer le defi
           </button>

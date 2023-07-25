@@ -5,6 +5,10 @@ import { PrismaService } from 'src/prisma/prisma.service';
 export class DefiService {
     constructor(private prismaService: PrismaService) { }
 
+    async createChallenge(username: string, creatorOrOpponent: string) {
+
+    }
+
     async getInfos(username: string) {
         const user = await this.prismaService.user.findUnique({ where: { name: username } });
         if (!user) {
@@ -39,6 +43,41 @@ export class DefiService {
             opponentAccepted: defi.opponentAccepted,
             mutualContract: defi.contractTerms,
             selectedGame: defi.gameSelected,
+        }
+    }
+
+    async changeAccept(username: any, newAccept: boolean) {
+        const user = await this.prismaService.user.findUnique({ where: { name: username } });
+        if (!user) {
+            return { success: false, error: 'User not found' };
+        }
+        const id = user.id;
+        const defi = await this.prismaService.defi.findUnique({ where: { creatorId: id } });
+        if (!defi) {
+            const defi2 = await this.prismaService.defi.findUnique({ where: { opponentId: id } });
+            if (!defi2) {
+                return { success: false, error: 'User is not in a defi' };
+            }
+            else {
+                const newDefi = await this.prismaService.defi.update({
+                    where: { opponentId: id },
+                    data: { opponentAccepted: newAccept },
+                });
+                if (newDefi.creatorAccepted && newDefi.opponentAccepted) {
+                    this.createChallenge(username, "opponent");
+                }
+                return { success: true };
+            }
+        }
+        else {
+            const newDefi = await this.prismaService.defi.update({
+                where: { creatorId: id },
+                data: { creatorAccepted: newAccept },
+            });
+            if (newDefi.creatorAccepted && newDefi.opponentAccepted) {
+                this.createChallenge(username, "creator");
+            }
+            return { success: true };
         }
     }
 

@@ -44,6 +44,12 @@ export class DefiGateway {
         socket.to(data.room).emit('changeGame', { newGame: data.newGame })
       })
 
+      socket.on('changeAccept', (data) => {
+        console.log("ici??")
+        if (data.username != null)
+          this.defiService.changeAccept(data.username, data.newAccept);
+        socket.to(data.room).emit('changeAccept', { newAccept: data.newAccept })
+      })
     });
   }
 }

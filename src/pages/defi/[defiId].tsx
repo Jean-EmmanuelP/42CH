@@ -9,6 +9,7 @@ import { api } from "~/utils/api";
 import Image from "next/image";
 import io from 'socket.io-client';
 import axios from "axios";
+import { set } from "lodash";
 
 function DefiPage() {
   let roomNumber = 123;
@@ -63,6 +64,8 @@ function DefiPage() {
         setOpponentBet(request.data.opponentBet)
         setHonorBet(request.data.honorBet)
         setOpponentHonorBet(request.data.opponentHonorBet)
+        setOpponentAccepted(request.data.opponentAccepted)
+        setUserAccepted(request.data.userAccepted)
         setMutualContract(request.data.mutualContract)
         setSelectedGame(request.data.selectedGame)
       }
@@ -99,6 +102,10 @@ function DefiPage() {
     socket.on('changeGame', (message: { newGame: string }) => {
       setSelectedGame(message.newGame);
     });
+
+    socket.on('changeAccept', (message: { userAccepted: boolean }) => {
+      setOpponentAccepted(true);
+    })
 
     socket.emit('join', { room: 123 })
 
@@ -174,6 +181,7 @@ function DefiPage() {
                   type="button"
                   className="mt-40 rounded bg-blue-500 p-2 text-white"
                   onClick={() => {
+                    socket.emit('changeAccept', { newAccept: true, room: roomNumber, username: sessionStorage.getItem('username') })
                     setUserAccepted(true);
                     // notifyUserAccepted.mutate({userId:  user})
                   }}
@@ -191,9 +199,9 @@ function DefiPage() {
               <label htmlFor="game">Quel jeu allez-vous jouer ?</label>
               <select className="mt-2 rounded" id="game" name="game" required onChange={handleGameChange} value={selectedGame}>
                 <option value="">--Sélectionnez un jeu--</option>
-                <option value="game1">Jeu de carte</option>
-                <option value="game2">Jeu de flechette</option>
-                <option value="game3">Echec</option>
+                <option value="Jeu de carte">Jeu de carte</option>
+                <option value="Jeu de flechette">Jeu de flechette</option>
+                <option value="Echec">Echec</option>
               </select>
               <div className="rounded border border-black bg-white p-2 text-center">
                 <h1 className="underline">Gain total:</h1>
@@ -248,7 +256,7 @@ function DefiPage() {
                 <button
                   type="button"
                   className="mt-40 rounded bg-blue-500 p-2 text-white"
-                  onClick={() => setOpponentAccepted(true)}
+                // onClick={() => setOpponentAccepted(true)}
                 >
                   {opponentAccepted ? 'Prêt' : 'Accepter'}
                 </button>

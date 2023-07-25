@@ -10,20 +10,42 @@ import Modal from "./Modal";
 import DefiModalContent from "./DefiModalContent";
 
 const DefiRightBar: React.FC = () => {
+  const [showModal, setShowModal] = useState<boolean>(false);
   const router = useRouter();
   const { data: session } = useSession();
   const { setChallengeData } = useContext(GlobalContext);
-  const [showModal, setShowModal] = useState<boolean>(false);
 
   // State
   const userId = session?.user.id || "";
-  console.log(`userId is`, userId);
   const username = session?.user.name || "";
-  console.log(`username is`, username);
   const [challenges, setChallenges] = useState<string[]>([]);
-  console.log(`challenges`, challenges);
   const [creatorId, setCreatorId] = useState<string>("");
-  console.log(`creatorId`, creatorId);
+  const [challengeArray, setChallengeArray] = useState<[]>([]);
+
+  // console.log(`userId is`, userId);
+  // console.log(`username is`, username);
+  // console.log(`challenges`, challenges);
+  // console.log(`creatorId`, creatorId);
+
+  useEffect(() => {
+    console.log('useEffect')
+    const request = axios.post('http://localhost:3333/defi/get_all_challenges/',
+      JSON.stringify({ username: sessionStorage.getItem('username') }),
+      { headers: { 'Content-Type': 'application/json' } })
+    request.then((response) => {
+      console.log(response.data)
+      if (response.data.success === true)
+        setChallengeArray(response.data.challenges);
+      else {
+        console.log(challengeArray)
+        console.error(response.data.error)
+      }
+    })
+  }, [])
+
+  useEffect(() => {
+    console.log(challengeArray)
+  }, [challengeArray])
 
   // Pusher Setup
   useEffect(() => {
@@ -158,6 +180,21 @@ const DefiRightBar: React.FC = () => {
             }
           })}
         </div>
+      </div>
+      <div className="bg-white-600 h-full w-full mb-3 overflow-y-auto">
+        {challengeArray.map((challenge, index) => {
+          return (
+            <div className="h-2/5 w-full">
+              <p className="mb-2 text-l font-semibold">{challenge.creatorName}</p>
+              <p className="mb-2 text-l font-semibold">{challenge.opponentName}</p>
+              <p className="mb-2 text-l font-semibold">{challenge.creatorBid}</p>
+              <p className="mb-2 text-l font-semibold">{challenge.opponentBid}</p>
+              <p className="mb-2 text-l font-semibold">{challenge.gameSelected}</p>
+              <p className="mb-2 text-l font-semibold">{challenge.status}</p>
+            </div>
+          )
+        }
+        )}
       </div>
       <div className="self-center mb-4 pb-6">
         <button

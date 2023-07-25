@@ -18,31 +18,19 @@ export default function HomePage() {
   // Hardcoded best and worst players
   const bestPlayers = [
     {
-      name: "Player 1",
+      name: "Dimitri",
       img: "https://www.didierdrogbafoundation.org/sites/default/files/didier-drogba.jpg",
+      gain: "10000"
     },
     {
-      name: "Player 2",
+      name: "Oscar",
       img: "https://img.freepik.com/photos-gratuite/portrait-beau-jeune-homme-gros-plan_176420-15568.jpg",
+      gain: "6500"
     },
     {
-      name: "Player 3",
+      name: "LeRusse",
       img: "https://www.superprof.fr/images/annonces/professeur-home-jeune-ingenieur-chinois-paris-capable-parler-francais-chinois-anglais.jpg",
-    },
-  ];
-
-  const worstPlayers = [
-    {
-      name: "Player 6",
-      img: "https://i.pinimg.com/736x/35/4e/16/354e1641081f40480fcb7236f3e7d7ea.jpg",
-    },
-    {
-      name: "Player 7",
-      img: "https://upload.wikimedia.org/wikipedia/commons/6/65/20180610_FIFA_Friendly_Match_Austria_vs._Brazil_Neymar_850_1705.jpg",
-    },
-    {
-      name: "Player 8",
-      img: "https://images.psg.media/media/192520/nasser-al-khelaifi-square.jpg?bgcolor=ffffff",
+      gain: "4800"
     },
   ];
 
@@ -100,9 +88,10 @@ export default function HomePage() {
             </div>
           </div>
         </div>
-        <div className="transparent m-2 flex w-1/2 flex-row gap-2">
-          <div className="flex items-center justify-center w-1/2 flex-col rounded-l-md bg-white">
-            <ul className="">
+        <div className="transparent m-2 flex w-1/2 flex-row gap-2 shadow-md">
+          <div className="flex w-full flex-col rounded-l-md bg-white">
+            <h2 className="pt-4 pl-7">LES PLUS GRANDS PARIEURS DE LA SEMAINE</h2>
+            <ul className="pt-2 pl-7 justify-center items-center w-full">
               {bestPlayers.map((player, index) => (
                 <li key={index} className="pb-2">
                   <img
@@ -110,21 +99,8 @@ export default function HomePage() {
                     alt={player.name}
                     className="border-gray mr-2 inline-block h-12 w-12 rounded-full border object-cover shadow-md hover:border-green-500"
                   />
-                  {player.name}
-                </li>
-              ))}
-            </ul>
-          </div>
-          <div className="flex items-center justify-center w-1/2 flex-col rounded-r-md bg-white">
-            <ul className="">
-              {worstPlayers.map((player, index) => (
-                <li key={index} className="pb-2">
-                  <img
-                    src={player.img}
-                    alt={player.name}
-                    className="border-gray mr-2 inline-block h-12 w-12 rounded-full border object-cover shadow-md hover:border-red-500"
-                  />
-                  {player.name}
+                  {player.name}{` `}
+                  {player.gain}
                 </li>
               ))}
             </ul>

@@ -160,7 +160,7 @@ const DefiRightBar: React.FC = () => {
           })}
         </div>
       </div>
-      <div className="self-center mb-4">
+      <div className="self-center mb-4 pb-6">
         <button
           type="button"
           className="rounded-full bg-red-600 px-6 py-3 text-sm font-semibold text-white shadow-md hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-red-500 focus:ring-offset-2"

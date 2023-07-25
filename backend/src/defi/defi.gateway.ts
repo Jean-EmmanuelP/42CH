@@ -21,19 +21,26 @@ export class DefiGateway {
       });
 
       socket.on('changeBet', (data) => {
-        this.defiService.changeBet(data.username, data.newBet);
+        if (data.username != null)
+          this.defiService.changeBet(data.username, data.newBet);
         socket.to(data.room).emit('changeBet', { newBet: data.newBet })
       })
 
       socket.on('changeHonorBet', (data) => {
+        if (data.username != null)
+          this.defiService.changeHonorBet(data.username, data.newHonorBet);
         socket.to(data.room).emit('changeHonorBet', { newHonorBet: data.newHonorBet })
       })
 
       socket.on('changeContract', (data) => {
+        if (data.username != null)
+          this.defiService.changeContract(data.username, data.newContract);
         socket.to(data.room).emit('changeContract', { newContract: data.newContract })
       })
 
       socket.on('changeGame', (data) => {
+        if (data.username != null)
+          this.defiService.changeGame(data.username, data.newGame);
         socket.to(data.room).emit('changeGame', { newGame: data.newGame })
       })
 

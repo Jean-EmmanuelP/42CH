@@ -8,6 +8,12 @@ export class DefiController {
 
     @Post('create')
     async createDefi(@Body() data: { creatorUsername: string, opponentUsername: string }) {
+        console.log("ici")
         return await this.defiService.createDefi(data.creatorUsername, data.opponentUsername);
+    }
+
+    @Post('get_infos')
+    async getInfos(@Body() data: { username: string }) {
+        return await this.defiService.getInfos(data.username);
     }
 }

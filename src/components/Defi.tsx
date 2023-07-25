@@ -5,6 +5,7 @@ import GlobalContext from "~/context/GlobalContext";
 import Pusher from "pusher-js";
 import { api } from "~/utils/api";
 import axios from "axios";
+import { createReactProxyDecoration } from "@trpc/react-query/shared";
 
 const DefiRightBar: React.FC = () => {
   const router = useRouter();
@@ -26,6 +27,8 @@ const DefiRightBar: React.FC = () => {
     const pusher = new Pusher("374519cdfad60d3b237f", { cluster: "eu" });
     const channel = pusher.subscribe(userId);
 
+    if (username != null)
+      sessionStorage.setItem('username', username);
     // Event Binding
     channel.bind("my-channel", (data: any) => {
       const eventData = data.message.split("|");
@@ -66,15 +69,7 @@ const DefiRightBar: React.FC = () => {
         setChallengeData([userId, username, creatorUsername]);
         sessionStorage.setItem('username', username);
         sessionStorage.setItem('userId', userId);
-        (async () => {
-          const request = await axios.post('localhost:3333/defi/create', {
-            creatorUsername: creatorUsername,
-            opponentUsername: username,
-          })
-          if (request.data.success == true) {
-            router.push(`/defi/${result.message}`);
-          }
-        })
+        router.push(`/defi/${result.message}`)
       }
     },
     onError: (error) => {
@@ -83,7 +78,7 @@ const DefiRightBar: React.FC = () => {
   });
 
   // Challenge Acceptance
-  const handleAcceptChallenge = (challengeIndex: number) => {
+  const handleAcceptChallenge = async (challengeIndex: number) => {
     if (!isLoading && !error) {
       const uniqueChallengeId = Date.now().toString();
       const creatorUsername = creatorIdResponse;
@@ -95,6 +90,9 @@ const DefiRightBar: React.FC = () => {
         userId,
         username,
       });
+      await axios.post('http://localhost:3333/defi/create',
+        JSON.stringify({ creatorUsername: creatorUsername, opponentUsername: username, }),
+        { headers: { 'Content-Type': 'application/json' } })
 
       setChallenges((prevChallenges) => {
         const newChallenges = prevChallenges.filter(

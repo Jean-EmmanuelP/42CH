@@ -87,6 +87,9 @@ model Defi {
     contractTerms String
 
     gameSelected String
+
+    creatorAccepted  Boolean @default(false)
+    opponentAccepted Boolean @default(false)
 }
 
 model VerificationToken {

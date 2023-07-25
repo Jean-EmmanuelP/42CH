@@ -8,6 +8,7 @@ import vsImage from "../../utils/images/vs.jpg";
 import { api } from "~/utils/api";
 import Image from "next/image";
 import io from 'socket.io-client';
+import axios from "axios";
 
 function DefiPage() {
   let roomNumber = 123;
@@ -54,11 +55,24 @@ function DefiPage() {
 
   useEffect(() => {
     setIsClient(true);
-
+    const request = axios.post('http://localhost:3333/defi/get_infos/', JSON.stringify({ username: sessionStorage.getItem('username') }), { headers: { 'Content-Type': 'application/json' } })
+    request.then((request) => {
+      if (request.data.success == true) {
+        console.log(request.data)
+        setUserBet(request.data.userBet)
+        setOpponentBet(request.data.opponentBet)
+        setHonorBet(request.data.honorBet)
+        setOpponentHonorBet(request.data.opponentHonorBet)
+        setMutualContract(request.data.mutualContract)
+        setSelectedGame(request.data.selectedGame)
+      }
+      else {
+        console.log(request.data.message)
+      }
+    })
     const socket = io(`http://localhost:3111`, {
       transports: ['websocket'],
     });
-
     setSocket(socket);
 
   }, []);
@@ -86,7 +100,7 @@ function DefiPage() {
       setSelectedGame(message.newGame);
     });
 
-    socket.emit('join', { room: 123 })//, username: UserResponse?.name, opponentUsername: OpponentResponse?.name });
+    socket.emit('join', { room: 123 })
 
     return () => {
       socket.emit('leave', { room: 123 });
@@ -98,11 +112,11 @@ function DefiPage() {
     setGainTotal(userBet + opponentBet);
   }, [userBet, opponentBet]);
 
-  useEffect(() => {
-    if (userAccepted && opponentAccepted) {
-      // Envoyez ici les informations du pari
-    }
-  }, [userAccepted, opponentAccepted]);
+  // useEffect(() => {
+  //   if (userAccepted && opponentAccepted) {
+  //     // Envoyez ici les informations du pari
+  //   }
+  // }, [userAccepted, opponentAccepted]);
 
   const handleUserBetChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     setUserBet(Number(event.target.value));
@@ -146,6 +160,7 @@ function DefiPage() {
                   placeholder="1"
                   className="mt-2 rounded p-2"
                   onChange={handleUserBetChange}
+                  value={userBet}
                 />
                 <label htmlFor="honorBet">Miser sur l'honneur</label>
                 <input
@@ -153,6 +168,7 @@ function DefiPage() {
                   id="honorBet"
                   name="honorBet"
                   onChange={handleHonorBetChange}
+                  checked={honorBet}
                 />
                 <button
                   type="button"

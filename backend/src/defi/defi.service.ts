@@ -5,33 +5,162 @@ import { PrismaService } from 'src/prisma/prisma.service';
 export class DefiService {
     constructor(private prismaService: PrismaService) { }
 
-    async changeBet(username: any, newBet: any) {
-        const defi = await this.prismaService.defi.findMany({ where: { creatorId: username } });
-        if (defi.length == 0) {
-            const defi2 = await this.prismaService.defi.findMany({ where: { opponentId: username } });
-            if (defi2.length == 0) {
+    async getInfos(username: string) {
+        const user = await this.prismaService.user.findUnique({ where: { name: username } });
+        if (!user) {
+            return { success: false, error: 'User not found' };
+        }
+        const id = user.id;
+        const defi = await this.prismaService.defi.findUnique({ where: { creatorId: id } });
+        if (!defi) {
+            const defi2 = await this.prismaService.defi.findUnique({ where: { opponentId: id } });
+            if (!defi2) {
+                return { success: false, error: 'User is not in a defi' };
+            }
+            return {
+                success: true,
+                userBet: defi2.opponentBid,
+                opponentBet: defi2.creatorBid,
+                honorBet: defi2.opponentHonor,
+                opponentHonorBet: defi2.creatorHonor,
+                userAccepted: defi2.opponentAccepted,
+                opponentAccepted: defi2.creatorAccepted,
+                mutualContract: defi2.contractTerms,
+                selectedGame: defi2.gameSelected,
+            }
+        }
+        return {
+            success: true,
+            userBet: defi.creatorBid,
+            opponentBet: defi.opponentBid,
+            honorBet: defi.creatorHonor,
+            opponentHonorBet: defi.opponentHonor,
+            userAccepted: defi.creatorAccepted,
+            opponentAccepted: defi.opponentAccepted,
+            mutualContract: defi.contractTerms,
+            selectedGame: defi.gameSelected,
+        }
+    }
+
+    async changeGame(username: any, newGame: string) {
+        const user = await this.prismaService.user.findUnique({ where: { name: username } });
+        if (!user) {
+            return { success: false, error: 'User not found' };
+        }
+        const id = user.id;
+        const defi = await this.prismaService.defi.findUnique({ where: { creatorId: id } });
+        if (!defi) {
+            const defi2 = await this.prismaService.defi.findUnique({ where: { opponentId: id } });
+            if (!defi2) {
                 return { success: false, error: 'User is not in a defi' };
             }
             else {
                 await this.prismaService.defi.update({
-                    where: { opponentId: username },
-                    data: { opponentBid: newBet },
+                    where: { opponentId: id },
+                    data: { gameSelected: newGame },
                 });
-                console.log(defi2)
                 return { success: true };
             }
         }
         else {
             await this.prismaService.defi.update({
-                where: { creatorId: username },
+                where: { creatorId: id },
+                data: { gameSelected: newGame },
+            });
+            return { success: true };
+        }
+    }
+
+    async changeBet(username: any, newBet: any) {
+        const user = await this.prismaService.user.findUnique({ where: { name: username } });
+        if (!user) {
+            return { success: false, error: 'User not found' };
+        }
+        const id = user.id;
+        const defi = await this.prismaService.defi.findUnique({ where: { creatorId: id } });
+        if (!defi) {
+            const defi2 = await this.prismaService.defi.findUnique({ where: { opponentId: id } });
+            if (!defi2) {
+                return { success: false, error: 'User is not in a defi' };
+            }
+            else {
+                await this.prismaService.defi.update({
+                    where: { opponentId: id },
+                    data: { opponentBid: newBet },
+                });
+                return { success: true };
+            }
+        }
+        else {
+            await this.prismaService.defi.update({
+                where: { creatorId: id },
                 data: { creatorBid: newBet },
             });
-            console.log(defi)
+            return { success: true };
+        }
+    }
+
+    async changeHonorBet(username: any, newHonorBet: boolean) {
+        const user = await this.prismaService.user.findUnique({ where: { name: username } });
+        if (!user) {
+            return { success: false, error: 'User not found' };
+        }
+        const id = user.id;
+        const defi = await this.prismaService.defi.findUnique({ where: { creatorId: id } });
+        if (!defi) {
+            const defi2 = await this.prismaService.defi.findUnique({ where: { opponentId: id } });
+            if (!defi2) {
+                return { success: false, error: 'User is not in a defi' };
+            }
+            else {
+                await this.prismaService.defi.update({
+                    where: { opponentId: id },
+                    data: { opponentHonor: newHonorBet },
+                });
+                return { success: true };
+            }
+        }
+        else {
+            await this.prismaService.defi.update({
+                where: { creatorId: id },
+                data: { creatorHonor: newHonorBet },
+            });
+            return { success: true };
+        }
+    }
+
+
+    async changeContract(username: any, newContract: string) {
+        const user = await this.prismaService.user.findUnique({ where: { name: username } });
+        if (!user) {
+            return { success: false, error: 'User not found' };
+        }
+        const id = user.id;
+        const defi = await this.prismaService.defi.findUnique({ where: { creatorId: id } });
+        if (!defi) {
+            const defi2 = await this.prismaService.defi.findUnique({ where: { opponentId: id } });
+            if (!defi2) {
+                return { success: false, error: 'User is not in a defi' };
+            }
+            else {
+                await this.prismaService.defi.update({
+                    where: { opponentId: id },
+                    data: { contractTerms: newContract },
+                });
+                return { success: true };
+            }
+        }
+        else {
+            await this.prismaService.defi.update({
+                where: { creatorId: id },
+                data: { contractTerms: newContract },
+            });
             return { success: true };
         }
     }
 
     async createDefi(creatorUsername: string, opponentUsername: string) {
+        console.log("in create defi")
         const user1 = await this.prismaService.user.findUnique({ where: { name: creatorUsername, } });
         const user2 = await this.prismaService.user.findUnique({ where: { name: opponentUsername, } });
         if (!user1 || !user2) {
@@ -61,6 +190,7 @@ export class DefiService {
                 contractTerms: '',
             },
         });
+        console.log("defi created")
         return { success: true, defiId: defi.id };
     }
 }

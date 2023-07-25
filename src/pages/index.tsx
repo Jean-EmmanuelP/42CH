@@ -1,7 +1,7 @@
 import { useContext } from "react";
 import GlobalContext from "~/context/GlobalContext";
 import Image from "next/image";
-import EventOfTheWeek from "../utils/images/profileEvent.jpg";
+import EventOfTheWeek from "../utils/images/profileEvent.png";
 
 interface Event {
   title: string;

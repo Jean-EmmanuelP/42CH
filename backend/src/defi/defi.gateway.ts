@@ -47,8 +47,11 @@ export class DefiGateway {
       socket.on('changeAccept', (data) => {
         if (data.username != null)
           this.defiService.changeAccept(data.username, data.newAccept).then((res) => {
-            if (res.challengeAccepted == true)
-              socket.emit('challengeAccepted'); socket.to(data.room).emit('challengeAccepted');
+            console.log('res', res)
+            if (res.challengeAccepted == true) {
+              socket.emit('challengeAccepted');
+              socket.to(data.room).emit('challengeAccepted');
+            }
           })
         socket.to(data.room).emit('changeAccept', { newAccept: data.newAccept })
       })

@@ -66,25 +66,25 @@ export class DefiService {
     async changeAccept(username: any, newAccept: boolean) {
         const user = await this.prismaService.user.findUnique({ where: { name: username } });
         if (!user) {
-            return { success: false, error: 'User not found' };
+            return { success: false, error: 'User not found', challengeAccepted: false };
         }
         const id = user.id;
         const defi = await this.prismaService.defi.findUnique({ where: { creatorId: id } });
         if (!defi) {
             const defi2 = await this.prismaService.defi.findUnique({ where: { opponentId: id } });
             if (!defi2) {
-                return { success: false, error: 'User is not in a defi' };
+                return { success: false, error: 'User is not in a defi', challengeAccepted: false };
             }
             else {
                 const newDefi = await this.prismaService.defi.update({
                     where: { opponentId: id },
                     data: { opponentAccepted: newAccept },
                 });
-                if (newDefi.creatorAccepted && newDefi.opponentAccepted) {
+                if (newDefi.creatorAccepted == true && newDefi.opponentAccepted == true) {
                     this.createChallenge(username, "opponent");
                     return { success: true, challengeAccepted: true }
                 }
-                return { success: true };
+                return { success: true, challengeAccepted: false };
             }
         }
         else {
@@ -92,11 +92,11 @@ export class DefiService {
                 where: { creatorId: id },
                 data: { creatorAccepted: newAccept },
             });
-            if (newDefi.creatorAccepted && newDefi.opponentAccepted) {
+            if (newDefi.creatorAccepted == true && newDefi.opponentAccepted == true) {
                 this.createChallenge(username, "creator");
                 return { success: true, challengeAccepted: true }
             }
-            return { success: true };
+            return { success: true, challengeAccepted: false };
         }
     }
 

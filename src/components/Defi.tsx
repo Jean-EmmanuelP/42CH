@@ -197,7 +197,7 @@ const DefiRightBar: React.FC = () => {
               <p className="">Jeu : {challenge.gameSelected}</p>
               <p className="">Enjeu : {sumUp(challenge.creatorBid, challenge.opponentBid)} coin</p>
               </div>
-              <button className="bg-black/25 border border-black shadow-sm p-2 rounded-md justify-center ml-2 items-center tracking-wide">Fin du DEFI</button>
+              <button className="bg-black/25 border border-red-500 text-red-500 shadow-sm p-2 rounded-md justify-center ml-2 items-center tracking-wide">Fin du DEFI</button>
             </div>
           )
         }

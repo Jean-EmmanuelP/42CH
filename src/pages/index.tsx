@@ -90,7 +90,7 @@ export default function HomePage() {
         </div>
         <div className="transparent m-2 flex w-1/2 flex-row gap-2 shadow-md">
           <div className="flex w-full flex-col rounded-l-md bg-white">
-            <h2 className="pt-4 pl-7">LES PLUS GRANDS PARIEURS DE LA SEMAINE</h2>
+            <h2 className="pt-4 pl-7">LES GRANDS GAGNANTS DE LA SEMAINE</h2>
             <ul className="pt-2 pl-7 justify-center items-center w-full">
               {bestPlayers.map((player, index) => (
                 <li key={index} className="pb-2">

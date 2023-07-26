@@ -140,12 +140,18 @@ const DefiRightBar: React.FC = () => {
     });
   };
 
+  function extractUsername(email: string) {
+    return email.split(" ")[0];
+  }
+
+  function sumUp(number1: number, number2: number) {
+    return number1 + number2;
+  }
   // Render
   return (
     <div className="flex h-full w-full flex-col justify-between rounded-md mt-4 shadow-md bg-white p-5">
       <div>
-        <h2 className="text-2xl font-bold mb-4">Mes defis</h2>
-        <p className="mb-2 text-gray-600">Mon historique</p>
+        <h2 className="text-2xl font-bold">Mes defis</h2>
         <div className="mb-4 overflow-auto">
           {challenges.map((challenge, index) => {
             // Check if challenge contains only digits
@@ -182,15 +188,15 @@ const DefiRightBar: React.FC = () => {
         </div>
       </div>
       <div className="bg-white-600 h-full w-full mb-3 overflow-y-auto">
+        {challengeArray ? (<p className="mb-2">Defi en cours</p>):(<></>)}
         {challengeArray.map((challenge, index) => {
           return (
-            <div className="h-1/5 w-full border border-black">
-              <p className="mb-2 text-l font-semibold border-b border-black p-2">{challenge.creatorName}</p>
-              <p className="mb-2 text-l font-semibold">{challenge.opponentName}</p>
-              <p className="mb-2 text-l font-semibold">{challenge.creatorBid}</p>
-              <p className="mb-2 text-l font-semibold">{challenge.opponentBid}</p>
-              <p className="mb-2 text-l font-semibold">{challenge.gameSelected}</p>
-              <p className="mb-2 text-l font-semibold">{challenge.status}</p>
+            <div className="text-sm w-full border border-gray rounded-md pt-2 pl-2 pb-2 shadow-sm">
+              <p className="border-b border-gray p-2">{extractUsername(challenge.creatorName)} - {extractUsername(challenge.opponentName)}</p>
+              <div className="p-2 flex flex-col gap-2">
+              <p className="">Jeu : {challenge.gameSelected}</p>
+              <p className="">Gain potentiel : {sumUp(challenge.creatorBid, challenge.opponentBid)}</p>
+              </div>
             </div>
           )
         }

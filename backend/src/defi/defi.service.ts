@@ -5,6 +5,50 @@ import { PrismaService } from 'src/prisma/prisma.service';
 export class DefiService {
     constructor(private prismaService: PrismaService) { }
 
+    async finish(username: string, challengeId: string, winner: string) {
+        const challenge = await this.prismaService.challenge.findUnique({ where: { id: challengeId } });
+        if (!challenge) {
+            return { success: false, error: 'Challenge not found' };
+        }
+        const user = await this.prismaService.user.findUnique({ where: { name: username } });
+        if (!user) {
+            return { success: false, error: 'User not found' };
+        }
+        const id = user.id;
+        if (challenge.creatorId == id) {
+            const challenge2 = await this.prismaService.challenge.update({ where: { id: challengeId }, data: { creatorWinner: winner, creatorAnswer: true } });
+            if (challenge2.opponentAnswer == true) {
+                // If both users have answered, we can finish the challenge
+                if (challenge2.creatorWinner === challenge2.opponentWinner) {
+                    let user = await this.prismaService.user.findUnique({ where: { id: challenge2.creatorId } });
+                    if (challenge2.creatorWinner == user.name)
+                        await this.prismaService.user.update({ where: { id: challenge2.creatorId }, data: { balance: { increment: challenge2.creatorBid + challenge2.opponentBid } } })
+                    else {
+                        await this.prismaService.user.update({ where: { id: challenge2.opponentId }, data: { balance: { increment: challenge2.creatorBid + challenge2.opponentBid } } })
+                    }
+                    await this.prismaService.challenge.update({ where: { id: challengeId }, data: { status: "finished" } })
+                    return { success: true }
+                }
+            }
+        }
+        else if (challenge.opponentId == id) {
+            const challenge3 = await this.prismaService.challenge.update({ where: { id: challengeId }, data: { opponentWinner: winner, opponentAnswer: true } });
+            if (challenge3.creatorAnswer == true) {
+                // If both users have answered, we can finish the challenge
+                if (challenge3.creatorWinner === challenge3.opponentWinner) {
+                    let user = await this.prismaService.user.findUnique({ where: { id: challenge3.creatorId } });
+                    if (challenge3.creatorWinner == user.name)
+                        await this.prismaService.user.update({ where: { id: challenge3.creatorId }, data: { balance: { increment: challenge3.creatorBid + challenge3.opponentBid } } })
+                    else {
+                        await this.prismaService.user.update({ where: { id: challenge3.opponentId }, data: { balance: { increment: challenge3.creatorBid + challenge3.opponentBid } } })
+                    }
+                    await this.prismaService.challenge.update({ where: { id: challengeId }, data: { status: "finished" } })
+                    return { success: true }
+                }
+            }
+        }
+    }
+
     async getAllChallenges(username: string) {
         const user = await this.prismaService.user.findUnique({ where: { name: username } });
         if (!user) {
@@ -17,6 +61,7 @@ export class DefiService {
                     { creatorId: id },
                     { opponentId: id },
                 ],
+                status: "pending",
             },
         });
         if (!challenges) {
@@ -27,6 +72,7 @@ export class DefiService {
             let creator = await this.prismaService.user.findUnique({ where: { id: challenges[i].creatorId } });
             let opponent = await this.prismaService.user.findUnique({ where: { id: challenges[i].opponentId } });
             challengesInfos.push({
+                id: challenges[i].id,
                 creatorName: creator.name,
                 opponentName: opponent.name,
                 creatorBid: challenges[i].creatorBid,
@@ -34,6 +80,8 @@ export class DefiService {
                 gameSelected: challenges[i].gameSelected,
                 contractTerms: challenges[i].contractTerms,
                 status: challenges[i].status,
+                creatorAnswer: challenges[i].creatorAnswer,
+                opponentAnswer: challenges[i].opponentAnswer,
             });
         }
         return { success: true, challenges: challengesInfos };
@@ -115,6 +163,8 @@ export class DefiService {
                     data: { opponentAccepted: newAccept },
                 });
                 if (newDefi.creatorAccepted == true && newDefi.opponentAccepted == true) {
+                    await this.prismaService.user.update({ where: { id: newDefi.creatorId }, data: { balance: { decrement: newDefi.creatorBid } } })
+                    await this.prismaService.user.update({ where: { id: newDefi.opponentId }, data: { balance: { decrement: newDefi.opponentBid } } })
                     this.createChallenge(username, "opponent");
                     return { success: true, challengeAccepted: true }
                 }
@@ -127,6 +177,8 @@ export class DefiService {
                 data: { creatorAccepted: newAccept },
             });
             if (newDefi.creatorAccepted == true && newDefi.opponentAccepted == true) {
+                await this.prismaService.user.update({ where: { id: newDefi.creatorId }, data: { balance: { decrement: newDefi.creatorBid } } })
+                await this.prismaService.user.update({ where: { id: newDefi.opponentId }, data: { balance: { decrement: newDefi.opponentBid } } })
                 this.createChallenge(username, "creator");
                 return { success: true, challengeAccepted: true }
             }

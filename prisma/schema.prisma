@@ -57,6 +57,13 @@ model User {
     wonChallenges  Challenge[] @relation("WonChallenges") // Nouveau champ pour les défis gagnés
 }
 
+model ChallengeHistory {
+    id String @id @default(cuid())
+    createdAt DateTime @default(now())
+
+    
+}
+
 model Challenge {
     id          String    @id @default(cuid())
     createdAt   DateTime  @default(now())
@@ -64,6 +71,12 @@ model Challenge {
 
     winnerId String?
     loserId  String?
+
+    creatorAnswer  Boolean @default(false)
+    opponentAnswer Boolean @default(false)
+
+    creatorWinner  String @default("")
+    opponentWinner String @default("")
 
     creatorId  String
     opponentId String

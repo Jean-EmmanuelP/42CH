@@ -20,4 +20,9 @@ export class DefiController {
     async getAllChallenges(@Body() data: { username: string }) {
         return await this.defiService.getAllChallenges(data.username);
     }
+
+    @Post('finish')
+    async finish(@Body() data: { username: string, challengeId: string, winner: string }) {
+        return await this.defiService.finish(data.username, data.challengeId, data.winner);
+    }
 }

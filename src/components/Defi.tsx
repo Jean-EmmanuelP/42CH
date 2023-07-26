@@ -21,6 +21,8 @@ const DefiRightBar: React.FC = () => {
   const [challenges, setChallenges] = useState<string[]>([]);
   const [creatorId, setCreatorId] = useState<string>("");
   const [challengeArray, setChallengeArray] = useState<any[]>([]);
+  const [showModalFin, setShowModalFin] = useState<boolean>(false);
+  const [challengeOpened, setChallengeOpened] = useState<any>(null);
 
   // console.log(`userId is`, userId);
   // console.log(`username is`, username);
@@ -149,6 +151,7 @@ const DefiRightBar: React.FC = () => {
   }
   // Render
   return (
+    console.log("in return", challengeArray[0]),
     <div className="flex h-full w-full flex-col justify-between rounded-md mt-4 shadow-md bg-white p-5">
       <div>
         <h2 className="text-2xl font-bold">Mes defis</h2>
@@ -188,16 +191,20 @@ const DefiRightBar: React.FC = () => {
         </div>
       </div>
       <div className="bg-white-600 h-full w-full mb-3 overflow-y-auto">
-        {challengeArray ? (<p className="mb-2">Defi en cours</p>):(<></>)}
+        {challengeArray ? (<p className="mb-2">Defi en cours</p>) : (<></>)}
         {challengeArray.map((challenge, index) => {
           return (
             <div className="text-sm w-full border border-gray rounded-md pt-2 pl-2 pb-2 shadow-sm">
-              <p className="border-b border-gray p-2">You vs {extractUsername(challenge.opponentName)}</p>
+              <p className="border-b border-gray p-2">You vs {extractUsername(challenge.opponentName)} a changer</p>
               <div className="p-2 flex flex-col gap-2">
-              <p className="">Jeu : {challenge.gameSelected}</p>
-              <p className="">Enjeu : {sumUp(challenge.creatorBid, challenge.opponentBid)} coin</p>
+                <p className="">Jeu : {challenge.gameSelected}</p>
+                <p className="">Enjeu : {sumUp(challenge.creatorBid, challenge.opponentBid)} coin</p>
               </div>
-              <button className="bg-black/25 border border-red-500 text-red-500 shadow-sm p-2 rounded-md justify-center ml-2 items-center tracking-wide">Fin du DEFI</button>
+              {(challenge.creatorName == sessionStorage.getItem('username') && challenge.creatorAnswer == false)
+                || (challenge.opponentName == sessionStorage.getItem('username') && challenge.opponentAnswer == false) ? (
+                <button onClick={() => { setShowModalFin(true); setChallengeOpened(challenge) }}
+                  className="bg-black/25 border border-red-500 text-red-500 shadow-sm p-2 rounded-md justify-center ml-2 items-center tracking-wide">Fin du DEFI</button>
+              ) : <p>En attente de l'adversaire...</p>}
             </div>
           )
         }
@@ -213,7 +220,31 @@ const DefiRightBar: React.FC = () => {
         </button>
       </div>
       <Modal isVisible={showModal} onClose={() => setShowModal(false)}>
-        <DefiModalContent onClose={() => setShowModal(false)}/>
+        <DefiModalContent onClose={() => setShowModal(false)} />
+      </Modal>
+      <Modal isVisible={showModalFin} onClose={() => setShowModalFin(false)}>
+        <div className="items-center gap-2">
+          <p className="items-center text-xl font-bold block">Qui a gagné ?</p>
+          {challengeOpened != null ?
+            (
+              <>
+                <button onClick={async () => {
+                  const request = await axios.post('http://localhost:3333/defi/finish', JSON.stringify({ username: sessionStorage.getItem('username'), challengeId: challengeOpened.id, winner: challengeOpened.creatorName }), { headers: { 'Content-Type': 'application/json' } })
+                  setShowModalFin(false)
+                  window.location.href = '/';
+                }}
+                  className="border border-black inline text-xl">{challengeOpened?.creatorName}</button>
+                <button onClick={async () => {
+                  const request = await axios.post('http://localhost:3333/defi/finish', JSON.stringify({ username: sessionStorage.getItem('username'), challengeId: challengeOpened.id, winner: challengeOpened.opponentName }), { headers: { 'Content-Type': 'application/json' } })
+                  setShowModalFin(false)
+                  window.location.href = '/';
+                }}
+                  className="border border-black sticky text-xl inline right-0">{challengeOpened?.opponentName}</button>
+              </>
+            ) : (<></>)
+
+          }
+        </div>
       </Modal>
     </div>
   );

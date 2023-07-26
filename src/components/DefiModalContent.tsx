@@ -20,7 +20,7 @@ interface DefiModalContentProps {
 }
 
 // Composant principal Defi
-export default function DefiModalContent(onClose: DefiModalContentProps) {
+export default function DefiModalContent({onClose}: DefiModalContentProps) {
   // Utilisation des hooks et du contexte
   const { data: sessionData } = useSession();
   const { setChallengeData, challengeData } = useContext(GlobalContext);
@@ -74,6 +74,7 @@ export default function DefiModalContent(onClose: DefiModalContentProps) {
           console.log(challengeData);
           setInviteeName(userName);
           toast.success(usernameCheckResult.message);
+          onClose();
         } else {
           toast.error(usernameCheckResult.message);
         }
@@ -139,7 +140,6 @@ export default function DefiModalContent(onClose: DefiModalContentProps) {
           <button
             type="submit"
             className="mb-2 mb-4 rounded border border-black bg-green-500 p-2 font-mono"
-            onClick={() => onClose}
           >
             Envoyer le defi
           </button>

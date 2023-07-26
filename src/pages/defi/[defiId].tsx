@@ -157,7 +157,7 @@ function DefiPage() {
               </p>
               <form
                 action=""
-                className="flex flex-col items-center justify-center border border-black p-2"
+                className="flex flex-col items-center justify-center border border-black pt-2"
               >
                 <label htmlFor="mise">
                   Mise de {UserResponse ? UserResponse.name || "" : ""} :

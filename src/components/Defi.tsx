@@ -20,7 +20,7 @@ const DefiRightBar: React.FC = () => {
   const username = session?.user.name || "";
   const [challenges, setChallenges] = useState<string[]>([]);
   const [creatorId, setCreatorId] = useState<string>("");
-  const [challengeArray, setChallengeArray] = useState<[]>([]);
+  const [challengeArray, setChallengeArray] = useState<any[]>([]);
 
   // console.log(`userId is`, userId);
   // console.log(`username is`, username);
@@ -184,8 +184,8 @@ const DefiRightBar: React.FC = () => {
       <div className="bg-white-600 h-full w-full mb-3 overflow-y-auto">
         {challengeArray.map((challenge, index) => {
           return (
-            <div className="h-2/5 w-full">
-              <p className="mb-2 text-l font-semibold">{challenge.creatorName}</p>
+            <div className="h-1/5 w-full border border-black">
+              <p className="mb-2 text-l font-semibold border-b border-black p-2">{challenge.creatorName}</p>
               <p className="mb-2 text-l font-semibold">{challenge.opponentName}</p>
               <p className="mb-2 text-l font-semibold">{challenge.creatorBid}</p>
               <p className="mb-2 text-l font-semibold">{challenge.opponentBid}</p>

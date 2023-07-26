@@ -192,10 +192,10 @@ const DefiRightBar: React.FC = () => {
         {challengeArray.map((challenge, index) => {
           return (
             <div className="text-sm w-full border border-gray rounded-md pt-2 pl-2 pb-2 shadow-sm">
-              <p className="border-b border-gray p-2">{extractUsername(challenge.creatorName)} - {extractUsername(challenge.opponentName)}</p>
+              <p className="border-b border-gray p-2">You vs {extractUsername(challenge.opponentName)}</p>
               <div className="p-2 flex flex-col gap-2">
               <p className="">Jeu : {challenge.gameSelected}</p>
-              <p className="">Gain potentiel : {sumUp(challenge.creatorBid, challenge.opponentBid)}</p>
+              <p className="">Enjeu : {sumUp(challenge.creatorBid, challenge.opponentBid)} coin</p>
               </div>
             </div>
           )

@@ -2,6 +2,8 @@ import { useContext, useState } from "react";
 import GlobalContext from "~/context/GlobalContext";
 import Image from "next/image";
 import EventOfTheWeek from "../utils/images/profileEvent.png";
+import Modal from "~/components/Modal";
+import EventSubscribeModal from "~/components/EventSubscribeModal";
 
 interface Event {
   title: string;
@@ -14,6 +16,7 @@ interface Event {
 export default function HomePage() {
   // Context
   const { weeklyEvents } = useContext(GlobalContext);
+  const [showModal, setShowModal] = useState<boolean>(false);
 
   // Hardcoded best and worst players
   const bestPlayers = [
@@ -55,7 +58,7 @@ export default function HomePage() {
           alt="Event of the Week"
           width={1300}
           height={1000}
-          className="m-2 rounded-3xl"
+          className="m-2 rounded-3xl object-cover"
         />
       </button>
       <div className="transparent mt-4 flex h-2/5 w-full gap-2">
@@ -66,8 +69,9 @@ export default function HomePage() {
               {weeklyEvents.map((event: Event, index: number) => (
                 <div
                   key={index}
-                  className={`m-2 flex h-full border bg-white`}
+                  className={`m-2 flex h-full border bg-white hover:cursor-pointer`}
                   style={{ borderColor: getColorFromLabel(event.label) }}
+                  onClick={() => {setShowModal(true)}}
                 >
                   <div
                     className={`w-1/3 ${event.label} p-2 text-center text-white`}
@@ -107,6 +111,9 @@ export default function HomePage() {
           </div>
         </div>
       </div>
+      <Modal isVisible={showModal} onClose={() => setShowModal(false)}>
+        <EventSubscribeModal />
+      </Modal>
     </div>
   );
 }

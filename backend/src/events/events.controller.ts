@@ -20,4 +20,14 @@ export class EventsController {
     async deleteEvent(@Body() event: { title: string, description: string, label: string, day: number, id: string }) {
         return await this.eventsService.deleteEvent(event);
     }
+
+    @Post('add-user-to-event')
+    async addUserToEvent(@Body() event: { eventId: string, user: string }) {
+        return await this.eventsService.addUserToEvent(event);
+    }
+
+    @Post('remove-user-from-event')
+    async removeUserFromEvent(@Body() event: { eventId: string, user: string }) {
+        return await this.eventsService.removeUserFromEvent(event);
+    }
 }

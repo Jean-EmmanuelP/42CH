@@ -33,7 +33,7 @@ export default function Day({ day, rowIdx }: DayProps) {
 
   const [dayEvents, setDayEvents] = useState<Event[]>([]);
 
-  async function setTmp() {
+  async function setDaily() {
     const request = await axios.get('http://localhost:3333/events/incoming-events/');
 
     request.data.forEach((element: Event) => {
@@ -42,30 +42,29 @@ export default function Day({ day, rowIdx }: DayProps) {
     const events: Event[] = request.data.filter((evt: Event) =>
       dayjs(evt.day).isSame(day, "day")
     );
-    console.log("avant", request.data)
-    setDayEvents(events);
-    console.log(dayEvents)
+    if (events.length > 0)
+      setDayEvents(events);
+  }
+
+  async function setWeekly() {
+    const today = dayjs();
+    const tenDaysFromNow = dayjs().add(10, "day");
+    const request = await axios.get('http://localhost:3333/events/incoming-events/');
+    request.data.forEach((element: Event) => {
+      element.day = Number(element.day)
+    });
+    const events: Event[] = request.data.filter((evt: Event) =>
+      dayjs(evt.day).isSameOrAfter(today) &&
+      dayjs(evt.day).isSameOrBefore(tenDaysFromNow)
+    );
+    if (events.length > 0)
+      setWeeklyEvents(events);
   }
 
   useEffect(() => {
-    setTmp()
+    setDaily()
+    setWeekly()
   }, []);
-
-  useEffect(() => {
-    const today = dayjs();
-    const tenDaysFromNow = dayjs().add(10, "day");
-
-    const eventsInNext10Days: Event[] = filteredEvents.filter(
-      (evt: Event) =>
-        dayjs(evt.day).isSameOrAfter(today) &&
-        dayjs(evt.day).isSameOrBefore(tenDaysFromNow)
-    );
-    setWeeklyEvents(eventsInNext10Days);
-  }, [filteredEvents]);
-
-  useEffect(() => {
-    // console.log("weeklyEvents has been updated:", weeklyEvents);
-  }, [weeklyEvents]);
 
   function getCurrentDayClass() {
     return day.isSame(dayjs(), "day")

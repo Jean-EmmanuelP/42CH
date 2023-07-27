@@ -125,11 +125,12 @@ model VerificationToken {
 }
 
 model Event {
-    id             String   @id @default(cuid())
-    title          String
-    description    String
-    label          String
-    day            String
-    limitedSeats   Int?
-    participantsId String[]
+    id                    String   @id @default(cuid())
+    title                 String
+    description           String
+    label                 String
+    day                   String
+    limitedSeats          Int?
+    participantsUsernames String[]
+    isFull                Boolean  @default(false)
 }

@@ -5,6 +5,50 @@ import { PrismaService } from 'src/prisma/prisma.service';
 export class EventsService {
     constructor(private prismaService: PrismaService) { }
 
+    async removeUserFromEvent(event: { eventId: string; user: string; }) {
+        const { eventId, user } = event;
+        const userExists = await this.prismaService.user.findFirst({ where: { name: user } })
+        if (userExists == null) {
+            return { success: false, error: "User not found" }
+        }
+        const selectedEvent = await this.prismaService.event.findFirst({ where: { id: eventId } })
+        if (selectedEvent == null) {
+            return { success: false, error: "Event not found" }
+        }
+        else {
+            const updatedEvent = await this.prismaService.event.update({ where: { id: eventId }, data: { participantsUsernames: { set: selectedEvent.participantsUsernames.filter((username) => username != userExists.name) } } })
+            return { success: true }
+        }
+    }
+
+    async addUserToEvent(event: { eventId: string; user: string; }) {
+        const { eventId, user } = event;
+        const userExists = await this.prismaService.user.findFirst({ where: { name: user } })
+        if (userExists == null) {
+            return { success: false, error: "User not found" }
+        }
+        const selectedEvent = await this.prismaService.event.findFirst({ where: { id: eventId } })
+        if (selectedEvent.isFull == true) {
+            return { success: false, error: "Event is full" }
+        }
+        if (selectedEvent == null) {
+            return { success: false, error: "Event not found" }
+        }
+        else if (selectedEvent.limitedSeats != null) {
+            if (selectedEvent.limitedSeats == selectedEvent.participantsUsernames.length) {
+                await this.prismaService.event.update({ where: { id: eventId }, data: { isFull: true } })
+                return { success: false, error: "Event is full" }
+            }
+            else {
+                const updatedEvent = await this.prismaService.event.update({ where: { id: eventId }, data: { participantsUsernames: { push: userExists.name } } })
+                if (updatedEvent.limitedSeats == updatedEvent.participantsUsernames.length) {
+                    await this.prismaService.event.update({ where: { id: eventId }, data: { isFull: true } })
+                }
+                return { success: true }
+            }
+        }
+    }
+
     async deleteEvent(event: { title: string; description: string; label: string; day: number; id: string; }) {
         const { title, description, label, day, id } = event;
         const stringDay = day.toString();

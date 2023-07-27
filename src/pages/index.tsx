@@ -1,9 +1,17 @@
-import { useContext, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import GlobalContext from "~/context/GlobalContext";
 import Image from "next/image";
 import EventOfTheWeek from "../utils/images/profileEvent.png";
 import Modal from "~/components/Modal";
 import EventSubscribeModal from "~/components/EventSubscribeModal";
+import dayjs from 'dayjs';
+import isSameOrAfter from 'dayjs/plugin/isSameOrAfter';
+import isSameOrBefore from 'dayjs/plugin/isSameOrBefore';
+
+dayjs.extend(isSameOrAfter);
+dayjs.extend(isSameOrBefore);
+
+import axios from "axios";
 
 interface Event {
   title: string;
@@ -11,11 +19,14 @@ interface Event {
   label: string;
   day: number;
   id: number;
+  participantsUsernames: string[];
+  isFull: boolean;
 }
 
 export default function HomePage() {
   // Context
-  const { weeklyEvents } = useContext(GlobalContext);
+  // const { weeklyEvents } = useContext(GlobalContext);
+  const [weeklyEvents, setWeeklyEvents] = useState<Event[]>([]);
   const [showModal, setShowModal] = useState<boolean>(false);
 
   // Hardcoded best and worst players
@@ -36,6 +47,37 @@ export default function HomePage() {
       gain: "4800"
     },
   ];
+
+
+  async function setWeekly() {
+    const today = dayjs().startOf("day");
+    const tenDaysFromNow = dayjs().add(10, "day");
+    const request = await axios.get('http://localhost:3333/events/incoming-events/');
+    request.data.forEach((element: Event) => {
+      element.day = Number(element.day)
+    });
+    const events: Event[] = request.data.filter((evt: Event) =>
+      dayjs(evt.day).isSameOrAfter(today) &&
+      dayjs(evt.day).isSameOrBefore(tenDaysFromNow)
+    );
+    if (events.length > 0) {
+      // sort event by date
+      events.sort((a, b) => {
+        if (a.day > b.day) {
+          return 1;
+        }
+        if (a.day < b.day) {
+          return -1;
+        }
+        return 0;
+      });
+      setWeeklyEvents(events);
+    }
+  }
+
+  useEffect(() => {
+    setWeekly();
+  }, []);
 
   function BiggestEvent() {
     console.log(`you clicked on the image`);
@@ -67,11 +109,15 @@ export default function HomePage() {
           <div className="flex-grow overflow-auto rounded-b-md bg-white pr-2 mb-2 ml-4 mr-4">
             <div className="max-h-32">
               {weeklyEvents.map((event: Event, index: number) => (
+                // Première chose, if event.isFull == true event marqué comme full + quand on click dessus on peut pas s'inscrire
+                // Deuxième chose si sessionStorage.getItem('username') est dans event.participantsUsernames marqué event comme inscrit 
+                // et quand on click dessus on peut se désinscrire
+                // Sinon juste afficher l'event et quand on click dessus on peut s'inscrire
                 <div
                   key={index}
                   className={`m-2 flex h-full border bg-white hover:cursor-pointer`}
                   style={{ borderColor: getColorFromLabel(event.label) }}
-                  onClick={() => {setShowModal(true)}}
+                  onClick={() => { setShowModal(true) }}
                 >
                   <div
                     className={`w-1/3 ${event.label} p-2 text-center text-white`}
@@ -112,7 +158,7 @@ export default function HomePage() {
         </div>
       </div>
       <Modal isVisible={showModal} onClose={() => setShowModal(false)}>
-        <EventSubscribeModal Event={Event}/>
+        <EventSubscribeModal Event={Event} />
       </Modal>
     </div>
   );

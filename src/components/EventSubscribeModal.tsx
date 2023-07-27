@@ -1,5 +1,6 @@
 import axios from "axios";
 import { useEffect, useState } from "react";
+import { ReactNode } from "react";
 
 interface Event {
     title: string;
@@ -10,25 +11,42 @@ interface Event {
     participantsUsernames: string[];
     isFull: boolean;
 }
+interface EventSubscribeModalProps {
+    eventToSend: Event;
+}
 
-export default function EventSubscribeModal(event: Event) {
-    const [eventToSend, setEventToSend] = useState<Event>(event);
+export default function EventSubscribeModal(props: EventSubscribeModalProps) {
+    const [eventToSend, setEventToSend] = useState<EventSubscribeModalProps>(props);
 
     useEffect(() => {
-        console.log(event)
-        setEventToSend(event);
-    }, []);
+        setEventToSend(props)
+        console.log("eventToSend is", eventToSend)
+    }, [props])
 
     return (
         <div>
             <button onClick={
                 async () => {
-                    console.log("event.id is", eventToSend.id)
-                    const request = await axios.post('http://localhost:3333/events/add-user-to-event/', JSON.stringify({ eventId: eventToSend.id, user: sessionStorage.getItem('username') }), { headers: { 'Content-Type': 'application/json' } });
-                    console.log(request.data)
+                    const request = await axios.post('http://localhost:3333/events/add-user-to-event/', JSON.stringify({ eventId: props.eventToSend.id, user: sessionStorage.getItem('username') }), { headers: { 'Content-Type': 'application/json' } });
+                    if (request.data.success == true) {
+                        console.log("success")
+                    }
+                    else {
+                        console.error(request.data.error)
+                    }
                 }
             }>Join</button>
-            <button>Leave</button>
-        </div>
+            <button onClick={
+                async () => {
+                    const request = await axios.post('http://localhost:3333/events/remove-user-from-event/', JSON.stringify({ eventId: props.eventToSend.id, user: sessionStorage.getItem('username') }), { headers: { 'Content-Type': 'application/json' } });
+                    if (request.data.success == true) {
+                        console.log("success")
+                    }
+                    else {
+                        console.error(request.data.error)
+                    }
+                }
+            }>Leave</button>
+        </div >
     );
 }

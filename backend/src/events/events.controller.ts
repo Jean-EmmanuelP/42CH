@@ -7,7 +7,7 @@ export class EventsController {
     constructor(private eventsService: EventsService) { }
 
     @Post('create')
-    async createEvent(@Body() event: { title: string, description: string, label: string, day: number, id: string }) {
+    async createEvent(@Body() event: { title: string, description: string, label: string, day: number, id: string, limitedSeats: number }) {
         return await this.eventsService.createEvent(event);
     }
 

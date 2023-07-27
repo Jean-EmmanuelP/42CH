@@ -12,6 +12,9 @@ export class EventsService {
             return { success: false, error: "User not found" }
         }
         const selectedEvent = await this.prismaService.event.findFirst({ where: { id: eventId } })
+        if (selectedEvent.participantsUsernames.includes(userExists.name) == false) {
+            return { success: false, error: "User not in event" }
+        }
         if (selectedEvent == null) {
             return { success: false, error: "Event not found" }
         }
@@ -23,18 +26,21 @@ export class EventsService {
 
     async addUserToEvent(eventId: string, user: string) {
         console.log(eventId, user)
-        const userExists = await this.prismaService.user.findFirst({ where: { name: user } })
+        const userExists = await this.prismaService.user.findUnique({ where: { name: user } })
         if (userExists == null) {
             return { success: false, error: "User not found" }
         }
-        const selectedEvent = await this.prismaService.event.findFirst({ where: { id: eventId } })
+        const selectedEvent = await this.prismaService.event.findUnique({ where: { id: eventId } })
         if (selectedEvent.isFull == true) {
             return { success: false, error: "Event is full" }
+        }
+        if (selectedEvent.participantsUsernames.includes(userExists.name)) {
+            return { success: false, error: "User already in event" }
         }
         if (selectedEvent == null) {
             return { success: false, error: "Event not found" }
         }
-        else if (selectedEvent.limitedSeats != null) {
+        if (selectedEvent.limitedSeats != -1) {
             if (selectedEvent.limitedSeats == selectedEvent.participantsUsernames.length) {
                 await this.prismaService.event.update({ where: { id: eventId }, data: { isFull: true } })
                 return { success: false, error: "Event is full" }
@@ -48,6 +54,12 @@ export class EventsService {
                 return { success: true }
             }
         }
+        else {
+            const updatedEvent = await this.prismaService.event.update({ where: { id: eventId }, data: { participantsUsernames: { push: userExists.name } } })
+            console.log(updatedEvent)
+            return { success: true }
+        }
+
     }
 
     async deleteEvent(event: { title: string; description: string; label: string; day: number; id: string; }) {
@@ -65,10 +77,11 @@ export class EventsService {
         return events;
     }
 
-    async createEvent(event: { title: string, description: string, label: string, day: number, id: string }) {
+    async createEvent(event: { title: string, description: string, label: string, day: number, id: string, limitedSeats: number }) {
         const { title, description, label, day, id } = event;
         const stringDay = day.toString();
-        const createdEvent = await this.prismaService.event.create({ data: { title: title, description: description, label: label, day: stringDay } })
+        const intLimited = parseInt(event.limitedSeats.toString())
+        const createdEvent = await this.prismaService.event.create({ data: { title: title, description: description, label: label, day: stringDay, limitedSeats: intLimited } })
         if (createdEvent == null) {
             return { success: false, error: "Event not created" }
         }

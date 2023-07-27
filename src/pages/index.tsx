@@ -162,9 +162,13 @@ export default function HomePage() {
           </div>
         </div>
       </div>
-      <Modal isVisible={showModal} onClose={() => setShowModal(false)}>
-        <EventSubscribeModal eventToSend={{ title: eventToSend?.title, description: eventToSend?.description, label: eventToSend?.label, day: eventToSend?.day, id: eventToSend?.id, participantsUsernames: eventToSend?.participantsUsernames, isFull: eventToSend?.isFull }} />
-      </Modal>
+      {
+        eventToSend != undefined ? (
+          <Modal isVisible={showModal} onClose={() => setShowModal(false)}>
+            <EventSubscribeModal eventToSend={eventToSend} />
+          </Modal>
+        ) : null
+      }
     </div>
   );
 }

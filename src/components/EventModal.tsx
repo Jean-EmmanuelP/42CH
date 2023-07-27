@@ -50,6 +50,7 @@ export default function EventModal() {
       label: selectedLabel,
       day: daySelected?.valueOf(),
       id: selectedEvent ? selectedEvent.id : Date.now(),
+      limitedSeats,
     };
     const request = await axios.post('http://localhost:3333/events/create/', calendarEvent);
     if (request.data.success == true) {
@@ -136,9 +137,9 @@ export default function EventModal() {
             />
             <span>
               <BookMarkBorder />
-              <button className="rounded border border-black bg-white p-2" onClick={() => {}}><p>clique si event de la semaine</p></button>
+              <button className="rounded border border-black bg-white p-2" onClick={() => { }}><p>clique si event de la semaine</p></button>
               <label htmlFor="limitedseats">Nombre de place:</label>
-              <input type="number" id="number" max={100} min={-1} name="limitedseats" value={limitedSeats} onChange={(e) => setLimitedSeats(e.target.value)} className="rounded border border-black bg-white"/>
+              <input type="number" id="number" max={100} min={-1} name="limitedseats" value={limitedSeats} onChange={(e) => setLimitedSeats(e.target.value)} className="rounded border border-black bg-white" />
             </span>
             <div className="flex gap-x-2">
               {labelsClasses.map((lblClass, i) => (

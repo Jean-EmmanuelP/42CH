@@ -23,7 +23,7 @@ export class EventsController {
 
     @Post('add-user-to-event')
     async addUserToEvent(@Body() event: { eventId: string, user: string }) {
-        return await this.eventsService.addUserToEvent(event);
+        return await this.eventsService.addUserToEvent(event.eventId, event.user);
     }
 
     @Post('remove-user-from-event')

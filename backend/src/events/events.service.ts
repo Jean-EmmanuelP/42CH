@@ -21,8 +21,8 @@ export class EventsService {
         }
     }
 
-    async addUserToEvent(event: { eventId: string; user: string; }) {
-        const { eventId, user } = event;
+    async addUserToEvent(eventId: string, user: string) {
+        console.log(eventId, user)
         const userExists = await this.prismaService.user.findFirst({ where: { name: user } })
         if (userExists == null) {
             return { success: false, error: "User not found" }
@@ -44,6 +44,7 @@ export class EventsService {
                 if (updatedEvent.limitedSeats == updatedEvent.participantsUsernames.length) {
                     await this.prismaService.event.update({ where: { id: eventId }, data: { isFull: true } })
                 }
+                console.log(updatedEvent)
                 return { success: true }
             }
         }

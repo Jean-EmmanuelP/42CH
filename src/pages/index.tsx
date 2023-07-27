@@ -28,6 +28,7 @@ export default function HomePage() {
   // const { weeklyEvents } = useContext(GlobalContext);
   const [weeklyEvents, setWeeklyEvents] = useState<Event[]>([]);
   const [showModal, setShowModal] = useState<boolean>(false);
+  const [eventToSend, setEventToSend] = useState<Event>();
 
   // Hardcoded best and worst players
   const bestPlayers = [
@@ -91,6 +92,7 @@ export default function HomePage() {
     return parts[1]; // cela renvoie "red" si label est "bg-red-500"
   }
 
+
   // Render
   return (
     <div className="mt-4 flex h-full w-full flex-col">
@@ -113,11 +115,12 @@ export default function HomePage() {
                 // Deuxième chose si sessionStorage.getItem('username') est dans event.participantsUsernames marqué event comme inscrit 
                 // et quand on click dessus on peut se désinscrire
                 // Sinon juste afficher l'event et quand on click dessus on peut s'inscrire
+
                 <div
                   key={index}
                   className={`m-2 flex h-full border bg-white hover:cursor-pointer`}
                   style={{ borderColor: getColorFromLabel(event.label) }}
-                  onClick={() => { setShowModal(true) }}
+                  onClick={() => { setEventToSend(event); setShowModal(true) }}
                 >
                   <div
                     className={`w-1/3 ${event.label} p-2 text-center text-white`}
@@ -133,6 +136,8 @@ export default function HomePage() {
                     <h3 className="text-black">{event.title}</h3>
                     <p className="text-gray-500">{event.description}</p>
                   </div>
+                  {event.participantsUsernames.includes(sessionStorage.getItem('username') as string) ? <div className="w-1/3 bg-green-500 p-2 text-center text-white">INSCRIT</div> : <div className="pr-2 text-center text-green-500">S'inscrire</div>}
+                  {event.isFull ? <div className="w-1/3 bg-red-500 p-2 text-center text-white">FULL</div> : <div className="pr-2 text-center text-red-500">Full</div>}
                 </div>
               ))}
             </div>
@@ -158,7 +163,7 @@ export default function HomePage() {
         </div>
       </div>
       <Modal isVisible={showModal} onClose={() => setShowModal(false)}>
-        <EventSubscribeModal Event={Event} />
+        <EventSubscribeModal eventToSend={{ title: eventToSend?.title, description: eventToSend?.description, label: eventToSend?.label, day: eventToSend?.day, id: eventToSend?.id, participantsUsernames: eventToSend?.participantsUsernames, isFull: eventToSend?.isFull }} />
       </Modal>
     </div>
   );

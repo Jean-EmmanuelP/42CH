@@ -1,7 +1,7 @@
 'use client'
 
 interface EventSubscribeModalProps {
-
+    Event: {}
 }
 
 export default function EventSubscribeModal({}: EventSubscribeModalProps) {

@@ -112,7 +112,7 @@ export default function HomePage() {
         </div>
       </div>
       <Modal isVisible={showModal} onClose={() => setShowModal(false)}>
-        <EventSubscribeModal />
+        <EventSubscribeModal Event={Event}/>
       </Modal>
     </div>
   );

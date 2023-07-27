@@ -36,7 +36,6 @@ export default function Day({ day, rowIdx }: DayProps) {
     const events: Event[] = filteredEvents.filter((evt: Event) =>
       dayjs(evt.day).isSame(day, "day")
     );
-
     setDayEvents(events);
   }, [filteredEvents, day]);
 
@@ -49,7 +48,6 @@ export default function Day({ day, rowIdx }: DayProps) {
         dayjs(evt.day).isSameOrAfter(today) &&
         dayjs(evt.day).isSameOrBefore(tenDaysFromNow)
     );
-
     setWeeklyEvents(eventsInNext10Days);
   }, [filteredEvents]);
 

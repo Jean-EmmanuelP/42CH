@@ -7,6 +7,7 @@ import Segment from "~/utils/images/Segment";
 import BookMarkBorder from "~/utils/images/BookMarkBorder";
 import Check from "~/utils/images/Check";
 import Delete from "~/utils/images/Delete";
+import axios from "axios";
 
 const labelsClasses = [
   "bg-red-600",
@@ -35,7 +36,7 @@ export default function EventModal() {
       : labelsClasses[0]
   );
 
-  function handleSubmit(e: any) {
+  async function handleSubmit(e: any) {
     e.preventDefault();
     if (title.trim() === "") {
       alert("Title cannot be empty!");
@@ -49,11 +50,23 @@ export default function EventModal() {
       day: daySelected?.valueOf(),
       id: selectedEvent ? selectedEvent.id : Date.now(),
     };
+    const request = await axios.post('http://localhost:3333/events/create/', calendarEvent);
+    if (request.data.success == true) {
+      // reload le state qui contient tous les events
+      window.location.reload();
+    }
+    else {
+      console.error(request.data.error)
+    }
+
     if (selectedEvent) {
       dispatchCalEvent({ type: "update", payload: calendarEvent });
     } else {
       dispatchCalEvent({ type: "push", payload: calendarEvent });
     }
+
+    const test = await axios.get('http://localhost:3333/events/incoming-events/');
+    console.log(test.data)
     setShowEventModal(false);
     setSelectedEvent(null);
     setTitle("");
@@ -72,12 +85,14 @@ export default function EventModal() {
             {selectedEvent && (
               <span
                 className="text-gray-400 cursor-pointer"
-                onClick={() => {
+                onClick={async () => {
+                  const request = await axios.post('http://localhost:3333/events/delete/', selectedEvent);
                   dispatchCalEvent({
                     type: "delete",
                     payload: selectedEvent,
                   });
                   setShowEventModal(false);
+                  window.location.reload();
                 }}
               >
                 <Delete />

@@ -3,6 +3,7 @@ import dayjs, { Dayjs } from "dayjs";
 import isSameOrAfter from "dayjs/plugin/isSameOrAfter";
 import isSameOrBefore from "dayjs/plugin/isSameOrBefore";
 import GlobalContext from "../context/GlobalContext";
+import axios from "axios";
 
 dayjs.extend(isSameOrAfter);
 dayjs.extend(isSameOrBefore);
@@ -32,12 +33,23 @@ export default function Day({ day, rowIdx }: DayProps) {
 
   const [dayEvents, setDayEvents] = useState<Event[]>([]);
 
-  useEffect(() => {
-    const events: Event[] = filteredEvents.filter((evt: Event) =>
+  async function setTmp() {
+    const request = await axios.get('http://localhost:3333/events/incoming-events/');
+
+    request.data.forEach((element: Event) => {
+      element.day = Number(element.day)
+    });
+    const events: Event[] = request.data.filter((evt: Event) =>
       dayjs(evt.day).isSame(day, "day")
     );
+    console.log("avant", request.data)
     setDayEvents(events);
-  }, [filteredEvents, day]);
+    console.log(dayEvents)
+  }
+
+  useEffect(() => {
+    setTmp()
+  }, []);
 
   useEffect(() => {
     const today = dayjs();
@@ -52,7 +64,7 @@ export default function Day({ day, rowIdx }: DayProps) {
   }, [filteredEvents]);
 
   useEffect(() => {
-    console.log("weeklyEvents has been updated:", weeklyEvents);
+    // console.log("weeklyEvents has been updated:", weeklyEvents);
   }, [weeklyEvents]);
 
   function getCurrentDayClass() {

@@ -151,7 +151,7 @@ const DefiRightBar: React.FC = () => {
   }
   // Render
   return (
-    console.log("in return", challengeArray[0]),
+    // console.log("in return", challengeArray[0]),
     <div className="flex h-full w-full flex-col justify-between rounded-md mt-4 shadow-md bg-white p-5">
       <div>
         <h2 className="text-2xl font-bold">Mes defis</h2>

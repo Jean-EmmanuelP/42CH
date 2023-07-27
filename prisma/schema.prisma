@@ -55,14 +55,11 @@ model User {
     challenges     Challenge[] @relation("CreatedChallenges")
     participations Challenge[] @relation("ParticipatedChallenges")
     wonChallenges  Challenge[] @relation("WonChallenges") // Nouveau champ pour les défis gagnés
-    events          Event[]
 }
 
 model ChallengeHistory {
-    id String @id @default(cuid())
+    id        String   @id @default(cuid())
     createdAt DateTime @default(now())
-
-    
 }
 
 model Challenge {
@@ -128,11 +125,11 @@ model VerificationToken {
 }
 
 model Event {
-  id          String   @id @default(cuid())
-  title       String
-  description String
-  label       String
-  day         DateTime
-  limitedSeats Int?
-  participants User[]
+    id             String   @id @default(cuid())
+    title          String
+    description    String
+    label          String
+    day            String
+    limitedSeats   Int?
+    participantsId String[]
 }

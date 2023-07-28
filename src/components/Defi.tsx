@@ -28,7 +28,9 @@ const DefiRightBar: React.FC = () => {
   const [socket, setSocket] = useState<any>(null);
 
   useEffect(() => {
-    console.log('useEffect')
+    console.log(session)
+    if (session?.user.name != null)
+      sessionStorage.setItem('username', session.user.name)
     const request = axios.post('http://localhost:3333/defi/get_all_challenges/',
       JSON.stringify({ username: sessionStorage.getItem('username') }),
       { headers: { 'Content-Type': 'application/json' } })
@@ -40,7 +42,6 @@ const DefiRightBar: React.FC = () => {
       }
     })
     fetchDefiRequestArray()
-
     const socket = io(`http://localhost:3111`, {
       transports: ['websocket'],
     });
@@ -76,13 +77,14 @@ const DefiRightBar: React.FC = () => {
     else
       console.error(request.data.error)
   }
+
   const handleAcceptChallenge = async (index: number) => {
     const request = await axios.post('http://localhost:3333/defi/create',
       JSON.stringify({ creatorUsername: defiRequestArray[index].senderUsername, opponentUsername: username, }),
       { headers: { 'Content-Type': 'application/json' } })
     if (request.data.success === true) {
       // will need to add another way to join a defi requets later
-      socket.emit('sendDefiId', { toDelete: defiRequestArray[index].id, username: defiRequestArray[index].senderUsername, defiId: request.data.defiId })
+      socket.emit('sendDefiId', { toDelete: defiRequestArray[index].id, senderUsername: defiRequestArray[index].senderUsername, defiId: request.data.defiId })
       window.location.href = '/defi/' + request.data.defiId;
     }
   };
@@ -97,13 +99,6 @@ const DefiRightBar: React.FC = () => {
         console.error(response.data.error)
       }
     })
-    //   setChallenges((prevChallenges) => {
-    //     const newChallenges = prevChallenges.filter(
-    //       (_, index) => index !== challengeIndex
-    //     );
-    //     localStorage.setItem("challenges", JSON.stringify(newChallenges));
-    //     return newChallenges;
-    //   });
   };
 
   function extractUsername(email: string) {

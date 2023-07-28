@@ -73,6 +73,8 @@ function DefiPage() {
         setUserAccepted(request.data.userAccepted)
         setMutualContract(request.data.mutualContract)
         setSelectedGame(request.data.selectedGame)
+        if (UserResponse != undefined)
+          UserResponse!.name = sessionStorage.getItem('username')
       }
       else {
         console.log(request.data.message)
@@ -165,7 +167,7 @@ function DefiPage() {
                 className="flex flex-col items-center justify-center border border-black pt-2"
               >
                 <label htmlFor="mise">
-                  Mise de {UserResponse ? UserResponse.name || "" : ""} :
+                  Mise de {UserResponse ? UserResponse.name || sessionStorage.getItem('username') : sessionStorage.getItem('username')} :
                 </label>
 
                 <input

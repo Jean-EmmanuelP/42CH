@@ -90,7 +90,9 @@ export class DefiGateway {
     await this.prismaService.defiRequest.delete({ where: { id: data.toDelete } })
     if (data.senderUsername != null) {
       let senderId = usernameMap.get(data.senderUsername);
+      console.log('avant sent')
       client.to(senderId).emit('receiveDefiId', { defiId: data.defiId })
+      console.log('apres sent')
     }
   }
 }

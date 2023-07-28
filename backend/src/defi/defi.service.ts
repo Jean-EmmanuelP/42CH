@@ -3,6 +3,8 @@ import { PrismaService } from 'src/prisma/prisma.service';
 
 @Injectable()
 export class DefiService {
+    constructor(private prismaService: PrismaService) { }
+
     async getOpponent(id: string) { // image name
         const user = await this.prismaService.user.findUnique({ where: { id: id } });
         if (!user) {
@@ -10,7 +12,26 @@ export class DefiService {
         }
         return { success: true, image: user.image, name: user.name };
     }
-    constructor(private prismaService: PrismaService) { }
+
+    async ongoing(username: string) {
+        let ret = [];
+        const user = await this.prismaService.user.findUnique({ where: { name: username } });
+        if (!user) {
+            return { success: false, error: 'User not found' };
+        }
+        const id = user.id;
+        const defi = await this.prismaService.defi.findUnique({ where: { creatorId: id } });
+        if (!defi) {
+            return { success: false, error: 'User is not in a defi' };
+        }
+        ret.push({ id: defi.id, opponentName: (await this.prismaService.user.findUnique({ where: { id: defi.opponentId } })).name, creatorName: (await this.prismaService.user.findUnique({ where: { id: defi.creatorId } })).name })
+        const defi2 = await this.prismaService.defi.findUnique({ where: { opponentId: id } });
+        if (!defi2) {
+            return { success: true, defis: ret };
+        }
+        ret.push({ id: defi2.id, opponentName: (await this.prismaService.user.findUnique({ where: { id: defi2.opponentId } })).name, creatorName: (await this.prismaService.user.findUnique({ where: { id: defi2.creatorId } })).name })
+        return { success: true, defis: ret };
+    }
 
     async getImage(username: string) {
         const user = await this.prismaService.user.findUnique({ where: { name: username } });

@@ -23,6 +23,7 @@ const DefiRightBar: React.FC = () => {
   const [creatorId, setCreatorId] = useState<string>("");
   const [challengeArray, setChallengeArray] = useState<any[]>([]);
   const [defiRequestArray, setDefiRequestArray] = useState<any[]>([]);
+  const [ongoingDefiArray, setOngoingDefiArray] = useState<any[]>([]);
   const [showModalFin, setShowModalFin] = useState<boolean>(false);
   const [challengeOpened, setChallengeOpened] = useState<any>(null);
   const [socket, setSocket] = useState<any>(null);
@@ -37,6 +38,16 @@ const DefiRightBar: React.FC = () => {
     request.then((response) => {
       if (response.data.success === true)
         setChallengeArray(response.data.challenges);
+      else {
+        console.error(response.data.error)
+      }
+    })
+    const request2 = axios.post('http://localhost:3333/defi/ongoing/',
+      JSON.stringify({ username: sessionStorage.getItem('username') }),
+      { headers: { 'Content-Type': 'application/json' } })
+    request2.then((response) => {
+      if (response.data.success === true)
+        setDefiRequestArray(response.data.defiRequests);
       else {
         console.error(response.data.error)
       }

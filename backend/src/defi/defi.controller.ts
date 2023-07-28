@@ -50,4 +50,9 @@ export class DefiController {
     async getOpponent(@Body() data: { id: string }) {
         return await this.defiService.getOpponent(data.id);
     }
+
+    @Post('ongoing')
+    async ongoing(@Body() data: { username: string }) {
+        return await this.defiService.ongoing(data.username);
+    }
 }

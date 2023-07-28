@@ -1,2 +1,0 @@
--- AlterTable
-ALTER TABLE "Event" ALTER COLUMN "day" SET DATA TYPE BIGINT;

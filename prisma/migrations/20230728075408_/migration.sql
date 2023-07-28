@@ -40,12 +40,24 @@ CREATE TABLE "User" (
 );
 
 -- CreateTable
+CREATE TABLE "ChallengeHistory" (
+    "id" TEXT NOT NULL,
+    "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
+
+    CONSTRAINT "ChallengeHistory_pkey" PRIMARY KEY ("id")
+);
+
+-- CreateTable
 CREATE TABLE "Challenge" (
     "id" TEXT NOT NULL,
     "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "completedAt" TIMESTAMP(3),
     "winnerId" TEXT,
     "loserId" TEXT,
+    "creatorAnswer" BOOLEAN NOT NULL DEFAULT false,
+    "opponentAnswer" BOOLEAN NOT NULL DEFAULT false,
+    "creatorWinner" TEXT NOT NULL DEFAULT '',
+    "opponentWinner" TEXT NOT NULL DEFAULT '',
     "creatorId" TEXT NOT NULL,
     "opponentId" TEXT NOT NULL,
     "creatorBid" INTEGER NOT NULL,
@@ -83,6 +95,20 @@ CREATE TABLE "VerificationToken" (
     "identifier" TEXT NOT NULL,
     "token" TEXT NOT NULL,
     "expires" TIMESTAMP(3) NOT NULL
+);
+
+-- CreateTable
+CREATE TABLE "Event" (
+    "id" TEXT NOT NULL,
+    "title" TEXT NOT NULL,
+    "description" TEXT NOT NULL,
+    "label" TEXT NOT NULL,
+    "day" TEXT NOT NULL,
+    "limitedSeats" INTEGER,
+    "participantsUsernames" TEXT[],
+    "isFull" BOOLEAN NOT NULL DEFAULT false,
+
+    CONSTRAINT "Event_pkey" PRIMARY KEY ("id")
 );
 
 -- CreateIndex

@@ -50,6 +50,9 @@ export class DefiService {
     }
 
     async getAllChallenges(username: string) {
+        if (username == null) {
+            return { success: false, error: 'User is null' };
+        }
         const user = await this.prismaService.user.findUnique({ where: { name: username } });
         if (!user) {
             return { success: false, error: 'User not found' };
@@ -336,5 +339,43 @@ export class DefiService {
         });
         console.log("defi created")
         return { success: true, defiId: defi.id };
+    }
+
+
+    async createDefiRequest(senderUsername: any, receiverUsername: any) {
+        console.log('.')
+        const sender = await this.prismaService.user.findUnique({ where: { name: senderUsername } });
+        const receiver = await this.prismaService.user.findUnique({ where: { name: receiverUsername } });
+        if (!sender || !receiver) {
+            return { success: false, error: 'User not found' };
+        }
+        const defiRequestTest = await this.prismaService.defiRequest.findMany({ where: { senderUsername: senderUsername, receiverUsername: receiverUsername } });
+        // const defiRequestTest2 = await this.prismaService.defiRequest.findMany({ where: { senderUsername: receiverUsername, receiverUsername: senderUsername } });
+        if (defiRequestTest.length > 0) {// || defiRequestTest2.length > 0) {
+            return { success: false, error: 'Defi request already exists' };
+        }
+        const defiRequest = await this.prismaService.defiRequest.create({ data: { senderUsername: senderUsername, receiverUsername: receiverUsername } });
+        if (!defiRequest) {
+            return { success: false, error: 'Defi request not created' };
+        }
+        console.log("defi created")
+        return { success: true };
+    }
+
+
+    async getAllDefiRequests(username: string) {
+        const user = await this.prismaService.user.findUnique({ where: { name: username } });
+        if (!user) {
+            return { success: false, error: 'User not found' };
+        }
+        const defiRequests = await this.prismaService.defiRequest.findMany({ where: { receiverUsername: { equals: username } } });
+        if (!defiRequests) {
+            return { success: false, error: 'No defi requests found' };
+        }
+        let defiRequestsInfos = [];
+        for (let i = 0; i < defiRequests.length; i++) {
+            defiRequestsInfos.push({ id: defiRequests[i].id, senderUsername: defiRequests[i].senderUsername, receiverUsername: defiRequests[i].receiverUsername })
+        }
+        return { success: true, defiRequests: defiRequestsInfos };
     }
 }

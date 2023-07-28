@@ -1,60 +1,96 @@
-import { WebSocketGateway, SubscribeMessage, MessageBody } from '@nestjs/websockets';
+import { WebSocketGateway, SubscribeMessage, MessageBody, ConnectedSocket } from '@nestjs/websockets';
 import { DefiService } from './defi.service';
+import { PrismaService } from 'src/prisma/prisma.service';
 
-@WebSocketGateway(3130, { cors: true })
+let usernameMap = new Map();
+
+@WebSocketGateway(3111, { cors: true })
 export class DefiGateway {
-  constructor(private defiService: DefiService) {
-    const io = require('socket.io')(3111, {
-      cors: {
-        origin: '*',
+  constructor(private defiService: DefiService, private prismaService: PrismaService) { }
+
+  @SubscribeMessage('join')
+  handleJoin(@MessageBody() data: any, @ConnectedSocket() client: any) {
+    client.join(data.room);
+  }
+
+  @SubscribeMessage('leave')
+  handleLeave(@MessageBody() data: any, @ConnectedSocket() client: any) {
+    client.leave(data.room);
+  }
+
+  @SubscribeMessage('changeBet')
+  handleChangeBet(@MessageBody() data: any, @ConnectedSocket() client: any): void {
+    if (data.username != null)
+      this.defiService.changeBet(data.username, data.newBet);
+    client.to(data.room).emit('changeBet', { newBet: data.newBet });
+  }
+
+  @SubscribeMessage('changeHonorBet')
+  handleChangeHonorBet(@MessageBody() data: any, @ConnectedSocket() client: any): void {
+    if (data.username != null)
+      this.defiService.changeHonorBet(data.username, data.newHonorBet);
+    client.to(data.room).emit('changeHonorBet', { newHonorBet: data.newHonorBet });
+  }
+
+  @SubscribeMessage('changeContract')
+  handleChangeContract(@MessageBody() data: any, @ConnectedSocket() client: any): void {
+    if (data.username != null)
+      this.defiService.changeContract(data.username, data.newContract);
+    client.to(data.room).emit('changeContract', { newContract: data.newContract });
+  }
+
+  @SubscribeMessage('changeGame')
+  handleChangeGame(@MessageBody() data: any, @ConnectedSocket() client: any): void {
+    if (data.username != null)
+      this.defiService.changeGame(data.username, data.newGame);
+    client.to(data.room).emit('changeGame', { newGame: data.newGame });
+  }
+
+  @SubscribeMessage('changeAccept')
+  async handleChangeAccept(@MessageBody() data: any, @ConnectedSocket() client: any): Promise<void> {
+    if (data.username != null)
+      await this.defiService.changeAccept(data.username, data.newAccept).then((res) => {
+        console.log('res', res)
+        if (res.challengeAccepted == true) {
+          client.emit('challengeAccepted');
+          client.to(data.room).emit('challengeAccepted');
+        }
+      })
+    client.to(data.room).emit('changeAccept', { newAccept: data.newAccept })
+  }
+
+  @SubscribeMessage('joinDefi')
+  handleJoinDefi(@MessageBody() data: any, @ConnectedSocket() client: any): void {
+    if (data.username != null)
+      usernameMap.set(data.username, client.id);
+  }
+
+  @SubscribeMessage('leaveDefi')
+  handleLeaveDefi(@MessageBody() data: any, @ConnectedSocket() client: any): void {
+    if (data.username != null)
+      usernameMap.delete(data.username);
+  }
+
+  @SubscribeMessage('sendDefi')
+  async handlesendDefi(@MessageBody() data: any, @ConnectedSocket() client: any): Promise<void> {
+    if (data.senderUsername != null && data.receiverUsername != null) {
+      const req = await this.defiService.createDefiRequest(data.senderUsername, data.receiverUsername);
+      if (req.success == true) {
+        const receiverId = usernameMap.get(data.receiverUsername);
+        console.log(receiverId)
+        if (receiverId == null)
+          return;
+        client.to(receiverId).emit('receiveDefi');
       }
     }
-    );
-    io.on('connection', (socket) => {
+  }
 
-      socket.on('join', (data) => {
-        socket.join(data.room);
-      });
-
-      socket.on('leave', (data) => {
-        socket.leave(data.room);
-      });
-
-      socket.on('changeBet', (data) => {
-        if (data.username != null)
-          this.defiService.changeBet(data.username, data.newBet);
-        socket.to(data.room).emit('changeBet', { newBet: data.newBet })
-      })
-
-      socket.on('changeHonorBet', (data) => {
-        if (data.username != null)
-          this.defiService.changeHonorBet(data.username, data.newHonorBet);
-        socket.to(data.room).emit('changeHonorBet', { newHonorBet: data.newHonorBet })
-      })
-
-      socket.on('changeContract', (data) => {
-        if (data.username != null)
-          this.defiService.changeContract(data.username, data.newContract);
-        socket.to(data.room).emit('changeContract', { newContract: data.newContract })
-      })
-
-      socket.on('changeGame', (data) => {
-        if (data.username != null)
-          this.defiService.changeGame(data.username, data.newGame);
-        socket.to(data.room).emit('changeGame', { newGame: data.newGame })
-      })
-
-      socket.on('changeAccept', (data) => {
-        if (data.username != null)
-          this.defiService.changeAccept(data.username, data.newAccept).then((res) => {
-            console.log('res', res)
-            if (res.challengeAccepted == true) {
-              socket.emit('challengeAccepted');
-              socket.to(data.room).emit('challengeAccepted');
-            }
-          })
-        socket.to(data.room).emit('changeAccept', { newAccept: data.newAccept })
-      })
-    });
+  @SubscribeMessage('sendDefiId')
+  async handlesendDefiId(@MessageBody() data: any, @ConnectedSocket() client: any): Promise<void> {
+    await this.prismaService.defiRequest.delete({ where: { id: data.toDelete } })
+    if (data.senderUsername != null) {
+      let senderId = usernameMap.get(data.senderUsername);
+      client.to(senderId).emit('receiveDefiId', { defiId: data.defiId })
+    }
   }
 }

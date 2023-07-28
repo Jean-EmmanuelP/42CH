@@ -17,10 +17,11 @@ Pusher.logToConsole = true;
 
 interface DefiModalContentProps {
   onClose: () => void;
+  socket: any;
 }
 
 // Composant principal Defi
-export default function DefiModalContent({onClose}: DefiModalContentProps) {
+export default function DefiModalContent({ onClose, socket }: DefiModalContentProps) {
   // Utilisation des hooks et du contexte
   const { data: sessionData } = useSession();
   const { setChallengeData, challengeData } = useContext(GlobalContext);
@@ -71,7 +72,7 @@ export default function DefiModalContent({onClose}: DefiModalContentProps) {
           const userName = usernameCheckResult.invitee || "";
           setChallengeData([userId, my_username, userName]);
           /* Mettre dans le localStorage */
-          console.log(challengeData);
+          // console.log(challengeData);
           setInviteeName(userName);
           toast.success(usernameCheckResult.message);
           onClose();
@@ -83,23 +84,23 @@ export default function DefiModalContent({onClose}: DefiModalContentProps) {
   };
 
   // Ecoute des notifications Pusher
-  useEffect(() => {
-    const pusher = new Pusher("374519cdfad60d3b237f", {
-      cluster: "eu",
-    });
+  // useEffect(() => {
+  //   const pusher = new Pusher("374519cdfad60d3b237f", {
+  //     cluster: "eu",
+  //   });
 
-    const channel = pusher.subscribe(userId.toString());
+  //   const channel = pusher.subscribe(userId.toString());
 
-    channel.bind("my-channel", (data: any) => {
-      const uniqueChallengeId = data.message; // ajuster cette ligne en fonction du format de `data`
-      router.push(`/defi/${uniqueChallengeId}`);
-    });
+  //   channel.bind("my-channel", (data: any) => {
+  //     const uniqueChallengeId = data.message; // ajuster cette ligne en fonction du format de `data`
+  //     router.push(`/defi/${uniqueChallengeId}`);
+  //   });
 
-    return () => {
-      pusher.unsubscribe(userId.toString());
-      pusher.disconnect();
-    };
-  }, [userId]);
+  //   return () => {
+  //     pusher.unsubscribe(userId.toString());
+  //     pusher.disconnect();
+  //   };
+  // }, [userId]);
 
   // Retour du composant JSX
   return (
@@ -140,11 +141,14 @@ export default function DefiModalContent({onClose}: DefiModalContentProps) {
           <button
             type="submit"
             className="mb-2 mb-4 rounded border border-black bg-green-500 p-2 font-mono"
+            onClick={() => {
+              socket.emit("sendDefi", { senderUsername: my_username, receiverUsername: username })
+            }}
           >
             Envoyer le defi
           </button>
         </form>
-      </div>
+      </div >
     </>
   );
 }

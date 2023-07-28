@@ -4,7 +4,7 @@ import { DefiService } from './defi.service';
 
 @Controller('defi')
 export class DefiController {
-    constructor(private prismaServce: PrismaService, private defiService: DefiService) { }
+    constructor(private prismaService: PrismaService, private defiService: DefiService) { }
 
     @Post('create')
     async createDefi(@Body() data: { creatorUsername: string, opponentUsername: string }) {
@@ -24,5 +24,20 @@ export class DefiController {
     @Post('finish')
     async finish(@Body() data: { username: string, challengeId: string, winner: string }) {
         return await this.defiService.finish(data.username, data.challengeId, data.winner);
+    }
+
+    @Post('get_all_defi_requests')
+    async getAllDefiRequests(@Body() data: { username: string }) {
+        return await this.defiService.getAllDefiRequests(data.username);
+    }
+
+    @Post('delete_defi_request')
+    async deleteDefiRequest(@Body() data: { id: string }) {
+        const defi = await this.prismaService.defiRequest.findFirst({ where: { id: data.id } })
+        if (defi == null) {
+            return { success: false, error: 'Defi not found' }
+        }
+        await this.prismaService.defiRequest.delete({ where: { id: data.id } })
+        return { success: true }
     }
 }

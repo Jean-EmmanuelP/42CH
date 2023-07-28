@@ -116,6 +116,14 @@ model Defi {
     opponentAccepted Boolean @default(false)
 }
 
+model DefiRequest {
+    id        String   @id @default(cuid())
+    createdAt DateTime @default(now())
+
+    senderUsername   String
+    receiverUsername String
+}
+
 model VerificationToken {
     identifier String
     token      String   @unique

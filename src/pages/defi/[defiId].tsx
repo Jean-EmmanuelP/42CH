@@ -1,6 +1,6 @@
 "use client";
 
-import { useRouter } from "next/navigation";
+import { useRouter } from 'next/router'
 import { useContext, useEffect, useState } from "react";
 import Navbar from "~/components/Navbar";
 import GlobalContext from "~/context/GlobalContext";
@@ -12,7 +12,11 @@ import axios from "axios";
 import { set } from "lodash";
 
 function DefiPage() {
-  let roomNumber = 123;
+  // need to fix this
+  // const router = useRouter()
+  // const path = router.asPath
+  // const roomNumber = path.split('/').pop()
+  const roomNumber = 123;
   const { challengeData } = useContext(GlobalContext);
   const [isClient, setIsClient] = useState(false);
   const [gainTotal, setGainTotal] = useState<number>(0);
@@ -56,6 +60,7 @@ function DefiPage() {
 
   useEffect(() => {
     setIsClient(true);
+    // check if id is in the url and exists in the database
     const request = axios.post('http://localhost:3333/defi/get_infos/', JSON.stringify({ username: sessionStorage.getItem('username') }), { headers: { 'Content-Type': 'application/json' } })
     request.then((request) => {
       if (request.data.success == true) {
@@ -111,10 +116,10 @@ function DefiPage() {
       window.location.href = "/"
     })
 
-    socket.emit('join', { room: 123 })
+    socket.emit('join', { room: roomNumber })
 
     return () => {
-      socket.emit('leave', { room: 123 });
+      socket.emit('leave', { room: roomNumber });
       socket.off('message');
     };
   }, [socket]);

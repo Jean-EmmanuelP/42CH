@@ -123,6 +123,7 @@ export class DefiService {
             if (!defi2) {
                 return { success: false, error: 'User is not in a defi' };
             }
+            const opponent = await this.prismaService.user.findUnique({ where: { id: defi2.creatorId } });
             return {
                 success: true,
                 userBet: defi2.opponentBid,
@@ -133,8 +134,11 @@ export class DefiService {
                 opponentAccepted: defi2.creatorAccepted,
                 mutualContract: defi2.contractTerms,
                 selectedGame: defi2.gameSelected,
+                balance: user.balance,
+                opponentBalance: opponent.balance,
             }
         }
+        const opponent = await this.prismaService.user.findUnique({ where: { id: defi.opponentId } });
         return {
             success: true,
             userBet: defi.creatorBid,
@@ -145,6 +149,8 @@ export class DefiService {
             opponentAccepted: defi.opponentAccepted,
             mutualContract: defi.contractTerms,
             selectedGame: defi.gameSelected,
+            balance: user.balance,
+            opponentBalance: opponent.balance,
         }
     }
 

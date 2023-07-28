@@ -38,6 +38,8 @@ function DefiPage() {
   const [opponentAccepted, setOpponentAccepted] = useState<boolean>(false);
   const [opponentId, setOpponnentId] = useState<string>("");
   const [socket, setSocket] = useState<any>(null);
+  const [userBalance, setUserBalance] = useState<number>(0);
+  const [opponentBalance, setOpponentBalance] = useState<number>(0);
   // backend in nextjs port 3000, file handling socket /api/socket
   // console.log(challengeData);
 
@@ -73,8 +75,8 @@ function DefiPage() {
         setUserAccepted(request.data.userAccepted)
         setMutualContract(request.data.mutualContract)
         setSelectedGame(request.data.selectedGame)
-        if (UserResponse != undefined)
-          UserResponse!.name = sessionStorage.getItem('username')
+        setUserBalance(request.data.balance)
+        setOpponentBalance(request.data.opponentBalance)
       }
       else {
         console.log(request.data.message)
@@ -84,7 +86,8 @@ function DefiPage() {
       transports: ['websocket'],
     });
     setSocket(socket);
-
+    if (UserResponse != undefined)
+      console.log(UserResponse.balance)
   }, []);
 
   useEffect(() => {
@@ -137,6 +140,9 @@ function DefiPage() {
   // }, [userAccepted, opponentAccepted]);
 
   const handleUserBetChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    if (Number(event.target.value) > userBalance) {
+      event.target.value = String(userBalance);
+    }
     setUserBet(Number(event.target.value));
     socket.emit('changeBet', { newBet: Number(event.target.value), room: roomNumber, username: sessionStorage.getItem('username') })
   };
@@ -145,6 +151,12 @@ function DefiPage() {
     setMutualContract(event.target.value);
     socket.emit('changeContract', { newContract: event.target.value, room: roomNumber, username: sessionStorage.getItem('username') })
   };
+
+  function checkEveryInputs() {
+    if (userBet != 0 && selectedGame != '')
+      return 0;
+  }
+
 
   const placeholder = "Loading...";
 
@@ -160,7 +172,7 @@ function DefiPage() {
                 alt="pic_me"
               />
               <p className="p-4">
-                Balance : {UserResponse ? UserResponse.balance || "0" : "0"}
+                Balance : {userBalance}
               </p>
               <form
                 action=""
@@ -192,9 +204,10 @@ function DefiPage() {
                   type="button"
                   className="mt-40 rounded bg-blue-500 p-2 text-white"
                   onClick={() => {
-                    socket.emit('changeAccept', { newAccept: true, room: roomNumber, username: sessionStorage.getItem('username') })
-                    setUserAccepted(true);
-                    // notifyUserAccepted.mutate({userId:  user})
+                    if (checkEveryInputs() == 0) {
+                      socket.emit('changeAccept', { newAccept: true, room: roomNumber, username: sessionStorage.getItem('username') })
+                      setUserAccepted(true);
+                    }
                   }}
                 >
                   {userAccepted ? "En attente de l'adversaire" : "Accepter"}
@@ -236,8 +249,7 @@ function DefiPage() {
                 alt="pic_me"
               />
               <p className="p-4">
-                Balance :{" "}
-                {OpponentResponse ? OpponentResponse.balance || "0" : "0"}
+                Balance :{opponentBalance}
               </p>
               <form
                 action=""

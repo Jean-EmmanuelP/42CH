@@ -40,4 +40,14 @@ export class DefiController {
         await this.prismaService.defiRequest.delete({ where: { id: data.id } })
         return { success: true }
     }
+
+    @Post('get_image')
+    async getImage(@Body() data: { username: string }) {
+        return await this.defiService.getImage(data.username);
+    }
+
+    @Post('get_opponent')
+    async getOpponent(@Body() data: { id: string }) {
+        return await this.defiService.getOpponent(data.id);
+    }
 }

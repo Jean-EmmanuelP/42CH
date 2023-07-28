@@ -3,7 +3,22 @@ import { PrismaService } from 'src/prisma/prisma.service';
 
 @Injectable()
 export class DefiService {
+    async getOpponent(id: string) { // image name
+        const user = await this.prismaService.user.findUnique({ where: { id: id } });
+        if (!user) {
+            return { success: false, error: 'User not found' };
+        }
+        return { success: true, image: user.image, name: user.name };
+    }
     constructor(private prismaService: PrismaService) { }
+
+    async getImage(username: string) {
+        const user = await this.prismaService.user.findUnique({ where: { name: username } });
+        if (!user) {
+            return { success: false, error: 'User not found' };
+        }
+        return { success: true, image: user.image };
+    }
 
     async finish(username: string, challengeId: string, winner: string) {
         const challenge = await this.prismaService.challenge.findUnique({ where: { id: challengeId } });
@@ -135,7 +150,9 @@ export class DefiService {
                 mutualContract: defi2.contractTerms,
                 selectedGame: defi2.gameSelected,
                 balance: user.balance,
+                image: user.image,
                 opponentBalance: opponent.balance,
+                opponentId: opponent.id,
             }
         }
         const opponent = await this.prismaService.user.findUnique({ where: { id: defi.opponentId } });
@@ -151,6 +168,7 @@ export class DefiService {
             selectedGame: defi.gameSelected,
             balance: user.balance,
             opponentBalance: opponent.balance,
+            opponentId: opponent.id,
         }
     }
 

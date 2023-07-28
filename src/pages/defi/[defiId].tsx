@@ -39,26 +39,10 @@ function DefiPage() {
   const [opponentId, setOpponnentId] = useState<string>("");
   const [socket, setSocket] = useState<any>(null);
   const [userBalance, setUserBalance] = useState<number>(0);
+  const [userImage, setUserImage] = useState<string>("");
   const [opponentBalance, setOpponentBalance] = useState<number>(0);
-  // backend in nextjs port 3000, file handling socket /api/socket
-  // console.log(challengeData);
-
-
-  const {
-    data: UserResponse,
-    error: UserError,
-    isLoading: UserIsLoading,
-  } = api.defi.getUserDataByName.useQuery({
-    name: challengeData ? challengeData[1] : "",
-  });
-
-  const {
-    data: OpponentResponse,
-    error: OpponentError,
-    isLoading: OpponentIsLoading,
-  } = api.defi.getUserDataByName.useQuery({
-    name: challengeData ? challengeData[2] : "",
-  });
+  const [opponentImage, setOpponentImage] = useState<string>("");
+  const [opponentName, setOpponentName] = useState<string>("");
 
   useEffect(() => {
     setIsClient(true);
@@ -66,7 +50,6 @@ function DefiPage() {
     const request = axios.post('http://localhost:3333/defi/get_infos/', JSON.stringify({ username: sessionStorage.getItem('username') }), { headers: { 'Content-Type': 'application/json' } })
     request.then((request) => {
       if (request.data.success == true) {
-        console.log(request.data)
         setUserBet(request.data.userBet)
         setOpponentBet(request.data.opponentBet)
         setHonorBet(request.data.honorBet)
@@ -77,17 +60,36 @@ function DefiPage() {
         setSelectedGame(request.data.selectedGame)
         setUserBalance(request.data.balance)
         setOpponentBalance(request.data.opponentBalance)
+        setUserImage(request.data.image)
+        // faire qqch avec request.data.opponenttId
+        const opponent = axios.post('http://localhost:3333/defi/get_opponent/', JSON.stringify({ id: request.data.opponentId }), { headers: { 'Content-Type': 'application/json' } })
+        opponent.then((opponent) => {
+          if (opponent.data.success == true) {
+            setOpponentImage(opponent.data.image)
+            setOpponentName(opponent.data.name)
+          }
+          else {
+            console.error(opponent.data.message)
+          }
+        })
       }
       else {
-        console.log(request.data.message)
+        console.error(request.data.message)
+      }
+    })
+    const img = axios.post('http://localhost:3333/defi/get_image/', JSON.stringify({ username: sessionStorage.getItem('username') }), { headers: { 'Content-Type': 'application/json' } })
+    img.then((img) => {
+      if (img.data.success == true) {
+        setUserImage(img.data.image)
+      }
+      else {
+        console.error(img.data.message)
       }
     })
     const socket = io(`http://localhost:3111`, {
       transports: ['websocket'],
     });
     setSocket(socket);
-    if (UserResponse != undefined)
-      console.log(UserResponse.balance)
   }, []);
 
   useEffect(() => {
@@ -133,12 +135,6 @@ function DefiPage() {
     setGainTotal(userBet + opponentBet);
   }, [userBet, opponentBet]);
 
-  // useEffect(() => {
-  //   if (userAccepted && opponentAccepted) {
-  //     // Envoyez ici les informations du pari
-  //   }
-  // }, [userAccepted, opponentAccepted]);
-
   const handleUserBetChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     if (Number(event.target.value) > userBalance) {
       event.target.value = String(userBalance);
@@ -168,7 +164,7 @@ function DefiPage() {
             <div className="flex flex-1 flex-col items-center justify-center bg-gray-400/95 p-10">
               <img
                 className="rounded-full shadow-xl"
-                src={UserResponse ? UserResponse.image || "" : ""}
+                src={userImage}
                 alt="pic_me"
               />
               <p className="p-4">
@@ -179,7 +175,7 @@ function DefiPage() {
                 className="flex flex-col items-center justify-center border border-black pt-2"
               >
                 <label htmlFor="mise">
-                  Mise de {UserResponse ? UserResponse.name || sessionStorage.getItem('username') : sessionStorage.getItem('username')} :
+                  Mise de {sessionStorage.getItem('username')} :
                 </label>
 
                 <input
@@ -245,7 +241,7 @@ function DefiPage() {
             <div className="flex flex-1 flex-col items-center justify-center bg-gray-400/95 p-10">
               <img
                 className="rounded-full shadow-xl"
-                src={OpponentResponse ? OpponentResponse.image || "" : ""}
+                src={opponentImage}
                 alt="pic_me"
               />
               <p className="p-4">
@@ -256,7 +252,7 @@ function DefiPage() {
                 className="flex flex-col items-center justify-center border border-black p-2"
               >
                 <label htmlFor="mise">
-                  Mise de {OpponentResponse ? OpponentResponse.name || "" : ""}{" "}
+                  Mise de {opponentName}
                   :
                 </label>
                 <input

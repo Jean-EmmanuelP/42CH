@@ -5,17 +5,17 @@ import { UserService } from './user.service';
 export class UserController {
     constructor(private userService: UserService) { }
 
-    @Get('get_top_users')
+    @Get('get_top_users') // figma done
     async getTopUsers() {
         return await this.userService.getTopUsers();
     }
 
-    @Get('get_online_users')
+    @Get('get_online_users') // figma done
     async getOnlineUsers() {
         return await this.userService.getOnlineUsers();
     }
 
-    @Post('get_user_infos')
+    @Post('get_user_infos') // figma done
     async getUserInfos(data: { username: string }) {
         return await this.userService.getUserInfos(data.username);
     }
@@ -45,7 +45,7 @@ export class UserController {
         return await this.userService.getFriendRequests(data.username);
     }
 
-    @Post('get_friends')
+    @Post('get_friends') // figma done
     async getFriends(data: { username: string }) {
         return await this.userService.getFriends(data.username);
     }

@@ -20,6 +20,7 @@ export class UserService {
                 username: friend.name,
                 image: friend.image,
                 balance: friend.balance,
+                statusMessage: friend.statusMessage,
             })
         }
         return { success: true, friends: friends }

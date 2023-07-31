@@ -22,6 +22,7 @@ export class DefiService {
                 opponentBid: publicChallenges[i].opponentBid,
                 gameSelected: publicChallenges[i].gameSelected,
                 contractTerms: publicChallenges[i].contractTerms,
+                //todo add the timer before the bet cannot be done anymore
             })
         }
         return { success: true, publicChallenges: publicChallengesInfos }

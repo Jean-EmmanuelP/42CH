@@ -3,6 +3,9 @@ import { PrismaService } from 'src/prisma/prisma.service';
 
 @Injectable()
 export class UserService {
+    getUserInfos(username: string) {
+        throw new Error('Method not implemented.');
+    }
     constructor(private prismaService: PrismaService) { }
 
     async getOnlineUsers() {

@@ -127,7 +127,7 @@ const DefiRightBar: React.FC = () => {
       </div>
       <div className="bg-white-600 h-full w-full mb-3 overflow-y-auto">
         {defiRequestArray ? (<p className="mb-2">Demande de defi</p>) : (<></>)}
-        {defiRequestArray.map((defiRequest, index) => {
+        {defiRequestArray?.map((defiRequest, index) => {
           return (
             <div
               key={index}

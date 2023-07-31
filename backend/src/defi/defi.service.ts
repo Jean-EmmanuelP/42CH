@@ -5,6 +5,28 @@ import { PrismaService } from 'src/prisma/prisma.service';
 export class DefiService {
     constructor(private prismaService: PrismaService) { }
 
+    async getAllPublicChallenges() {
+        const publicChallenges = await this.prismaService.challenge.findMany({ where: { isPublic: true } })
+        if (publicChallenges.length == 0) {
+            return { success: false, error: 'No public challenges found' };
+        }
+        let publicChallengesInfos = [];
+        for (let i = 0; i < publicChallenges.length; i++) {
+            publicChallengesInfos.push({
+                id: publicChallenges[i].id,
+                creatorName: (await this.prismaService.user.findUnique({ where: { id: publicChallenges[i].creatorId } })).name,
+                opponentName: (await this.prismaService.user.findUnique({ where: { id: publicChallenges[i].opponentId } })).name,
+                creatorImage: (await this.prismaService.user.findUnique({ where: { id: publicChallenges[i].creatorId } })).image,
+                opponentImage: (await this.prismaService.user.findUnique({ where: { id: publicChallenges[i].opponentId } })).image,
+                creatorBid: publicChallenges[i].creatorBid,
+                opponentBid: publicChallenges[i].opponentBid,
+                gameSelected: publicChallenges[i].gameSelected,
+                contractTerms: publicChallenges[i].contractTerms,
+            })
+        }
+        return { success: true, publicChallenges: publicChallengesInfos }
+    }
+
     async getOpponent(id: string) { // image name
         const user = await this.prismaService.user.findUnique({ where: { id: id } });
         if (!user) {
@@ -142,6 +164,7 @@ export class DefiService {
                 gameSelected: defi.gameSelected,
                 contractTerms: defi.contractTerms,
                 status: "pending",
+                isPublic: defi.isPublic,
             }
         })
         await this.prismaService.defi.delete({ where: { id: defi.id } });
@@ -352,7 +375,6 @@ export class DefiService {
     }
 
     async createDefi(creatorUsername: string, opponentUsername: string) {
-        console.log("in create defi")
         const user1 = await this.prismaService.user.findUnique({ where: { name: creatorUsername, } });
         const user2 = await this.prismaService.user.findUnique({ where: { name: opponentUsername, } });
         if (!user1 || !user2) {
@@ -382,7 +404,6 @@ export class DefiService {
                 contractTerms: '',
             },
         });
-        console.log("defi created")
         return { success: true, defiId: defi.id };
     }
 
@@ -403,7 +424,6 @@ export class DefiService {
         if (!defiRequest) {
             return { success: false, error: 'Defi request not created' };
         }
-        console.log("defi created")
         return { success: true };
     }
 

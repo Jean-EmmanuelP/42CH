@@ -1,4 +1,4 @@
-import { Body, Controller, Post } from '@nestjs/common';
+import { Body, Controller, Get, Post } from '@nestjs/common';
 import { PrismaService } from 'src/prisma/prisma.service';
 import { DefiService } from './defi.service';
 
@@ -29,6 +29,11 @@ export class DefiController {
     @Post('get_all_defi_requests')
     async getAllDefiRequests(@Body() data: { username: string }) {
         return await this.defiService.getAllDefiRequests(data.username);
+    }
+
+    @Get('get_all_public_challenges')
+    async getAllPublicChallenges() {
+        return await this.defiService.getAllPublicChallenges();
     }
 
     @Post('delete_defi_request')

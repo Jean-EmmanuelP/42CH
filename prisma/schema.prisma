@@ -52,6 +52,8 @@ model User {
     accounts       Account[]
     sessions       Session[]
     balance        Int         @default(0)
+    status         String      @default("offline")
+    statusMessage  String?     @default("")
     challenges     Challenge[] @relation("CreatedChallenges")
     participations Challenge[] @relation("ParticipatedChallenges")
     wonChallenges  Challenge[] @relation("WonChallenges") // Nouveau champ pour les défis gagnés
@@ -84,6 +86,8 @@ model Challenge {
 
     status String
 
+    isPublic Boolean @default(false)
+
     contractTerms String?
     gameSelected  String
 
@@ -114,6 +118,8 @@ model Defi {
 
     creatorAccepted  Boolean @default(false)
     opponentAccepted Boolean @default(false)
+
+    isPublic Boolean @default(false)
 }
 
 model DefiRequest {

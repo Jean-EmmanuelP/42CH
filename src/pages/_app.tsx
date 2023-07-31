@@ -6,6 +6,7 @@ import "~/styles/globals.css";
 import ContextWrapper from "~/context/ContextWrapper";
 import Navbar from "~/components/Navbar";
 import DefiRightBar from "~/components/Defi";
+import Social from "~/components/Social";
 
 const MyApp: AppType<{ session: Session | null }> = ({
   Component,
@@ -14,17 +15,20 @@ const MyApp: AppType<{ session: Session | null }> = ({
   return (
     <SessionProvider session={session}>
       <ContextWrapper>
-        <div className="flex h-screen flex-col">
-          <div className="h-20">
+        <div className="h-full w-screen">
+          <div className="h-[20vh] mb-[6vh] w-full">
             <Navbar />
           </div>
-          <div className="flex flex-grow bg-gray-300/20">
-            <div className="w-4/5">
+          <div className="flex h-[72vh] mb-[2vh] mx-[1vw] w-[98vw] border border-red-500">
+            <div className="w-[15vw] h-full  border border-black">
+              <Social />
+            </div>
+            <div className="w-[58vw] mx-[2vw] h-full border border-black">
               <Component {...pageProps} />
             </div>
-            <div className="w-1/5">
-              <DefiRightBar />
-            </div>
+              <div className="w-[27vw] h-full  border border-black">
+                <DefiRightBar />
+              </div>
           </div>
         </div>
       </ContextWrapper>

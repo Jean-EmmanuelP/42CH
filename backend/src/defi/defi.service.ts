@@ -22,6 +22,7 @@ export class DefiService {
                 opponentBid: publicChallenges[i].opponentBid,
                 gameSelected: publicChallenges[i].gameSelected,
                 contractTerms: publicChallenges[i].contractTerms,
+                timerPublic: publicChallenges[i].timerPublic, // Timer de fin, comparé dans le front avec Date.now() / 1000 (seconds)
                 //todo add the timer before the bet cannot be done anymore
             })
         }
@@ -166,6 +167,7 @@ export class DefiService {
                 contractTerms: defi.contractTerms,
                 status: "pending",
                 isPublic: defi.isPublic,
+                timerPublic: (Date.now() / 1000) + defi.timerPublic,
             }
         })
         await this.prismaService.defi.delete({ where: { id: defi.id } });
@@ -444,4 +446,6 @@ export class DefiService {
         }
         return { success: true, defiRequests: defiRequestsInfos };
     }
+
+    // todo all the new functions after defiId reworked design
 }

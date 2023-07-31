@@ -90,7 +90,8 @@ model Challenge {
 
     status String
 
-    isPublic Boolean @default(false)
+    isPublic    Boolean @default(false)
+    timerPublic BigInt  @default(0)
 
     contractTerms String?
     gameSelected  String

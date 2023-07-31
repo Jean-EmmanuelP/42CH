@@ -68,6 +68,17 @@ model ChallengeHistory {
     createdAt DateTime @default(now())
 }
 
+model UsersBet {
+    id        String   @id @default(cuid())
+    createdAt DateTime @default(now())
+
+    winnerId    String
+    userId      String
+    amount      Int
+    Challenge   Challenge? @relation(fields: [challengeId], references: [id])
+    challengeId String?
+}
+
 model Challenge {
     id          String    @id @default(cuid())
     createdAt   DateTime  @default(now())
@@ -92,6 +103,8 @@ model Challenge {
 
     isPublic    Boolean @default(false)
     timerPublic BigInt  @default(0)
+
+    userBets UsersBet[]
 
     contractTerms String?
     gameSelected  String

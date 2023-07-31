@@ -5,11 +5,82 @@ import { PrismaService } from 'src/prisma/prisma.service';
 export class DefiService {
     constructor(private prismaService: PrismaService) { }
 
+    async betPublicChallenge(username: string, challengeId: string, amount: number, winner: string) {
+        const user = await this.prismaService.user.findUnique({ where: { name: username } });
+        if (!user)
+            return { success: false, error: 'User not found' };
+        const userWinner = await this.prismaService.user.findUnique({ where: { name: winner } });
+        if (!userWinner)
+            return { success: false, error: 'Winner not found' };
+        const challenge = await this.prismaService.challenge.findUnique({ where: { id: challengeId } });
+        if (!challenge)
+            return { success: false, error: 'Challenge not found' };
+        if (user.id == challenge.creatorId || user.id == challenge.opponentId)
+            return { success: false, error: 'User cannot bet on his own challenge' };
+        if (user.balance < amount)
+            return { success: false, error: 'Not enough money' };
+        const userBets = await this.prismaService.usersBet.findMany({ where: { challengeId: challenge.id } });
+        for (let i = 0; i < userBets.length; i++) { // If the user has already bet on this challenge, we increment his bet
+            if (userBets[i].userId == user.id) {
+                await this.prismaService.usersBet.update({
+                    where: { id: userBets[i].id },
+                    data: { amount: { increment: amount } },
+                });
+                await this.prismaService.user.update({ where: { id: user.id }, data: { balance: { decrement: amount } } })
+                return { success: true };
+            }
+        }
+        // If the user has not bet on this challenge, we create a new bet
+        await this.prismaService.usersBet.create({
+            data: {
+                userId: user.id,
+                challengeId: challenge.id,
+                amount: amount,
+                winnerId: userWinner.id,
+            }
+        });
+        await this.prismaService.user.update({ where: { id: user.id }, data: { balance: { decrement: amount } } })
+        return { success: true };
+    }
+
+    async splitBetToWinners(challengeId: string) {
+        const challenge = await this.prismaService.challenge.findUnique({ where: { id: challengeId } });
+        if (!challenge)
+            return { success: false, error: 'Challenge not found' };
+        const usersBets = await this.prismaService.usersBet.findMany({ where: { challengeId: challenge.id } });
+        if (usersBets.length == 0)
+            return { success: false, error: 'No bets found' };
+        let winners = [];
+        let losers = [];
+        for (let i = 0; i < usersBets.length; i++) {
+            if (usersBets[i].winnerId == challenge.creatorWinner) // en s'assurant d'envoyer dans cette fonction que s'il y a pas de litige entre creatorWinner et opponentWinner
+                winners.push({ id: usersBets[i].userId, amount: usersBets[i].amount });
+            else
+                losers.push({ id: usersBets[i].userId, amount: usersBets[i].amount });
+        }
+        let winnerTotalBet = 0;
+        let loserTotalBet = 0;
+        for (let i = 0; i < winners.length; i++)
+            winnerTotalBet += winners[i].amount;
+        for (let i = 0; i < losers.length; i++)
+            loserTotalBet += losers[i].amount;
+        if (loserTotalBet == 0) {
+            for (let i = 0; i < winners.length; i++)
+                await this.prismaService.user.update({ where: { id: winners[i].id }, data: { balance: { increment: winners[i].amount } } })
+            return { success: true }
+        }
+        else {
+            for (let i = 0; i < winners.length; i++) {
+                await this.prismaService.user.update({ where: { id: winners[i].id }, data: { balance: { increment: (winners[i].amount / winnerTotalBet) * (winnerTotalBet + loserTotalBet) } } })
+            }
+            return { success: true };
+        }
+    }
+
     async getAllPublicChallenges() {
         const publicChallenges = await this.prismaService.challenge.findMany({ where: { isPublic: true } })
-        if (publicChallenges.length == 0) {
+        if (publicChallenges.length == 0)
             return { success: false, error: 'No public challenges found' };
-        }
         let publicChallengesInfos = [];
         for (let i = 0; i < publicChallenges.length; i++) {
             publicChallengesInfos.push({
@@ -23,10 +94,19 @@ export class DefiService {
                 gameSelected: publicChallenges[i].gameSelected,
                 contractTerms: publicChallenges[i].contractTerms,
                 timerPublic: publicChallenges[i].timerPublic, // Timer de fin, comparé dans le front avec Date.now() / 1000 (seconds)
-                //todo add the timer before the bet cannot be done anymore
             })
         }
         return { success: true, publicChallenges: publicChallengesInfos }
+    }
+
+    async userBetOnPublicChallenge(username: string, challengeId: string) {
+        const user = await this.prismaService.user.findUnique({ where: { name: username } })
+        if (!user)
+            return { success: false, error: 'User not found' }
+        const challenge = await this.prismaService.challenge.findUnique({ where: { id: challengeId } })
+        if (!challenge)
+            return { success: false, error: 'Challenge not found' }
+        // todo en travaux mais je veux push
     }
 
     async getOpponent(id: string) { // image name

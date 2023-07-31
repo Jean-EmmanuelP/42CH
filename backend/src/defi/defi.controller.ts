@@ -60,4 +60,14 @@ export class DefiController {
     async ongoing(@Body() data: { username: string }) {
         return await this.defiService.ongoing(data.username);
     }
+
+    @Post('bet_public_challenge')
+    async betPublicChallenge(@Body() data: { username: string, challengeId: string, amount: number, winner: string }) {
+        return await this.defiService.betPublicChallenge(data.username, data.challengeId, data.amount, data.winner);
+    }
+
+    @Post('user_bet_on_public_challenge')
+    async userBetOnPublicChallenge(@Body() data: { username: string, challengeId: string }) {
+        return await this.defiService.userBetOnPublicChallenge(data.username, data.challengeId);
+    }
 }

@@ -106,7 +106,14 @@ export class DefiService {
         const challenge = await this.prismaService.challenge.findUnique({ where: { id: challengeId } })
         if (!challenge)
             return { success: false, error: 'Challenge not found' }
-        // todo en travaux mais je veux push
+        const usersBet = await this.prismaService.usersBet.findMany({ where: { challengeId: challenge.id } })
+        if (!usersBet)
+            return { success: false, error: 'No bets found' }
+        for (let i = 0; i < usersBet.length; i++) {
+            if (usersBet[i].userId == user.id)
+                return { success: true, userBet: usersBet[i].amount }
+        }
+        return { success: false, error: 'User has not bet on this challenge' }
     }
 
     async getOpponent(id: string) { // image name

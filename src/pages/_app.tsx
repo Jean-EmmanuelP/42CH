@@ -15,20 +15,20 @@ const MyApp: AppType<{ session: Session | null }> = ({
   return (
     <SessionProvider session={session}>
       <ContextWrapper>
-        <div className="h-full w-screen">
-          <div className="h-[20vh] mb-[6vh] w-full">
+        <div className="h-full w-screen bg-[#EEF0F3]">
+          <div className="mb-[3vh] h-[10vh] w-full">
             <Navbar />
           </div>
-          <div className="flex h-[72vh] mb-[2vh] mx-[1vw] w-[98vw] border border-red-500">
-            <div className="w-[15vw] h-full  border border-black">
+          <div className="mx-[1vw] mb-[2vh] flex h-[85vh] w-[98vw] border border-red-500">
+            <div className="h-full w-[15vw]  border border-black">
               <Social />
             </div>
-            <div className="w-[58vw] mx-[2vw] h-full border border-black">
+            <div className="mx-[2vw] h-full w-[58vw] border border-black">
               <Component {...pageProps} />
             </div>
-              <div className="w-[27vw] h-full  border border-black">
-                <DefiRightBar />
-              </div>
+            <div className="h-full w-[27vw] border border-black rounded-md">
+              <DefiRightBar />
+            </div>
           </div>
         </div>
       </ContextWrapper>

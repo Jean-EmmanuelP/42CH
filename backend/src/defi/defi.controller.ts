@@ -11,32 +11,32 @@ export class DefiController {
         return await this.defiService.createDefi(data.creatorUsername, data.opponentUsername);
     }
 
-    @Post('get_infos')
+    @Post('get_infos') // already implemented
     async getInfos(@Body() data: { username: string }) {
         return await this.defiService.getInfos(data.username);
     }
 
-    @Post('get_all_challenges')
+    @Post('get_all_challenges') // figma done
     async getAllChallenges(@Body() data: { username: string }) {
         return await this.defiService.getAllChallenges(data.username);
     }
 
-    @Post('finish')
+    @Post('finish') // already implemented
     async finish(@Body() data: { username: string, challengeId: string, winner: string }) {
         return await this.defiService.finish(data.username, data.challengeId, data.winner);
     }
 
-    @Post('get_all_defi_requests')
+    @Post('get_all_defi_requests') // already implemented
     async getAllDefiRequests(@Body() data: { username: string }) {
         return await this.defiService.getAllDefiRequests(data.username);
     }
 
-    @Get('get_all_public_challenges')
+    @Get('get_all_public_challenges') // figma done
     async getAllPublicChallenges() {
         return await this.defiService.getAllPublicChallenges();
     }
 
-    @Post('delete_defi_request')
+    @Post('delete_defi_request') // already implemented
     async deleteDefiRequest(@Body() data: { id: string }) {
         const defi = await this.prismaService.defiRequest.findFirst({ where: { id: data.id } })
         if (defi == null) {
@@ -59,5 +59,15 @@ export class DefiController {
     @Post('ongoing')
     async ongoing(@Body() data: { username: string }) {
         return await this.defiService.ongoing(data.username);
+    }
+
+    @Post('bet_public_challenge') // figma done
+    async betPublicChallenge(@Body() data: { username: string, challengeId: string, amount: number, winner: string }) {
+        return await this.defiService.betPublicChallenge(data.username, data.challengeId, data.amount, data.winner);
+    }
+
+    @Post('user_bet_on_public_challenge') // figma done
+    async userBetOnPublicChallenge(@Body() data: { username: string, challengeId: string }) {
+        return await this.defiService.userBetOnPublicChallenge(data.username, data.challengeId);
     }
 }

@@ -43,12 +43,16 @@ model Session {
 }
 
 model User {
-    id             String      @id @default(cuid())
-    name           String?     @unique
-    email          String?     @unique
-    emailVerified  DateTime?
-    image          String?
-    password       String?
+    id            String    @id @default(cuid())
+    name          String?   @unique
+    email         String?   @unique
+    emailVerified DateTime?
+    image         String?
+    password      String?
+
+    friends         String[] @default([])
+    friendsRequests String[] @default([])
+
     accounts       Account[]
     sessions       Session[]
     balance        Int         @default(0)
@@ -62,6 +66,17 @@ model User {
 model ChallengeHistory {
     id        String   @id @default(cuid())
     createdAt DateTime @default(now())
+}
+
+model UsersBet {
+    id        String   @id @default(cuid())
+    createdAt DateTime @default(now())
+
+    winnerId    String
+    userId      String
+    amount      Int
+    Challenge   Challenge? @relation(fields: [challengeId], references: [id])
+    challengeId String?
 }
 
 model Challenge {
@@ -86,7 +101,10 @@ model Challenge {
 
     status String
 
-    isPublic Boolean @default(false)
+    isPublic    Boolean @default(false)
+    timerPublic BigInt  @default(0)
+
+    userBets UsersBet[]
 
     contractTerms String?
     gameSelected  String
@@ -119,7 +137,8 @@ model Defi {
     creatorAccepted  Boolean @default(false)
     opponentAccepted Boolean @default(false)
 
-    isPublic Boolean @default(false)
+    isPublic    Boolean @default(false)
+    timerPublic BigInt  @default(0)
 }
 
 model DefiRequest {

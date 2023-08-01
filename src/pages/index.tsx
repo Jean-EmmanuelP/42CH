@@ -9,6 +9,8 @@ import isSameOrBefore from "dayjs/plugin/isSameOrBefore";
 import PokerImage from "../utils/images/poker.svg";
 import Position from "../utils/images/position.svg";
 import ClockIcon from "../utils/images/clockicon.svg";
+import QuestionMark from "../utils/images/questionmark.svg";
+import Versus from "../utils/images/versus.png";
 
 dayjs.extend(isSameOrAfter);
 dayjs.extend(isSameOrBefore);
@@ -131,7 +133,7 @@ export default function HomePage() {
       "http://localhost:3333/user/get_top_users/"
     );
     const topUsers = request.data.topUsers;
-    console.log(topUsers);
+    console.log(`those are the top Users`, topUsers);
     setPlayers(topUsers);
     return topUsers;
   }
@@ -248,31 +250,70 @@ export default function HomePage() {
               </div>
             </div>
           </div>
-          <div className="h-[42%] w-full">
-            <div className="flex h-full w-full flex-col rounded-l-md bg-white pl-7">
-              <h2 className="mb-2 font-bold">Joueurs de la semaine</h2>
-              <div className="mb-2 flex h-full flex-wrap overflow-hidden">
-                {players.map((player, index) => (
-                  <div
-                    key={index}
-                    className="flex h-full w-[32%] w-full flex-col items-center justify-center"
-                  >
-                    <div className={index === 1 ? "shadow-xl" : "shadow-sm"}>
-                      <img
-                        className="h-full w-full object-contain"
-                        src={`${player.image}`}
-                        alt="Image Player"
-                      />
-                    </div>
-                  </div>
-                ))}
-              </div>
+          <div className="h-[42%] w-full rounded-md bg-white">
+            <h1 className="flex h-[20%] items-center pl-7 font-bold">
+              Joueurs de la semaine
+            </h1>
+            <div className="flex h-[80%] w-full">
+              {players.map((player, index) => (
+                <div
+                  key={index}
+                  className={`mr-1 flex h-full w-full flex-grow flex-col items-center`}
+                >
+                  <Image
+                    src={player.image}
+                    width={100}
+                    height={100}
+                    alt="Player Image"
+                    className={`${
+                      index === 1 ? "shadow-xl" : "shadow-md"
+                    } rounded-md`}
+                  />
+                  <p className="flex w-full justify-center pt-1 text-[10px]">
+                    {index + 1}
+                    {index + 1 === 1 && "st"}
+                    {index + 1 === 2 && "nd"}
+                    {index + 1 === 3 && "rd"}
+                  </p>
+                </div>
+              ))}
             </div>
           </div>
         </div>
-        <div className="ml-2 flex w-[44%] flex-row bg-white shadow-md">
-          <div className="border-b border-black">
-            <h1 className="pl-7 pt-4 font-bold">Live Pari</h1>
+        <div className=" relative ml-2 flex h-full w-[44%] flex-col bg-white shadow-md">
+          <h1 className="pl-7 pt-4 font-bold">Live Pari</h1>
+          <button className="absolute right-4 top-4 rounded-full border border-black p-1">
+            <Image
+              src={QuestionMark}
+              alt="questionMark"
+              width={15}
+              height={15}
+            />
+          </button>
+          <div className="relative mx-6 mt-4 h-1/3 w-[88%] rounded-md border border-black bg-[#272A30]">
+            <Image
+              src="https://cdn.intra.42.fr/users/360e47329956d8a4293e03f4113107d2/lgillard.jpg"
+              alt="questionMark"
+              width={60}
+              height={60}
+              className="rounded-full absolute top-[10%] left-[15%] border border-white shadow-md"
+            />
+            <Image
+              src="https://cdn.intra.42.fr/users/669381bd9e2af663004af7a99747e2be/rfouraul.jpg"
+              alt="questionMark"
+              width={60}
+              height={60}
+              className="rounded-full absolute top-[10%] right-[15%] border border-white shadow-md"
+            />
+            <Image 
+              src={Versus}
+              alt="versus"
+              width={40}
+              height={40}
+              className="absolute top-[13%] left-[43%]"
+            />
+            <p className="absolute text-white top-[44%] left-[45%] text-[12px]">4 : 10</p>
+            <button className="absolute border border-white top-[64%] left-[43%] rounded-md bg-[#DD0000] p-1 text-white text-sm">Miser</button>
           </div>
         </div>
       </div>

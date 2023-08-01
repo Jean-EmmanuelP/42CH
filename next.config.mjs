@@ -18,6 +18,10 @@ const config = {
     locales: ["en"],
     defaultLocale: "en",
   },
+
+  images: {
+    domains: ['lh3.googleusercontent.com', 'cdn.intra.42.fr'],
+  },
 };
 
 export default config;

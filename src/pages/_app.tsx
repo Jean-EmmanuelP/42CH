@@ -16,7 +16,7 @@ const MyApp: AppType<{ session: Session | null }> = ({
   return (
     <SessionProvider session={session}>
       <ContextWrapper>
-        <div className="h-full w-screen bg-[#EEF0F3]">
+        <div className="h-screen w-screen bg-[#EEF0F3]">
           <div className="mb-[3vh] h-[10vh] w-full">
             <Navbar />
           </div>

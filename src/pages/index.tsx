@@ -1,17 +1,18 @@
 import { useContext, useEffect, useState } from "react";
 import GlobalContext from "~/context/GlobalContext";
 import Image from "next/image";
-import EventOfTheWeek from "../utils/images/profileEvent.png";
 import Modal from "~/components/Modal";
 import EventSubscribeModal from "~/components/EventSubscribeModal";
 import dayjs from 'dayjs';
 import isSameOrAfter from 'dayjs/plugin/isSameOrAfter';
 import isSameOrBefore from 'dayjs/plugin/isSameOrBefore';
+import PokerImage from "../utils/images/poker.svg"
 
 dayjs.extend(isSameOrAfter);
 dayjs.extend(isSameOrBefore);
 
 import axios from "axios";
+import { PrismaClientKnownRequestError } from "@prisma/client/runtime";
 
 interface Event {
   title: string;
@@ -95,10 +96,10 @@ export default function HomePage() {
 
   // Render
   return (
-    <div className="mt-4 flex h-full w-full flex-col">
+    <div className="flex h-full w-full flex-col">
       <button className="flex h-1/2 w-full items-center justify-center overflow-hidden">
         <Image
-          src={EventOfTheWeek}
+          src={PokerImage}
           alt="Event of the Week"
           width={1300}
           height={1000}

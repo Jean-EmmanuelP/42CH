@@ -146,7 +146,7 @@ const DefiRightBar: React.FC = () => {
   ];
   const [selectedTab, setSelectedTab] = useState(0);
   return (
-    <div className="flex h-full flex-col rounded-md bg-white shadow-md">
+    <div className="flex h-full flex-col rounded-l-md bg-white shadow-md">
       <div className="mb-6 pl-2 pt-2">
         <select className="text-l font-bold">
           <option value="Mes Defis">Mes Defis</option>

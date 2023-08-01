@@ -162,7 +162,7 @@ export default function HomePage() {
       </button>
       <div className="mt-2 flex h-3/5 w-full rounded-md">
         <div className="flex w-[56%] flex-col rounded-md ">
-          <div className="mb-[2%] h-[56%] w-full rounded-md border-b border-black bg-white">
+          <div className="mb-[2%] h-[56%] w-full rounded-md bg-white">
             <h2 className="mb-2 pl-7 pt-4 font-bold">Evenements</h2>
             <div className="flex-grow overflow-auto rounded-b-md bg-white px-2">
               <div className="max-h-32">
@@ -182,7 +182,7 @@ export default function HomePage() {
                     }}
                   >
                     <div
-                      className={`w-1/3 ${event.label} text-center text-sm text-white`}
+                      className={`w-1/3 ${event.label} text-center text-sm text-white rounded-l-md`}
                     >
                       <p>{new Date(event.day).getDate()}</p>
                       <p>
@@ -249,7 +249,7 @@ export default function HomePage() {
             </div>
           </div>
           <div className="h-[42%] w-full">
-            <div className="flex h-full w-full flex-col rounded-l-md border border-black bg-white pl-7">
+            <div className="flex h-full w-full flex-col rounded-l-md bg-white pl-7">
               <h2 className="mb-2 font-bold">Joueurs de la semaine</h2>
               <div className="mb-2 flex h-full flex-wrap overflow-hidden">
                 {players.map((player, index) => (

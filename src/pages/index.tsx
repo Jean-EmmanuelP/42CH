@@ -182,7 +182,7 @@ export default function HomePage() {
                     }}
                   >
                     <div
-                      className={`w-1/3 ${event.label} text-center text-sm text-white rounded-l-md`}
+                      className={`w-1/3 ${event.label} rounded-l-md text-center text-sm text-white`}
                     >
                       <p>{new Date(event.day).getDate()}</p>
                       <p>
@@ -199,20 +199,20 @@ export default function HomePage() {
                         >
                           {event.title}
                         </h3>
-                        <p className="h-1/3 overflow-hidden pl-2 text-[9px] text-gray-500 flex items-center">
+                        <p className="flex h-1/3 items-center overflow-hidden pl-2 text-[9px] text-gray-500">
                           {truncateWords(event.description, 6)}
                         </p>
-                        <div className="flex h-1/3 flex-row items-center w-full">
-                          <div className="w-1/2 flex justify-center">
+                        <div className="flex h-1/3 w-full flex-row items-center">
+                          <div className="flex w-1/2 justify-center">
                             <Image
                               src={ClockIcon}
                               alt="clockicon"
                               height={10}
                               width={10}
                             />
-                            <p className="text-[8px] pl-1">16h</p>
+                            <p className="pl-1 text-[8px]">16h</p>
                           </div>
-                          <div className="w-1/2 flex justify-center">
+                          <div className="flex w-1/2 justify-center">
                             <Image
                               src={Position}
                               alt="position"
@@ -270,7 +270,11 @@ export default function HomePage() {
             </div>
           </div>
         </div>
-        <div className="ml-2 flex w-[44%] flex-row  shadow-md"></div>
+        <div className="ml-2 flex w-[44%] flex-row bg-white shadow-md">
+          <div className="border-b border-black">
+            <h1 className="pl-7 pt-4 font-bold">Live Pari</h1>
+          </div>
+        </div>
       </div>
       {eventToSend != undefined ? (
         <Modal isVisible={showModal} onClose={() => setShowModal(false)}>

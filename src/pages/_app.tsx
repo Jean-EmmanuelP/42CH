@@ -7,6 +7,7 @@ import ContextWrapper from "~/context/ContextWrapper";
 import Navbar from "~/components/Navbar";
 import DefiRightBar from "~/components/Defi";
 import Social from "~/components/Social";
+import { useRouter } from "next/navigation";
 
 const MyApp: AppType<{ session: Session | null }> = ({
   Component,

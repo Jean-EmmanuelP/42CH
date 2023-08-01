@@ -7,12 +7,15 @@ import dayjs from "dayjs";
 import isSameOrAfter from "dayjs/plugin/isSameOrAfter";
 import isSameOrBefore from "dayjs/plugin/isSameOrBefore";
 import PokerImage from "../utils/images/poker.svg";
+import Position from "../utils/images/position.svg";
+import ClockIcon from "../utils/images/clockicon.svg";
 
 dayjs.extend(isSameOrAfter);
 dayjs.extend(isSameOrBefore);
 
 import axios from "axios";
 import { PrismaClientKnownRequestError } from "@prisma/client/runtime";
+import { StringSupportOption } from "prettier";
 
 interface Event {
   title: string;
@@ -94,7 +97,59 @@ export default function HomePage() {
     const parts = label.split("-");
     return parts[1]; // cela renvoie "red" si label est "bg-red-500"
   }
+  function getName(label: any) {
+    const parts = label.split(" ");
+    return parts[0];
+  }
 
+  {
+    /*
+  ex : async function setWeekly() {
+      const today = dayjs().startOf("day");
+      const tenDaysFromNow = dayjs().add(10, "day");
+      const request = await axios.get(
+        "http://localhost:3333/events/incoming-events/"
+      );
+      request.data.forEach((element: Event) => {
+        element.day = Number(element.day);
+      });
+      const events: Event[] = request.data.filter(
+        (evt: Event) =>
+          dayjs(evt.day).isSameOrAfter(today) &&
+          dayjs(evt.day).isSameOrBefore(tenDaysFromNow)
+      );
+  */
+  }
+  interface PlayerProps {
+    username: string;
+    image: string;
+    balance: number;
+  }
+  const [players, setPlayers] = useState<PlayerProps[]>([]);
+  async function BestPlayersOfTheWeek() {
+    const request = await axios.get(
+      "http://localhost:3333/user/get_top_users/"
+    );
+    const topUsers = request.data.topUsers;
+    console.log(topUsers);
+    setPlayers(topUsers);
+    return topUsers;
+  }
+
+  function truncateWords(sentence = "bonjour", maxWords = 15) {
+    let words = sentence.split(" ");
+    if (words.length > maxWords) {
+      return words.slice(0, maxWords).join(" ") + "...";
+    } else {
+      return sentence;
+    }
+  }
+
+  useEffect(() => {
+    (async () => {
+      await BestPlayersOfTheWeek();
+    })();
+  }, []);
   // Render
   return (
     <div className="flex h-full w-full flex-col">
@@ -106,7 +161,7 @@ export default function HomePage() {
         />
       </button>
       <div className="mt-2 flex h-3/5 w-full rounded-md">
-        <div className="flex w-[56%] flex-col rounded-md border border-black">
+        <div className="flex w-[56%] flex-col rounded-md ">
           <div className="mb-[2%] h-[56%] w-full rounded-md border-b border-black bg-white">
             <h2 className="mb-2 pl-7 pt-4 font-bold">Evenements</h2>
             <div className="flex-grow overflow-auto rounded-b-md bg-white px-2">
@@ -136,44 +191,86 @@ export default function HomePage() {
                         })}
                       </p>
                     </div>
-                    <div className="w-2/3 pl-1">
-                      <h3
-                        className="text-sm text-black"
-                        style={{ color: getColorFromLabel(event.label) }}
-                      >
-                        {event.title}
-                      </h3>
-                      <p className="w-full pl-2 text-xs text-gray-500">
-                        {event.description}
-                      </p>
-                    </div>
-                    {!event.isFull ? (
-                      <div className="flex flex-col px-1 pt-1 text-center text-xs text-green-500">
-                        {event.participantsUsernames.includes(
-                          sessionStorage.getItem("username") as string
-                        ) ? (
-                          <p>Inscrit</p>
+                    <div className="flex h-full w-2/3 flex-row pl-1">
+                      <div className="h-full w-2/3">
+                        <h3
+                          className="h-1/3 text-sm text-black"
+                          style={{ color: getColorFromLabel(event.label) }}
+                        >
+                          {event.title}
+                        </h3>
+                        <p className="h-1/3 overflow-hidden pl-2 text-[9px] text-gray-500 flex items-center">
+                          {truncateWords(event.description, 6)}
+                        </p>
+                        <div className="flex h-1/3 flex-row items-center w-full">
+                          <div className="w-1/2 flex justify-center">
+                            <Image
+                              src={ClockIcon}
+                              alt="clockicon"
+                              height={10}
+                              width={10}
+                            />
+                            <p className="text-[8px] pl-1">16h</p>
+                          </div>
+                          <div className="w-1/2 flex justify-center">
+                            <Image
+                              src={Position}
+                              alt="position"
+                              height={10}
+                              width={10}
+                            />
+                            <p className="text-[8px]">Paul F5</p>
+                          </div>
+                        </div>
+                      </div>
+                      <div className="h-full w-1/3">
+                        {!event.isFull ? (
+                          <div className="flex flex-col  pl-1 pt-1 text-center text-[10px] text-green-500">
+                            {event.participantsUsernames.includes(
+                              sessionStorage.getItem("username") as string
+                            ) ? (
+                              <p>Inscrit</p>
+                            ) : (
+                              <p>S'inscrire</p>
+                            )}
+                            {/* ici il faut relier le back pour mettre l'heure et l'endroit et il faut le mettre ici */}
+                            <div className="rounded-tl-md pt-2 text-black"></div>
+                          </div>
                         ) : (
-                          <p>S'inscrire</p>
+                          <div className="flex px-1 pt-1 text-center text-xs text-green-500">
+                            Full
+                          </div>
                         )}
                       </div>
-                    ) : (
-                      <div className="flex px-1 pt-1 text-center text-xs text-green-500">
-                        Full
-                      </div>
-                    )}
+                    </div>
                   </div>
                 ))}
               </div>
             </div>
           </div>
           <div className="h-[42%] w-full">
-            <div className="flex w-full flex-col rounded-l-md bg-white">
-              <h2 className="pl-7 pt-4 font-bold">Joueurs de la semaine</h2>
+            <div className="flex h-full w-full flex-col rounded-l-md border border-black bg-white pl-7">
+              <h2 className="mb-2 font-bold">Joueurs de la semaine</h2>
+              <div className="mb-2 flex h-full flex-wrap overflow-hidden">
+                {players.map((player, index) => (
+                  <div
+                    key={index}
+                    className="flex h-full w-[32%] w-full flex-col items-center justify-center"
+                  >
+                    <div className={index === 1 ? "shadow-xl" : "shadow-sm"}>
+                      <img
+                        className="h-full w-full object-contain"
+                        src={`${player.image}`}
+                        alt="Image Player"
+                      />
+                    </div>
+                  </div>
+                ))}
+              </div>
             </div>
           </div>
         </div>
-        <div className="ml-2 flex w-[44%] flex-row border border-black shadow-md"></div>
+        <div className="ml-2 flex w-[44%] flex-row  shadow-md"></div>
       </div>
       {eventToSend != undefined ? (
         <Modal isVisible={showModal} onClose={() => setShowModal(false)}>
@@ -182,9 +279,4 @@ export default function HomePage() {
       ) : null}
     </div>
   );
-}
-{
-  /*
-
-*/
 }

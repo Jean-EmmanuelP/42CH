@@ -24,7 +24,7 @@ const MyApp: AppType<{ session: Session | null }> = ({
             <div className="h-full w-[15vw]  border border-black">
               <Social />
             </div>
-            <div className="mx-[2vw] h-full w-[58vw] border border-black">
+            <div className="mx-[2vw] h-full w-[58vw] border border-black/25">
               <Component {...pageProps} />
             </div>
             <div className="h-full w-[27vw] border border-black rounded-md">

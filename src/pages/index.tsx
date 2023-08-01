@@ -105,85 +105,75 @@ export default function HomePage() {
           className="w-full object-center"
         />
       </button>
-      <div className="mt-2 flex h-3/5 w-full">
-        <div className="flex w-[56%] flex-col border border-black">
-          <div className="h-[58%] w-full border-b border-black">
-          <h2 className="rounded-t-md bg-white pl-7 pt-4">Evenements</h2>
-          <div className="mb-2 ml-4 mr-4 flex-grow overflow-auto rounded-b-md bg-white pr-2">
-            <div className="max-h-32">
-              {weeklyEvents.map((event: Event, index: number) => (
-                // Première chose, if event.isFull == true event marqué comme full + quand on click dessus on peut pas s'inscrire
-                // Deuxième chose si sessionStorage.getItem('username') est dans event.participantsUsernames marqué event comme inscrit
-                // et quand on click dessus on peut se désinscrire
-                // Sinon juste afficher l'event et quand on click dessus on peut s'inscrire
+      <div className="mt-2 flex h-3/5 w-full rounded-md">
+        <div className="flex w-[56%] flex-col rounded-md border border-black">
+          <div className="mb-[2%] h-[56%] w-full rounded-md border-b border-black bg-white">
+            <h2 className="mb-2 pl-7 pt-4 font-bold">Evenements</h2>
+            <div className="flex-grow overflow-auto rounded-b-md bg-white px-2">
+              <div className="max-h-32">
+                {weeklyEvents.map((event: Event, index: number) => (
+                  // Première chose, if event.isFull == true event marqué comme full + quand on click dessus on peut pas s'inscrire
+                  // Deuxième chose si sessionStorage.getItem('username') est dans event.participantsUsernames marqué event comme inscrit
+                  // et quand on click dessus on peut se désinscrire
+                  // Sinon juste afficher l'event et quand on click dessus on peut s'inscrire
 
-                <div
-                  key={index}
-                  className={`w-full flex h-full border bg-white hover:cursor-pointer`}
-                  style={{ borderColor: getColorFromLabel(event.label) }}
-                  onClick={() => {
-                    setEventToSend(event);
-                    setShowModal(true);
-                  }}
-                >
                   <div
-                    className={`w-1/3 ${event.label} p-2 text-center text-white`}
+                    key={index}
+                    className={`mb-2 flex h-12 w-full rounded-md border bg-white hover:cursor-pointer`}
+                    style={{ borderColor: getColorFromLabel(event.label) }}
+                    onClick={() => {
+                      setEventToSend(event);
+                      setShowModal(true);
+                    }}
                   >
-                    <p className="">{new Date(event.day).getDate()}</p>
-                    <p>
-                      {new Date(event.day).toLocaleString("default", {
-                        month: "long",
-                      })}
-                    </p>
+                    <div
+                      className={`w-1/3 ${event.label} text-center text-sm text-white`}
+                    >
+                      <p>{new Date(event.day).getDate()}</p>
+                      <p>
+                        {new Date(event.day).toLocaleString("default", {
+                          month: "long",
+                        })}
+                      </p>
+                    </div>
+                    <div className="w-2/3 pl-1">
+                      <h3
+                        className="text-sm text-black"
+                        style={{ color: getColorFromLabel(event.label) }}
+                      >
+                        {event.title}
+                      </h3>
+                      <p className="w-full pl-2 text-xs text-gray-500">
+                        {event.description}
+                      </p>
+                    </div>
+                    {!event.isFull ? (
+                      <div className="flex flex-col px-1 pt-1 text-center text-xs text-green-500">
+                        {event.participantsUsernames.includes(
+                          sessionStorage.getItem("username") as string
+                        ) ? (
+                          <p>Inscrit</p>
+                        ) : (
+                          <p>S'inscrire</p>
+                        )}
+                      </div>
+                    ) : (
+                      <div className="flex px-1 pt-1 text-center text-xs text-green-500">
+                        Full
+                      </div>
+                    )}
                   </div>
-                  <div className="w-2/3 p-4 pl-4">
-                    <h3 className="text-black">{event.title}</h3>
-                    <p className="text-gray-500">{event.description}</p>
-                  </div>
-                  {event.participantsUsernames.includes(
-                    sessionStorage.getItem("username") as string
-                  ) ? (
-                    <div className="w-1/3 bg-green-500 p-2 text-center text-white">
-                      INSCRIT
-                    </div>
-                  ) : (
-                    <div className="pr-2 text-center text-green-500">
-                      S'inscrire
-                    </div>
-                  )}
-                  {event.isFull ? (
-                    <div className="w-1/3 bg-red-500 p-2 text-center text-white">
-                      FULL
-                    </div>
-                  ) : (
-                    <div className="pr-2 text-center text-red-500">Full</div>
-                  )}
-                </div>
-              ))}
+                ))}
+              </div>
             </div>
           </div>
-          </div>
-          <div className="h-[42%] w-full">B </div>
-        </div>
-        <div className="flex w-[44%] flex-row shadow-md border border-black ml-2">
-          <div className="flex w-full flex-col rounded-l-md bg-white">
-            <h2 className="pl-7 pt-4">LES GRANDS GAGNANTS DE LA SEMAINE</h2>
-            <ul className="w-full items-center justify-center pl-7 pt-2">
-              {bestPlayers.map((player, index) => (
-                <li key={index} className="pb-2">
-                  <img
-                    src={player.img}
-                    alt={player.name}
-                    className="border-gray mr-2 inline-block h-12 w-12 rounded-full border object-cover shadow-md hover:border-green-500"
-                  />
-                  {player.name}
-                  {` `}
-                  {player.gain}
-                </li>
-              ))}
-            </ul>
+          <div className="h-[42%] w-full">
+            <div className="flex w-full flex-col rounded-l-md bg-white">
+              <h2 className="pl-7 pt-4 font-bold">Joueurs de la semaine</h2>
+            </div>
           </div>
         </div>
+        <div className="ml-2 flex w-[44%] flex-row border border-black shadow-md"></div>
       </div>
       {eventToSend != undefined ? (
         <Modal isVisible={showModal} onClose={() => setShowModal(false)}>

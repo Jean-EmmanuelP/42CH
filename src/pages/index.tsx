@@ -315,6 +315,32 @@ export default function HomePage() {
             <p className="absolute text-white top-[44%] left-[45%] text-[12px]">4 : 10</p>
             <button className="absolute border border-white top-[64%] left-[43%] rounded-md bg-[#DD0000] p-1 text-white text-sm">Miser</button>
           </div>
+          <div className="relative mx-6 mt-4 h-1/3 w-[88%] rounded-md border border-black bg-[#272A30]">
+            <Image
+              src="https://cdn.intra.42.fr/users/360e47329956d8a4293e03f4113107d2/lgillard.jpg"
+              alt="questionMark"
+              width={60}
+              height={60}
+              className="rounded-full absolute top-[10%] left-[15%] border border-white shadow-md"
+            />
+            <Image
+              src="https://cdn.intra.42.fr/users/669381bd9e2af663004af7a99747e2be/rfouraul.jpg"
+              alt="questionMark"
+              width={60}
+              height={60}
+              className="rounded-full absolute top-[10%] right-[15%] border border-white shadow-md"
+            />
+            <Image 
+              src={Versus}
+              alt="versus"
+              width={40}
+              height={40}
+              className="absolute top-[13%] left-[43%]"
+            />
+            <p className="absolute text-white top-[44%] left-[45%] text-[12px]">4 : 10</p>
+            <button className="absolute border border-white top-[64%] left-[43%] rounded-md bg-[#DD0000] p-1 text-white text-sm">Miser</button>
+          </div>
+          
         </div>
       </div>
       {eventToSend != undefined ? (

@@ -70,4 +70,11 @@ export class UserController {
         }
         return await this.userService.getFriends(data.username);
     }
+
+    @Post('change_status')
+    async changeStatus(@Body() data: { username: string, status: string }) {
+        if (data == undefined || !data.username || !data.status)
+            return { success: false, error: 'Invalid input' };
+        return await this.userService.changeStatus(data.username, data.status);
+    }
 }

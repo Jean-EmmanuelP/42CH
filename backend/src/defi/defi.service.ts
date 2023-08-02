@@ -524,7 +524,6 @@ export class DefiService {
 
 
     async getAllDefiRequests(username: string) {
-        console.log(username);
         const user = await this.prismaService.user.findUnique({ where: { name: username } });
         if (!user) {
             return { success: false, error: 'User not found' };
@@ -537,7 +536,6 @@ export class DefiService {
         for (let i = 0; i < defiRequests.length; i++) {
             defiRequestsInfos.push({ id: defiRequests[i].id, senderUsername: defiRequests[i].senderUsername, receiverUsername: defiRequests[i].receiverUsername })
         }
-        console.log(defiRequestsInfos)
         return { success: true, defiRequests: defiRequestsInfos };
     }
 

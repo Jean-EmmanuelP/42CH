@@ -46,7 +46,7 @@ export default function HomePage() {
   // Context
   // const { weeklyEvents } = useContext(GlobalContext);
   const [weeklyEvents, setWeeklyEvents] = useState<Event[]>([]);
-  const [showModal, setShowModal] = useState<boolean>(false);
+  const [showModal, setShowModal] = useState<boolean>(true);
   const [eventToSend, setEventToSend] = useState<Event>();
   const [publicChallenges, setPublicChallenges] = useState<publicChallenge[]>([])
 

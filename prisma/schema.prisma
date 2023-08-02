@@ -101,7 +101,7 @@ model Challenge {
 
     status String
 
-    isPublic    Boolean @default(false)
+    isPublic    Boolean @default(true)
     timerPublic Int     @default(0)
 
     userBets UsersBet[]

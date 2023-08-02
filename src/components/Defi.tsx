@@ -73,6 +73,7 @@ const DefiRightBar: React.FC = () => {
 
     socket.on("receiveDefiId", (data: { defiId: string }) => {
       window.location.href = "/defi/" + data.defiId;
+      sessionStorage.setItem("defiId", data.defiId);
     });
 
     return () => {
@@ -111,6 +112,7 @@ const DefiRightBar: React.FC = () => {
         defiId: request.data.defiId,
       });
       window.location.href = "/defi/" + request.data.defiId;
+      sessionStorage.setItem("defiId", request.data.defiId);
     }
   };
 

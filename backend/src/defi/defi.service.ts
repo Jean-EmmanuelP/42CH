@@ -5,6 +5,33 @@ import { PrismaService } from 'src/prisma/prisma.service';
 export class DefiService {
     constructor(private prismaService: PrismaService) { }
 
+    async changeMode(username: any, newMode: any) {
+        const user = await this.prismaService.user.findUnique({ where: { name: username } });
+        if (!user)
+            return { success: false, error: 'User not found' };
+        const id = user.id;
+        const defi = await this.prismaService.defi.findUnique({ where: { creatorId: id } });
+        if (!defi) {
+            const defi2 = await this.prismaService.defi.findUnique({ where: { opponentId: id } });
+            if (!defi2)
+                return { success: false, error: 'User is not in a defi' };
+            else {
+                await this.prismaService.defi.update({
+                    where: { opponentId: id },
+                    data: { isPublic: newMode },
+                });
+                return { success: true };
+            }
+        }
+        else {
+            await this.prismaService.defi.update({
+                where: { creatorId: id },
+                data: { isPublic: newMode },
+            });
+            return { success: true };
+        }
+    }
+
     async betPublicChallenge(username: string, challengeId: string, amount: number, winner: string) {
         const user = await this.prismaService.user.findUnique({ where: { name: username } });
         if (!user)
@@ -262,6 +289,9 @@ export class DefiService {
                 timerPublic: timer,
             }
         })
+        setTimeout(async () => {
+            await this.prismaService.challenge.update({ where: { id: defi.id }, data: { isPublic: false } })
+        }, defi.timerPublic * 1000)
         await this.prismaService.defi.delete({ where: { id: defi.id } });
     }
 
@@ -292,6 +322,7 @@ export class DefiService {
                 image: user.image,
                 opponentBalance: opponent.balance,
                 opponentId: opponent.id,
+                isPublic: defi2.isPublic,
             }
         }
         const opponent = await this.prismaService.user.findUnique({ where: { id: defi.opponentId } });
@@ -308,6 +339,8 @@ export class DefiService {
             balance: user.balance,
             opponentBalance: opponent.balance,
             opponentId: opponent.id,
+            image: user.image,
+            isPublic: defi.isPublic,
         }
     }
 

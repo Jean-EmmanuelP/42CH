@@ -24,6 +24,9 @@ function DefiPage() {
   const [opponentBet, setOpponentBet] = useState<number>(0);
   const [mutualContract, setMutualContract] = useState<string>("");
   const [selectedGame, setSelectedGame] = useState<string>("");
+  const [userComment, setUserComment] = useState<string>("");
+  const [opponentComment, setOpponentComment] = useState<string>("");
+
   const handleGameChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
     setSelectedGame(event.target.value);
     socket.emit("changeGame", {
@@ -73,6 +76,7 @@ function DefiPage() {
         setUserBalance(request.data.balance);
         setOpponentBalance(request.data.opponentBalance);
         setUserImage(request.data.image);
+        setIsPublic(request.data.isPublic);
         // faire qqch avec request.data.opponenttId
         const opponent = axios.post(
           "http://localhost:3333/defi/get_opponent/",
@@ -136,6 +140,14 @@ function DefiPage() {
       setOpponentAccepted(true);
     });
 
+    socket.on("changeComment", (message: { newComment: string }) => {
+      setOpponentComment(message.newComment);
+    });
+
+    socket.on("changeMode", (message: { newMode: boolean }) => {
+      setIsPublic(message.newMode);
+    });
+
     socket.on("challengeAccepted", () => {
       window.location.href = "/";
     });
@@ -189,6 +201,11 @@ function DefiPage() {
   const [isPublic, setIsPublic] = useState(true);
   const handleClick = () => {
     setIsPublic(!isPublic);
+    socket.emit("changeMode", {
+      newMode: !isPublic,
+      room: roomNumber,
+      username: sessionStorage.getItem("username"),
+    });
   }
   return (
     <div className="h-full w-full ">
@@ -233,6 +250,15 @@ function DefiPage() {
                     rows={6}
                     className="my-4 w-[70%] resize-none rounded-sm border border-black p-2 text-[12px]"
                     placeholder="Ecris en live pour communiquer avec ton opposant, cette piece est en live..."
+                    onChange={(e) => {
+                      setUserComment(e.target.value)
+                      socket.emit("changeComment", {
+                        newComment: e.target.value,
+                        room: roomNumber,
+                        username: sessionStorage.getItem("username"),
+                      });
+                    }}
+                    value={userComment}
                   ></textarea>
                   <div className="mb-2 flex gap-4">
                     <button
@@ -385,6 +411,7 @@ ex: on va faire 3 parties d'echecs, celui qui gagne 2 parties remporte la mise d
                     readOnly
                     className="my-4 w-[70%] resize-none rounded-sm border border-black p-2 text-[12px]"
                     placeholder="Ecris en live pour communiquer avec ton opposant, cette piece est en live..."
+                    value={opponentComment}
                   ></textarea>
                   <div className="mb-2 flex gap-4">
                     <button

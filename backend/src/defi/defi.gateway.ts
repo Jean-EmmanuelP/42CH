@@ -59,6 +59,20 @@ export class DefiGateway {
     client.to(data.room).emit('changeAccept', { newAccept: data.newAccept })
   }
 
+  @SubscribeMessage('changeMode')
+  async handleChangeMode(@MessageBody() data: any, @ConnectedSocket() client: any) {
+    if (data.username != null)
+      this.defiService.changeMode(data.username, data.newMode);
+    client.to(data.room).emit('changeMode', { newMode: data.newMode });
+  }
+
+  @SubscribeMessage('changeComment')
+  async handleChangeComment(@MessageBody() data: any, @ConnectedSocket() client: any): Promise<void> {
+    // if (data.username != null)
+    //   this.defiService.changeComment(data.username, data.newComment);
+    client.to(data.room).emit('changeComment', { newComment: data.newComment });
+  }
+
   @SubscribeMessage('joinDefi')
   async handleJoinDefi(@MessageBody() data: any, @ConnectedSocket() client: any) {
     console.log("in join defi")

@@ -34,7 +34,11 @@ CREATE TABLE "User" (
     "emailVerified" TIMESTAMP(3),
     "image" TEXT,
     "password" TEXT,
+    "friends" TEXT[] DEFAULT ARRAY[]::TEXT[],
+    "friendsRequests" TEXT[] DEFAULT ARRAY[]::TEXT[],
     "balance" INTEGER NOT NULL DEFAULT 0,
+    "status" TEXT NOT NULL DEFAULT 'offline',
+    "statusMessage" TEXT DEFAULT '',
 
     CONSTRAINT "User_pkey" PRIMARY KEY ("id")
 );
@@ -45,6 +49,18 @@ CREATE TABLE "ChallengeHistory" (
     "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
 
     CONSTRAINT "ChallengeHistory_pkey" PRIMARY KEY ("id")
+);
+
+-- CreateTable
+CREATE TABLE "UsersBet" (
+    "id" TEXT NOT NULL,
+    "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    "winnerId" TEXT NOT NULL,
+    "userId" TEXT NOT NULL,
+    "amount" INTEGER NOT NULL,
+    "challengeId" TEXT,
+
+    CONSTRAINT "UsersBet_pkey" PRIMARY KEY ("id")
 );
 
 -- CreateTable
@@ -63,6 +79,8 @@ CREATE TABLE "Challenge" (
     "creatorBid" INTEGER NOT NULL,
     "opponentBid" INTEGER NOT NULL,
     "status" TEXT NOT NULL,
+    "isPublic" BOOLEAN NOT NULL DEFAULT false,
+    "timerPublic" INTEGER NOT NULL DEFAULT 0,
     "contractTerms" TEXT,
     "gameSelected" TEXT NOT NULL,
     "description" TEXT,
@@ -86,8 +104,20 @@ CREATE TABLE "Defi" (
     "gameSelected" TEXT NOT NULL,
     "creatorAccepted" BOOLEAN NOT NULL DEFAULT false,
     "opponentAccepted" BOOLEAN NOT NULL DEFAULT false,
+    "isPublic" BOOLEAN NOT NULL DEFAULT false,
+    "timerPublic" INTEGER NOT NULL DEFAULT 0,
 
     CONSTRAINT "Defi_pkey" PRIMARY KEY ("id")
+);
+
+-- CreateTable
+CREATE TABLE "DefiRequest" (
+    "id" TEXT NOT NULL,
+    "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    "senderUsername" TEXT NOT NULL,
+    "receiverUsername" TEXT NOT NULL,
+
+    CONSTRAINT "DefiRequest_pkey" PRIMARY KEY ("id")
 );
 
 -- CreateTable
@@ -140,6 +170,9 @@ ALTER TABLE "Account" ADD CONSTRAINT "Account_userId_fkey" FOREIGN KEY ("userId"
 
 -- AddForeignKey
 ALTER TABLE "Session" ADD CONSTRAINT "Session_userId_fkey" FOREIGN KEY ("userId") REFERENCES "User"("id") ON DELETE CASCADE ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE "UsersBet" ADD CONSTRAINT "UsersBet_challengeId_fkey" FOREIGN KEY ("challengeId") REFERENCES "Challenge"("id") ON DELETE SET NULL ON UPDATE CASCADE;
 
 -- AddForeignKey
 ALTER TABLE "Challenge" ADD CONSTRAINT "Challenge_winnerId_fkey" FOREIGN KEY ("winnerId") REFERENCES "User"("id") ON DELETE SET NULL ON UPDATE CASCADE;

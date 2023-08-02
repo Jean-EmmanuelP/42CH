@@ -36,25 +36,6 @@ export default function HomePage() {
   const [showModal, setShowModal] = useState<boolean>(false);
   const [eventToSend, setEventToSend] = useState<Event>();
 
-  // Hardcoded best and worst players
-  const bestPlayers = [
-    {
-      name: "Dimitri",
-      img: "https://www.didierdrogbafoundation.org/sites/default/files/didier-drogba.jpg",
-      gain: "10000",
-    },
-    {
-      name: "Oscar",
-      img: "https://img.freepik.com/photos-gratuite/portrait-beau-jeune-homme-gros-plan_176420-15568.jpg",
-      gain: "6500",
-    },
-    {
-      name: "LeRusse",
-      img: "https://www.superprof.fr/images/annonces/professeur-home-jeune-ingenieur-chinois-paris-capable-parler-francais-chinois-anglais.jpg",
-      gain: "4800",
-    },
-  ];
-
   async function setWeekly() {
     const today = dayjs().startOf("day");
     const tenDaysFromNow = dayjs().add(10, "day");

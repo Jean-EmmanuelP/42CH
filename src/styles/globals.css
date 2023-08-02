@@ -14,7 +14,7 @@ body {
   color: #272A30;
 }
 
-@layer utilitiers {
+@layer utilities {
   @variants responsive {
     .no-scrollbar::-webkit-scrollbar {
       display:none;

@@ -10,10 +10,13 @@ import { DefiModule } from './defi/defi.module';
 import { EventsModule } from './events/events.module';
 import { UserService } from './user/user.service';
 import { UserModule } from './user/user.module';
+import { AuthController } from './auth/auth.controller';
+import { AuthModule } from './auth/auth.module';
+import { AuthService } from './auth/auth.service';
 
 @Module({
-  imports: [PrismaModule, DefiModule, EventsModule, UserModule],
-  controllers: [AppController, DefiController],
-  providers: [AppService, DefiGateway, DefiService, PrismaService, UserService],
+  imports: [PrismaModule, DefiModule, EventsModule, UserModule, AuthModule],
+  controllers: [AppController, DefiController, AuthController],
+  providers: [AppService, DefiGateway, DefiService, PrismaService, UserService, AuthService],
 })
 export class AppModule { }

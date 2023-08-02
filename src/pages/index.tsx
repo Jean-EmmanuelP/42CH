@@ -281,7 +281,7 @@ export default function HomePage() {
           </div>
         </div>
         <div className=" relative ml-2 flex h-full w-[44%] flex-col bg-white shadow-md">
-          <h1 className="pl-7 pt-4 font-bold">Live Pari</h1>
+          <h1 className="pl-7 pt-4 font-bold">Live</h1>
           <button className="absolute right-4 top-4 rounded-full border border-black p-1">
             <Image
               src={QuestionMark}

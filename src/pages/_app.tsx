@@ -7,7 +7,8 @@ import ContextWrapper from "~/context/ContextWrapper";
 import Navbar from "~/components/Navbar";
 import DefiRightBar from "~/components/Defi";
 import Social from "~/components/Social";
-import { useRouter } from "next/navigation";
+import MainLayout from "~/components/MainLayout";
+
 
 const MyApp: AppType<{ session: Session | null }> = ({
   Component,
@@ -16,22 +17,9 @@ const MyApp: AppType<{ session: Session | null }> = ({
   return (
     <SessionProvider session={session}>
       <ContextWrapper>
-        <div className="h-screen w-screen bg-[#EEF0F3]">
-          <div className="mb-[3vh] h-[10vh] w-full">
-            <Navbar />
-          </div>
-          <div className="mx-[1vw] mb-[2vh] flex h-[85vh] w-[98vw]">
-            <div className="h-full w-[20vw]">
-              <Social />
-            </div>
-            <div className="mx-[2vw] h-full w-[53vw]">
-              <Component {...pageProps} />
-            </div>
-            <div className="h-full w-[27vw] rounded-md">
-              <DefiRightBar />
-            </div>
-          </div>
-        </div>
+        <MainLayout>
+          <Component {...pageProps} />
+        </MainLayout>
       </ContextWrapper>
     </SessionProvider>
   );

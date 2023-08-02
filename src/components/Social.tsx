@@ -58,7 +58,7 @@ export default function Social() {
               <p className="flex pt-2 text-[12px] font-bold">
                 Sebastien Poirier
               </p>
-              <p className="h-4 text-[10px] text-black">j'explose tout</p>
+              <p className="h-4 text-[10px] text-black font-bold">j'explose tout</p>
               <div className="flex items-center justify-between px-[2px]">
                 <p className="text-[11px] font-bold">Wallet : $50</p>
                 <button className="mb-[1px] rounded-md bg-red-600 px-3.5 py-[2px] text-[11px] text-white">
@@ -86,7 +86,7 @@ export default function Social() {
               <p className="flex pt-2 text-[12px] font-bold">
                 Sebastien Poirier
               </p>
-              <p className="h-4 text-[10px] text-black">j'explose tout</p>
+              <p className="h-4 text-[10px] text-black font-bold">j'explose tout</p>
               <div className="flex items-center justify-between px-[2px]">
                 <p className="text-[11px] font-bold">Wallet : $50</p>
                 <button className="mb-[1px] rounded-md bg-red-600 px-3.5 py-[2px] text-[11px] text-white">

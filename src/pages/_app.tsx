@@ -21,10 +21,10 @@ const MyApp: AppType<{ session: Session | null }> = ({
             <Navbar />
           </div>
           <div className="mx-[1vw] mb-[2vh] flex h-[85vh] w-[98vw]">
-            <div className="h-full w-[15vw]">
+            <div className="h-full w-[20vw]">
               <Social />
             </div>
-            <div className="mx-[2vw] h-full w-[58vw]">
+            <div className="mx-[2vw] h-full w-[53vw]">
               <Component {...pageProps} />
             </div>
             <div className="h-full w-[27vw] rounded-md">

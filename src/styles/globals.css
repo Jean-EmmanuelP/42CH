@@ -13,3 +13,16 @@ body {
   font-family: 'Roboto', sans-serif;
   color: #272A30;
 }
+
+@layer utilitiers {
+  @variants responsive {
+    .no-scrollbar::-webkit-scrollbar {
+      display:none;
+    }
+
+    .no-scrollbar {
+      -ms-overflow-style: none;
+      scrollbar-width: none;
+    }
+  }
+}

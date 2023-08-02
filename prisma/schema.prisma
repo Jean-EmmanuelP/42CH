@@ -102,7 +102,7 @@ model Challenge {
     status String
 
     isPublic    Boolean @default(false)
-    timerPublic BigInt  @default(0)
+    timerPublic Int     @default(0)
 
     userBets UsersBet[]
 
@@ -138,7 +138,7 @@ model Defi {
     opponentAccepted Boolean @default(false)
 
     isPublic    Boolean @default(false)
-    timerPublic BigInt  @default(0)
+    timerPublic Int     @default(0)
 }
 
 model DefiRequest {

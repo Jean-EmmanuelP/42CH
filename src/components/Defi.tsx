@@ -157,9 +157,8 @@ const DefiRightBar: React.FC = () => {
         {tabs.map((tab: any) => (
           <button
             key={tab.value}
-            className={`flex-grow ${
-              tab.value === activeTab ? "font-bold" : ""
-            }`}
+            className={`flex-grow ${tab.value === activeTab ? "font-bold" : ""
+              }`}
             onClick={() => {
               setActiveTab(tab.value);
               setSelectedTab(tab.position);
@@ -206,9 +205,9 @@ const DefiRightBar: React.FC = () => {
                   {(challenge.creatorName ==
                     sessionStorage.getItem("username") &&
                     challenge.creatorAnswer == false) ||
-                  (challenge.opponentName ==
-                    sessionStorage.getItem("username") &&
-                    challenge.opponentAnswer == false) ? (
+                    (challenge.opponentName ==
+                      sessionStorage.getItem("username") &&
+                      challenge.opponentAnswer == false) ? (
                     <button
                       onClick={() => {
                         setShowModalFin(true);

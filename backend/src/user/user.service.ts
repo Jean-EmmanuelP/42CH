@@ -135,6 +135,17 @@ export class UserService {
 
     // User related functions
 
+    async changeStatus(username: string, status: string) {
+        const user = await this.prismaService.user.findUnique({ where: { name: username } })
+        if (user == null)
+            return { success: false, error: 'User not found' }
+        await this.prismaService.user.update({
+            where: { name: username },
+            data: { status: status }
+        })
+        return { success: true }
+    }
+
     async getUserInfos(username: string) {
         const user = await this.prismaService.user.findUnique({ where: { name: username } })
         if (user == null) {

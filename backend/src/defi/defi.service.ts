@@ -173,7 +173,9 @@ export class DefiService {
                     else {
                         await this.prismaService.user.update({ where: { id: challenge2.opponentId }, data: { balance: { increment: challenge2.creatorBid + challenge2.opponentBid } } })
                     }
-                    await this.prismaService.challenge.update({ where: { id: challengeId }, data: { status: "finished" } })
+                    if (challenge2.isPublic == true)
+                        await this.splitBetToWinners(challengeId);
+                    await this.prismaService.challenge.update({ where: { id: challengeId }, data: { status: "finished", isPublic: false } })
                     return { success: true }
                 }
             }
@@ -189,7 +191,9 @@ export class DefiService {
                     else {
                         await this.prismaService.user.update({ where: { id: challenge3.opponentId }, data: { balance: { increment: challenge3.creatorBid + challenge3.opponentBid } } })
                     }
-                    await this.prismaService.challenge.update({ where: { id: challengeId }, data: { status: "finished" } })
+                    if (challenge3.isPublic == true)
+                        await this.splitBetToWinners(challengeId);
+                    await this.prismaService.challenge.update({ where: { id: challengeId }, data: { status: "finished", isPublic: false } })
                     return { success: true }
                 }
             }
@@ -244,6 +248,7 @@ export class DefiService {
             defi = await this.prismaService.defi.findUnique({ where: { creatorId: user.id } });
         else
             defi = await this.prismaService.defi.findUnique({ where: { opponentId: user.id } });
+        let timer: number = ((Date.now() / 1000) + defi.timerPublic)
         await this.prismaService.challenge.create({
             data: {
                 creatorId: defi.creatorId,
@@ -254,7 +259,7 @@ export class DefiService {
                 contractTerms: defi.contractTerms,
                 status: "pending",
                 isPublic: defi.isPublic,
-                timerPublic: (Date.now() / 1000) + defi.timerPublic,
+                timerPublic: timer,
             }
         })
         await this.prismaService.defi.delete({ where: { id: defi.id } });

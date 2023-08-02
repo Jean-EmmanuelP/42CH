@@ -19,6 +19,19 @@ import axios from "axios";
 import { PrismaClientKnownRequestError } from "@prisma/client/runtime";
 import { StringSupportOption } from "prettier";
 
+interface publicChallenge {
+  id: string;
+  creatorName: string;
+  opponentName: string;
+  creatorImage: string;
+  opponentImage: string;
+  creatorBid: number;
+  opponentBid: number;
+  gameSelected: string;
+  contractTerms: string;
+  timerPublic: number;
+}
+
 interface Event {
   title: string;
   description: string;
@@ -35,6 +48,7 @@ export default function HomePage() {
   const [weeklyEvents, setWeeklyEvents] = useState<Event[]>([]);
   const [showModal, setShowModal] = useState<boolean>(false);
   const [eventToSend, setEventToSend] = useState<Event>();
+  const [publicChallenges, setPublicChallenges] = useState<publicChallenge[]>([])
 
   async function setWeekly() {
     const today = dayjs().startOf("day");
@@ -65,8 +79,18 @@ export default function HomePage() {
     }
   }
 
+  async function getPublicChallenges() {
+    const request = await axios.get('http://localhost:3333/defi/get_all_public_challenges/')
+
+    if (request.data.success == true)
+      setPublicChallenges(request.data.publicChallenges)
+    else
+      console.error(request.data.error)
+  }
+
   useEffect(() => {
     setWeekly();
+    getPublicChallenges();
   }, []);
 
   function BiggestEvent() {
@@ -246,9 +270,8 @@ export default function HomePage() {
                     width={100}
                     height={100}
                     alt="Player Image"
-                    className={`${
-                      index === 1 ? "shadow-xl" : "shadow-md"
-                    } rounded-md`}
+                    className={`${index === 1 ? "shadow-xl" : "shadow-md"
+                      } rounded-md`}
                   />
                   <p className="flex w-full justify-center pt-1 text-[10px]">
                     {index + 1}
@@ -271,57 +294,33 @@ export default function HomePage() {
               height={15}
             />
           </button>
-          <div className="relative mx-6 mt-4 h-1/3 w-[88%] rounded-md border border-black bg-[#272A30]">
-            <Image
-              src="https://cdn.intra.42.fr/users/360e47329956d8a4293e03f4113107d2/lgillard.jpg"
-              alt="questionMark"
-              width={60}
-              height={60}
-              className="rounded-full absolute top-[10%] left-[15%] border border-white shadow-md"
-            />
-            <Image
-              src="https://cdn.intra.42.fr/users/669381bd9e2af663004af7a99747e2be/rfouraul.jpg"
-              alt="questionMark"
-              width={60}
-              height={60}
-              className="rounded-full absolute top-[10%] right-[15%] border border-white shadow-md"
-            />
-            <Image 
-              src={Versus}
-              alt="versus"
-              width={40}
-              height={40}
-              className="absolute top-[13%] left-[43%]"
-            />
-            <p className="absolute text-white top-[44%] left-[45%] text-[12px]">4 : 10</p>
-            <button className="absolute border border-white top-[64%] left-[43%] rounded-md bg-[#DD0000] p-1 text-white text-sm">Miser</button>
-          </div>
-          <div className="relative mx-6 mt-4 h-1/3 w-[88%] rounded-md border border-black bg-[#272A30]">
-            <Image
-              src="https://cdn.intra.42.fr/users/360e47329956d8a4293e03f4113107d2/lgillard.jpg"
-              alt="questionMark"
-              width={60}
-              height={60}
-              className="rounded-full absolute top-[10%] left-[15%] border border-white shadow-md"
-            />
-            <Image
-              src="https://cdn.intra.42.fr/users/669381bd9e2af663004af7a99747e2be/rfouraul.jpg"
-              alt="questionMark"
-              width={60}
-              height={60}
-              className="rounded-full absolute top-[10%] right-[15%] border border-white shadow-md"
-            />
-            <Image 
-              src={Versus}
-              alt="versus"
-              width={40}
-              height={40}
-              className="absolute top-[13%] left-[43%]"
-            />
-            <p className="absolute text-white top-[44%] left-[45%] text-[12px]">4 : 10</p>
-            <button className="absolute border border-white top-[64%] left-[43%] rounded-md bg-[#DD0000] p-1 text-white text-sm">Miser</button>
-          </div>
-          
+          {publicChallenges.map((challenge: any) => (
+            <div key={challenge.id} className="relative mx-6 mt-4 h-1/3 w-[88%] rounded-md border border-black bg-[#272A30]">
+              <Image
+                src={challenge.creatorImage}
+                alt="Challenge image"
+                width={60}
+                height={60}
+                className="rounded-full absolute top-[10%] left-[15%] border border-white shadow-md"
+              />
+              <Image
+                src={challenge.opponentImage}
+                alt="Opponent image"
+                width={60}
+                height={60}
+                className="rounded-full absolute top-[10%] right-[15%] border border-white shadow-md"
+              />
+              <Image
+                src={Versus}
+                alt="versus"
+                width={40}
+                height={40}
+                className="absolute top-[13%] left-[43%]"
+              />
+              <p className="absolute text-white top-[44%] left-[45%] text-[12px]">{challenge.creatorBid} : {challenge.opponentBid}</p>
+              <button className="absolute border border-white top-[64%] left-[43%] rounded-md bg-[#DD0000] p-1 text-white text-sm">Miser</button>
+            </div>
+          ))}
         </div>
       </div>
       {eventToSend != undefined ? (

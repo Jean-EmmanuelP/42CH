@@ -5,6 +5,23 @@ import { PrismaService } from 'src/prisma/prisma.service';
 export class DefiService {
     constructor(private prismaService: PrismaService) { }
 
+    async getRoomNumber(username: string) {
+        const user = await this.prismaService.user.findUnique({ where: { name: username } });
+        if (!user)
+            return { success: false, error: 'User not found' };
+        const id = user.id;
+        const defi = await this.prismaService.defi.findUnique({ where: { creatorId: id } });
+        if (!defi) {
+            const defi2 = await this.prismaService.defi.findUnique({ where: { opponentId: id } });
+            if (!defi2)
+                return { success: false, error: 'User is not in a defi' };
+            else
+                return { success: true, roomNumber: defi2.id };
+        }
+        else
+            return { success: true, roomNumber: defi.id };
+    }
+
     async changeMode(username: any, newMode: any) {
         const user = await this.prismaService.user.findUnique({ where: { name: username } });
         if (!user)

@@ -15,8 +15,9 @@ function DefiPage() {
   // need to fix this
   // const router = useRouter()
   // const path = router.asPath
-  // const roomNumber = path.split('/').pop()
-  const roomNumber = 123;
+  // // const roomNumber = path.split('/').pop()
+  // const roomNumber = 123;
+  const [roomNumber, setRoomNumber] = useState<number>(0);
   const { challengeData } = useContext(GlobalContext);
   const [isClient, setIsClient] = useState(false);
   const [gainTotal, setGainTotal] = useState<number>(0);
@@ -56,6 +57,22 @@ function DefiPage() {
   const [opponentName, setOpponentName] = useState<string>("");
 
   useEffect(() => {
+    if (socket == null) return;
+    else
+      socket.emit("join", { room: roomNumber });
+  }, [roomNumber])
+
+  useEffect(() => {
+    if (roomNumber == 0) {
+      const fixedRoomNumber = axios.post('http://localhost:3333/defi/get_room_number/', JSON.stringify({ username: sessionStorage.getItem("username") }), { headers: { "Content-Type": "application/json" } })
+      fixedRoomNumber.then((fixedRoomNumber) => {
+        if (fixedRoomNumber.data.success == true) {
+          setRoomNumber(fixedRoomNumber.data.roomNumber);
+        } else {
+          console.error(fixedRoomNumber.data.message);
+        }
+      })
+    }
     setIsClient(true);
     // check if id is in the url and exists in the database
     const request = axios.post(
@@ -77,7 +94,6 @@ function DefiPage() {
         setOpponentBalance(request.data.opponentBalance);
         setUserImage(request.data.image);
         setIsPublic(request.data.isPublic);
-        // faire qqch avec request.data.opponenttId
         const opponent = axios.post(
           "http://localhost:3333/defi/get_opponent/",
           JSON.stringify({ id: request.data.opponentId }),
@@ -114,7 +130,7 @@ function DefiPage() {
   }, []);
 
   useEffect(() => {
-    if (socket == null) return;
+    if (socket == null || roomNumber != 0) return;
 
     socket.on("joinedRoom", (message: any) => {
       console.log(message);
@@ -151,8 +167,6 @@ function DefiPage() {
     socket.on("challengeAccepted", () => {
       window.location.href = "/";
     });
-
-    socket.emit("join", { room: roomNumber });
 
     return () => {
       socket.emit("leave", { room: roomNumber });

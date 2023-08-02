@@ -103,4 +103,12 @@ export class DefiController {
         }
         return await this.defiService.userBetOnPublicChallenge(data.username, data.challengeId);
     }
+
+    @Post('get_room_number')
+    async getRoomNumber(@Body() data: { username: string }) {
+        if (data == undefined || !data.username) {
+            return { success: false, error: 'Invalid input' };
+        }
+        return await this.defiService.getRoomNumber(data.username);
+    }
 }

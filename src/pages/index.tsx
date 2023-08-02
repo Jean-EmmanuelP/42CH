@@ -260,7 +260,7 @@ export default function HomePage() {
               Joueurs de la semaine
             </h1>
             <div className="flex h-[80%] w-full">
-              {players.map((player, index) => (
+              {players?.map((player, index) => (
                 <div
                   key={index}
                   className={`mr-1 flex h-full w-full flex-grow flex-col items-center`}

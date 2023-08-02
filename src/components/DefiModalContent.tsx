@@ -4,6 +4,8 @@ import { useState, useEffect, useContext } from "react";
 import { useRouter } from "next/router";
 import { ToastContainer, toast } from "react-toastify";
 import Pusher from "pusher-js";
+import FightImage from "../utils/images/fightImg.png";
+import Loop from "../utils/images/LoopIcon.svg";
 
 // Import des composants et des utilitaires
 import Navbar from "~/components/Navbar";
@@ -12,6 +14,7 @@ import GlobalContext from "~/context/GlobalContext";
 
 // Import des styles
 import "react-toastify/dist/ReactToastify.css";
+import Image from "next/image";
 
 Pusher.logToConsole = true;
 
@@ -21,7 +24,10 @@ interface DefiModalContentProps {
 }
 
 // Composant principal Defi
-export default function DefiModalContent({ onClose, socket }: DefiModalContentProps) {
+export default function DefiModalContent({
+  onClose,
+  socket,
+}: DefiModalContentProps) {
   // Utilisation des hooks et du contexte
   const { data: sessionData } = useSession();
   const { setChallengeData, challengeData } = useContext(GlobalContext);
@@ -104,35 +110,56 @@ export default function DefiModalContent({ onClose, socket }: DefiModalContentPr
 
   // Retour du composant JSX
   return (
-    <>
-      <ToastContainer />
-      <div>
-        <p className="mb-4 mt-5 w-full bg-gray-400/25 p-5 text-center font-mono">
-          Bienvenue dans l'arene des DEFI
+    <div className="flex h-[65vh] w-full flex-col items-center justify-center bg-[#EEF0F3]">
+      <div className="h[40%] flex w-full flex-col items-center justify-center">
+        <Image
+          src={FightImage}
+          width={100}
+          height={100}
+          alt="challenge Image"
+          className=""
+        />
+        <p className="w-full bg-gray-400/20 p-5 text-center font-bold">
+          Envoie ton invitation de defi a un challenger !
         </p>
+      </div>
+      <div className="h-[60%] w-full">
         <form
           onSubmit={handleDefiSubmit}
-          className="m-2 flex flex-col items-center gap-2 border"
+          className="relative flex w-full h-full flex-col items-center gap-2 border"
         >
-          <p className="mr-2 pt-2 font-bold">Qui veux tu defier ?</p>
-          <input
-            type="text"
-            placeholder="Michel Obama"
-            className="mb-1 rounded border border-black p-1"
-            value={username}
-            onChange={(e) => setUsername(e.target.value)}
-          />
+          <p className="text-gray mr-2 pt-2 text-[10px] font-medium text-[#909090]">
+            Commence un defi avec n'importe qui.
+          </p>
+          <div className="flex w-[50%] rounded-md border-2 border-black bg-white caret-red-500 shadow-xl">
+            <Image src={Loop} width={50} height={50} alt="Loop" />
+            <input
+              type="text"
+              placeholder="Recherche par nom d'utilisateur"
+              className="w-[80%] rounded-md placeholder:text-[12px] focus:outline-none"
+              value={username}
+              onChange={(e) => setUsername(e.target.value)}
+            />
+          </div>
           {users?.map((user: any) => (
             <div
               key={user.id}
-              className="m-2 border border-black bg-cyan-400/25 p-2"
+              className="m-2 flex items-center justify-center rounded-md border border-white/10 bg-[#272A30] p-2 shadow-sm"
             >
+              <Image
+                src={user.image}
+                width={50}
+                height={50}
+                alt="user image"
+                className="rounded-md border border-white/10"
+              />
               <a
                 href="#"
                 onClick={(e) => {
                   e.preventDefault();
                   setUsername(user.name);
                 }}
+                className="pl-2 text-[12px] text-white/40 hover:text-white/70"
               >
                 {user.name}
               </a>
@@ -140,15 +167,18 @@ export default function DefiModalContent({ onClose, socket }: DefiModalContentPr
           ))}
           <button
             type="submit"
-            className="mb-2 mb-4 rounded border border-black bg-green-500 p-2 font-mono"
+            className="absolute bottom-5 rounded-md border border-white bg-red-600 py-2 px-4 text-white shadow-md"
             onClick={() => {
-              socket.emit("sendDefi", { senderUsername: my_username, receiverUsername: username })
+              socket.emit("sendDefi", {
+                senderUsername: my_username,
+                receiverUsername: username,
+              });
             }}
           >
             Envoyer le defi
           </button>
         </form>
-      </div >
-    </>
+      </div>
+    </div>
   );
 }

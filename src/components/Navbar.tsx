@@ -46,14 +46,14 @@ export default function Navbar() {
         />
       </a>
       {/* jai retire mais remets si ten as besoin c'est pour le rendu final */}
-      {/* <div className="bg-white text-gray-950">
-      <Link href="/calendrier" className="button p-5">
+      <div className="bg-white text-gray-950">
+        <Link href="/calendrier" className="button p-5">
           Calendrier
         </Link>
         <Link href={`api/auth/${sessionUrl}`} className="button p-5">
           {session ? "Logout" : "Login"}
         </Link>
-      </div> */}
+      </div>
     </div>
   );
 }

@@ -1,4 +1,4 @@
-import { Controller, Get, Post } from '@nestjs/common';
+import { Body, Controller, Get, Post } from '@nestjs/common';
 import { UserService } from './user.service';
 
 @Controller('user')
@@ -16,37 +16,58 @@ export class UserController {
     }
 
     @Post('get_user_infos') // figma done
-    async getUserInfos(data: { username: string }) {
+    async getUserInfos(@Body() data: { username: string }) {
+        if (data == undefined || data.username == undefined) {
+            return { success: false, error: 'Invalid input' };
+        }
         return await this.userService.getUserInfos(data.username);
     }
 
     @Post('add_friend')
-    async addFriend(data: { username: string, friendUsername: string }) {
+    async addFriend(@Body() data: { username: string, friendUsername: string }) {
+        if (data == undefined || !data.username || !data.friendUsername) {
+            return { success: false, error: 'Invalid input' };
+        }
         return await this.userService.addFriend(data.username, data.friendUsername);
     }
 
     @Post('accept_friend')
-    async acceptFriend(data: { username: string, toAcceptUsername: string }) {
+    async acceptFriend(@Body() data: { username: string, toAcceptUsername: string }) {
+        if (data == undefined || !data.username || !data.toAcceptUsername) {
+            return { success: false, error: 'Invalid input' };
+        }
         return await this.userService.acceptFriend(data.username, data.toAcceptUsername);
     }
 
     @Post('decline_friend')
-    async declineFriend(data: { username: string, toDeclineUsername: string }) {
+    async declineFriend(@Body() data: { username: string, toDeclineUsername: string }) {
+        if (data == undefined || !data.username || !data.toDeclineUsername) {
+            return { success: false, error: 'Invalid input' };
+        }
         return await this.userService.declineFriend(data.username, data.toDeclineUsername);
     }
 
     @Post('delete_friend')
-    async deleteFriend(data: { username: string, toDeleteUsername: string }) {
+    async deleteFriend(@Body() data: { username: string, toDeleteUsername: string }) {
+        if (data == undefined || !data.username || !data.toDeleteUsername) {
+            return { success: false, error: 'Invalid input' };
+        }
         return await this.userService.deleteFriend(data.username, data.toDeleteUsername);
     }
 
     @Post('get_friend_requests')
-    async getFriendRequests(data: { username: string }) {
+    async getFriendRequests(@Body() data: { username: string }) {
+        if (data == undefined || !data.username) {
+            return { success: false, error: 'Invalid input' };
+        }
         return await this.userService.getFriendRequests(data.username);
     }
 
     @Post('get_friends') // figma done
-    async getFriends(data: { username: string }) {
+    async getFriends(@Body() data: { username: string }) {
+        if (data == undefined || !data.username) {
+            return { success: false, error: 'Invalid input' };
+        }
         return await this.userService.getFriends(data.username);
     }
 }

@@ -116,7 +116,7 @@ export default function Social() {
             <div key={user.username} className="flex w-full items-center border-y border-black shadow-sm">
               <img
                 src={user.image}
-                alt="User profile image"
+                alt="User profile mage"
                 width={60}
                 height={60}
                 className=""
@@ -130,7 +130,7 @@ export default function Social() {
                 </p>
                 <p className="h-4 text-[10px] text-black font-bold">{user.bio}</p>
                 <div className="flex items-center justify-between px-[2px]">
-                  <p className="text-[11px] font-bold">Wallet : ${user.wallet}</p>
+                  <p className="text-[11px] font-bold">Wallet : ${user.balance}</p>
                   <button className="mb-[1px] rounded-md bg-red-600 px-3.5 py-[2px] text-[11px] text-white">
                     Defier
                   </button>

@@ -80,7 +80,7 @@ const DefiRightBar: React.FC = () => {
       socket.disconnect();
       socket.off();
     };
-  }, [username]);
+  }, [username, socket]);
 
   async function fetchDefiRequestArray() {
     const request = await axios.post(

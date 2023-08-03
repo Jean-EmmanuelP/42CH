@@ -23,11 +23,11 @@ export class DefiController {
     }
 
     @Post('get_all_challenges') // figma done
-    async getAllChallenges(@Body() data: { username: string }) {
+    async getAllChallenges(@Body() data: { username: string, accessToken?: string }) {
         if (data == undefined || !data.username) {
             return { success: false, error: 'Invalid input' };
         }
-        return await this.defiService.getAllChallenges(data.username);
+        return await this.defiService.getAllChallenges(data.username, data.accessToken);
     }
 
     @Post('finish') // already implemented

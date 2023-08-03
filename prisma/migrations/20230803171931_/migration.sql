@@ -36,6 +36,7 @@ CREATE TABLE "User" (
     "password" TEXT,
     "friends" TEXT[] DEFAULT ARRAY[]::TEXT[],
     "friendsRequests" TEXT[] DEFAULT ARRAY[]::TEXT[],
+    "access_token" TEXT,
     "balance" INTEGER NOT NULL DEFAULT 0,
     "status" TEXT NOT NULL DEFAULT 'offline',
     "statusMessage" TEXT DEFAULT '',
@@ -79,7 +80,7 @@ CREATE TABLE "Challenge" (
     "creatorBid" INTEGER NOT NULL,
     "opponentBid" INTEGER NOT NULL,
     "status" TEXT NOT NULL,
-    "isPublic" BOOLEAN NOT NULL DEFAULT false,
+    "isPublic" BOOLEAN NOT NULL DEFAULT true,
     "timerPublic" INTEGER NOT NULL DEFAULT 0,
     "contractTerms" TEXT,
     "gameSelected" TEXT NOT NULL,
@@ -164,12 +165,6 @@ CREATE UNIQUE INDEX "VerificationToken_token_key" ON "VerificationToken"("token"
 
 -- CreateIndex
 CREATE UNIQUE INDEX "VerificationToken_identifier_token_key" ON "VerificationToken"("identifier", "token");
-
--- AddForeignKey
-ALTER TABLE "Account" ADD CONSTRAINT "Account_userId_fkey" FOREIGN KEY ("userId") REFERENCES "User"("id") ON DELETE CASCADE ON UPDATE CASCADE;
-
--- AddForeignKey
-ALTER TABLE "Session" ADD CONSTRAINT "Session_userId_fkey" FOREIGN KEY ("userId") REFERENCES "User"("id") ON DELETE CASCADE ON UPDATE CASCADE;
 
 -- AddForeignKey
 ALTER TABLE "UsersBet" ADD CONSTRAINT "UsersBet_challengeId_fkey" FOREIGN KEY ("challengeId") REFERENCES "Challenge"("id") ON DELETE SET NULL ON UPDATE CASCADE;

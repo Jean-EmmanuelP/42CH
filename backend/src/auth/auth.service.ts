@@ -54,17 +54,23 @@ export class AuthService {
             return { success: false, error: "getUserToken failure ici" };
         const request = await axios.get("https://api.intra.42.fr/v2/me", { headers: { Authorization: `Bearer ${personnal42Token.access_token}` } });
         let user = await this.prismaService.user.findUnique({ where: { name: request.data.login } });
-        const accessToken = this.jwtService.sign(payload, { secret: process.env.JWT_ACCESS_SECRET, expiresIn: '5m' });
         if (!user) {
             user = await this.prismaService.user.create({
                 data: {
                     name: request.data.login,
                     image: request.data.image.versions.small,
+                },
+            });
+            const accessToken = this.jwtService.sign({ id: user.id }, { secret: process.env.JWT_ACCESS_SECRET, expiresIn: '10m' });
+            user = await this.prismaService.user.update({
+                where: { name: request.data.login },
+                data: {
                     access_token: accessToken,
                 },
             });
             return { success: true, username: user.name, access_token: accessToken };
         }
+        const accessToken = this.jwtService.sign({ id: user.id }, { secret: process.env.JWT_ACCESS_SECRET, expiresIn: '10m' });
         user = await this.prismaService.user.update({
             where: { name: request.data.login },
             data: {
@@ -76,25 +82,41 @@ export class AuthService {
     }
 
     async checkToken(username: string, accessToken: string) {
-        let user = await this.prismaService.user.findUnique({ where: { name: username } });
-        if (user == null)
+        const user = await this.prismaService.user.findUnique({ where: { name: username } });
+        if (!user) {
             return { success: false, error: 'User not found' };
-        if (user.access_token == accessToken) {
-            user = await this.prismaService.user.update({ where: { name: username }, data: { status: "online" }, });
-            try {
-                await this.jwtService.verify(accessToken, { secret: process.env.JWT_ACCESS_SECRET });
-            }
-            catch {
-                const payload = { id: user.id };
-                const newAccessToken = this.jwtService.sign(payload, { secret: process.env.JWT_ACCESS_SECRET, expiresIn: '5m' });
-                user = await this.prismaService.user.update({ where: { name: username }, data: { access_token: newAccessToken } });
-                setTimeout(async () => {
-                    if (newAccessToken == user.access_token && user.status == "online")
-                        await this.prismaService.user.update({ where: { id: payload.id }, data: { status: "offline" } });
-                }, 300000);
-                return { success: true, accessToken: accessToken };
-            }
         }
-        return { success: false, error: 'Invalid token' };
+
+        try {
+            // decode the token and get its expiration date
+            const decodedToken: any = this.jwtService.decode(accessToken);
+            const expirationDate = new Date(decodedToken.exp * 1000);  // convert from UNIX to JS date
+
+            // if the token is expired, return an error
+            if (expirationDate < new Date()) {
+                return { success: false, error: "Token" };
+            }
+
+            // if the token matches the database and it's not expired, refresh it
+            if (user.access_token === accessToken) {
+                const newAccessToken = this.jwtService.sign({ id: user.id }, { secret: process.env.JWT_ACCESS_SECRET, expiresIn: '10m' }); // time before users has to reconnect
+                await this.prismaService.user.update({ where: { name: username }, data: { access_token: newAccessToken, status: 'online' } });
+                setTimeout(async () => {
+                    const updatedUser = await this.prismaService.user.findUnique({ where: { name: username } });
+                    if (updatedUser?.access_token === newAccessToken && updatedUser.status === 'online') {
+                        await this.prismaService.user.update({ where: { id: user.id }, data: { status: 'offline' } });
+                    }
+                }, 60000); // time before user is considered offline
+
+                return { success: true, accessToken: newAccessToken };
+            }
+
+        } catch {
+            return { success: false, error: "Token" };
+        }
+
+        let user20 = await this.prismaService.user.update({ where: { name: username }, data: { status: 'online' } });
+
+        return { success: true, accessToken: user20.access_token };
     }
 }

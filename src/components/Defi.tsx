@@ -28,13 +28,19 @@ const DefiRightBar: React.FC = () => {
   useEffect(() => {
     const request = axios.post(
       "http://localhost:3333/defi/get_all_challenges/",
-      JSON.stringify({ username: sessionStorage.getItem("username") }),
+      JSON.stringify({ username: sessionStorage.getItem("username"), accessToken: sessionStorage.getItem("accessToken") }),
       { headers: { "Content-Type": "application/json" } }
     );
     request.then((response) => {
-      if (response.data.success === true)
+      if (response.data.success === true) {
+        sessionStorage.setItem('accessToken', response.data.accessToken)
         setChallengeArray(response.data.challenges);
+      }
       else {
+        if (response.data.error === "Token") {
+          sessionStorage.removeItem('accessToken')
+          window.location.href = "/"
+        }
         console.error(response.data.error);
       }
     });

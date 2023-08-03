@@ -75,9 +75,7 @@ export class DefiGateway {
 
   @SubscribeMessage('joinDefi')
   async handleJoinDefi(@MessageBody() data: any, @ConnectedSocket() client: any) {
-    console.log("in join defi")
     if (data.username != null) {
-      await this.prismaService.user.update({ where: { name: data.username }, data: { status: "online" } })
       usernameMap.set(data.username, client.id);
     }
     console.log(usernameMap)
@@ -87,7 +85,7 @@ export class DefiGateway {
   handleLeaveDefi(@MessageBody() data: any, @ConnectedSocket() client: any): void {
     console.log("in leave defi")
     if (data.username != null) {
-      this.prismaService.user.update({ where: { name: data.username }, data: { status: "offline" } })
+      // this.prismaService.user.update({ where: { name: data.username }, data: { status: "offline" } })
       usernameMap.delete(data.username);
     }
     console.log(usernameMap)

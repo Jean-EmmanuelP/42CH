@@ -29,7 +29,7 @@ model Account {
     scope             String?
     id_token          String? // @db.Text
     session_state     String?
-    user              User    @relation(fields: [userId], references: [id], onDelete: Cascade)
+    // user              User    @relation(fields: [userId], references: [id], onDelete: Cascade)
 
     @@unique([provider, providerAccountId])
 }
@@ -39,7 +39,7 @@ model Session {
     sessionToken String   @unique
     userId       String
     expires      DateTime
-    user         User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+    // user         User     @relation(fields: [userId], references: [id], onDelete: Cascade)
 }
 
 model User {
@@ -54,8 +54,8 @@ model User {
     friendsRequests String[] @default([])
 
     access_token   String? // @db.Text
-    accounts       Account[]
-    sessions       Session[]
+    // accounts       Account[]
+    // sessions       Session[]
     balance        Int         @default(0)
     status         String      @default("offline")
     statusMessage  String?     @default("")

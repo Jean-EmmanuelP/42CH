@@ -245,7 +245,11 @@ export class DefiService {
         }
     }
 
-    async getAllChallenges(username: string) {
+    async getAllChallenges(username: string, accessToken: string) {
+        let ret = await this.authService.checkToken(username, accessToken);
+        console.log("getAllChallenges", ret)
+        if (ret.success == false)
+            return { success: false, error: 'Token' };
         if (username == null) {
             return { success: false, error: 'User is null' };
         }
@@ -283,7 +287,7 @@ export class DefiService {
                 opponentAnswer: challenges[i].opponentAnswer,
             });
         }
-        return { success: true, challenges: challengesInfos };
+        return { success: true, challenges: challengesInfos, accessToken: ret.accessToken };
     }
 
     async createChallenge(username: string, creatorOrOpponent: string) {
@@ -314,6 +318,10 @@ export class DefiService {
     }
 
     async getInfos(username: string, accessToken?: string) {
+        let ret = await this.authService.checkToken(username, accessToken);
+        console.log("getInfos", ret)
+        if (ret.success == false)
+            return { success: false, error: 'Token' };
         const user = await this.prismaService.user.findUnique({ where: { name: username } });
         if (!user) {
             return { success: false, error: 'User not found' };

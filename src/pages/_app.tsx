@@ -9,7 +9,6 @@ import DefiRightBar from "~/components/Defi";
 import Social from "~/components/Social";
 import MainLayout from "~/components/MainLayout";
 
-
 const MyApp: AppType<{ session: Session | null }> = ({
   Component,
   pageProps: { session, ...pageProps },

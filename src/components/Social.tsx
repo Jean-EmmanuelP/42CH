@@ -8,7 +8,7 @@ export default function Social() {
   const [userProfile, setUserProfile] = useState<{ image: string, username: string, balance: number, statusMessage: string }>({ image: "", username: "", balance: 0, statusMessage: "" })
   const [friends, setFriends] = useState<{ image: string, username: string, balance: number, statusMessage: string }[]>([])
   const [onlineUsers, setOnlineUsers] = useState<{ image: string, username: string, balance: number, statusMessage: string }[]>([])
-  const [showModal, setShowModal] = useState<boolean>(true);
+  const [showModal, setShowModal] = useState<boolean>(false);
 
   async function getUserProfile() {
     const request = await axios.post("http://localhost:3333/user/get_user_infos/", JSON.stringify({ username: sessionStorage.getItem('username') }), { headers: { 'Content-Type': 'application/json' } })

@@ -16,6 +16,7 @@ interface Event {
   participantsUsernames: string[];
   isFull: boolean;
 }
+
 interface EventSubscribeModalProps {
   eventToSend: Event;
   showModal: (show: boolean) => void;

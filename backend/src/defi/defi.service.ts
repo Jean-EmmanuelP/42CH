@@ -1,9 +1,10 @@
 import { Injectable } from '@nestjs/common';
+import { AuthService } from 'src/auth/auth.service';
 import { PrismaService } from 'src/prisma/prisma.service';
 
 @Injectable()
 export class DefiService {
-    constructor(private prismaService: PrismaService) { }
+    constructor(private prismaService: PrismaService, private authService: AuthService) { }
 
     async getRoomNumber(username: string) {
         const user = await this.prismaService.user.findUnique({ where: { name: username } });
@@ -312,7 +313,7 @@ export class DefiService {
         await this.prismaService.defi.delete({ where: { id: defi.id } });
     }
 
-    async getInfos(username: string) {
+    async getInfos(username: string, accessToken?: string) {
         const user = await this.prismaService.user.findUnique({ where: { name: username } });
         if (!user) {
             return { success: false, error: 'User not found' };

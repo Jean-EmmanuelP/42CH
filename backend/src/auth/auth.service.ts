@@ -1,10 +1,12 @@
 import { Injectable } from '@nestjs/common';
+import { JwtService } from '@nestjs/jwt';
 import axios from 'axios';
 import { PrismaService } from 'src/prisma/prisma.service';
+const jwt = require('jsonwebtoken');
 
 @Injectable()
 export class AuthService {
-    constructor(private prismaService: PrismaService) { }
+    constructor(private prismaService: PrismaService, private jwtService: JwtService) { }
 
     async getUserToken(userCode: string) {
         const requestBody = new URLSearchParams({
@@ -37,15 +39,48 @@ export class AuthService {
             return { success: false, error: "getUserToken failure" };
         const request = await axios.get("https://api.intra.42.fr/v2/me", { headers: { Authorization: `Bearer ${personnal42Token.access_token}` } });
         let user = await this.prismaService.user.findUnique({ where: { name: request.data.login } });
+        let payload = { id: user.id };
+        const accessToken = this.jwtService.sign(payload, { secret: process.env.JWT_ACCESS_SECRET, expiresIn: '5m' });
         if (!user) {
             user = await this.prismaService.user.create({
                 data: {
                     name: request.data.login,
                     image: request.data.image.versions.small,
+                    access_token: accessToken,
                 },
             });
-            return { success: true, username: user.name };
+            return { success: true, username: user.name, access_token: accessToken };
         }
-        return { success: true, username: user.name };
+        user = await this.prismaService.user.update({
+            where: { name: request.data.login },
+            data: {
+                image: request.data.image.versions.small,
+                access_token: accessToken,
+            },
+        });
+        return { success: true, username: user.name, access_token: accessToken };
+    }
+
+    async checkToken(username: string, accessToken: string) {
+        let user = await this.prismaService.user.findUnique({ where: { name: username } });
+        if (user == null)
+            return { success: false, error: 'User not found' };
+        if (user.access_token == accessToken) {
+            user = await this.prismaService.user.update({ where: { name: username }, data: { status: "online" }, });
+            try {
+                await this.jwtService.verify(accessToken, { secret: process.env.JWT_ACCESS_SECRET });
+            }
+            catch {
+                const payload = { id: user.id };
+                const newAccessToken = this.jwtService.sign(payload, { secret: process.env.JWT_ACCESS_SECRET, expiresIn: '5m' });
+                user = await this.prismaService.user.update({ where: { name: username }, data: { access_token: newAccessToken } });
+                setTimeout(async () => {
+                    if (newAccessToken == user.access_token && user.status == "online")
+                        await this.prismaService.user.update({ where: { id: payload.id }, data: { status: "offline" } });
+                }, 300000);
+                return { success: true, accessToken: accessToken };
+            }
+        }
+        return { success: false, error: 'Invalid token' };
     }
 }

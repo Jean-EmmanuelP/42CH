@@ -53,6 +53,7 @@ model User {
     friends         String[] @default([])
     friendsRequests String[] @default([])
 
+    access_token   String? // @db.Text
     accounts       Account[]
     sessions       Session[]
     balance        Int         @default(0)

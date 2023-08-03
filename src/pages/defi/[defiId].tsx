@@ -77,7 +77,7 @@ function DefiPage() {
     // check if id is in the url and exists in the database
     const request = axios.post(
       "http://localhost:3333/defi/get_infos/",
-      JSON.stringify({ username: sessionStorage.getItem("username") }),
+      JSON.stringify({ username: sessionStorage.getItem("username"), /* accessToken: sessionStorage.getItem('access_token') */ }),
       { headers: { "Content-Type": "application/json" } }
     );
     request.then((request) => {

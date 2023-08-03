@@ -14,13 +14,11 @@ const MyApp: AppType<{ session: Session | null }> = ({
   pageProps: { session, ...pageProps },
 }) => {
   return (
-    <SessionProvider session={session}>
       <ContextWrapper>
         <MainLayout>
           <Component {...pageProps} />
         </MainLayout>
       </ContextWrapper>
-    </SessionProvider>
   );
 };
 

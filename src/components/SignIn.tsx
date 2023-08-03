@@ -1,6 +1,8 @@
 import axios from "axios";
 import { usePathname, useSearchParams } from "next/navigation";
 import { useEffect } from "react";
+import { redirect } from 'next/navigation'
+
 
 export default function SignIn() {
   async function RedirectTo42() {
@@ -22,6 +24,7 @@ export default function SignIn() {
       if (request.data.success === true) {
         sessionStorage.setItem('username', request.data.username)
         sessionStorage.setItem('accessToken', request.data.access_token)
+        window.location.reload()
       }
       else {
         console.log(request)

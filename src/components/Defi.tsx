@@ -1,5 +1,4 @@
 import React, { useContext, useEffect, useState } from "react";
-import { useSession } from "next-auth/react";
 import { useRouter } from "next/navigation";
 import GlobalContext from "~/context/GlobalContext";
 import Pusher from "pusher-js";
@@ -13,12 +12,10 @@ import io from "socket.io-client";
 const DefiRightBar: React.FC = () => {
   const [showModal, setShowModal] = useState<boolean>(false);
   const router = useRouter();
-  const { data: session } = useSession();
   const { setChallengeData } = useContext(GlobalContext);
 
   // State
-  const userId = session?.user.id || "";
-  const username = session?.user.name || "";
+  const username = sessionStorage.getItem('username');
   const [challenges, setChallenges] = useState<string[]>([]);
   const [creatorId, setCreatorId] = useState<string>("");
   const [challengeArray, setChallengeArray] = useState<any[]>([]);
@@ -29,9 +26,6 @@ const DefiRightBar: React.FC = () => {
   const [socket, setSocket] = useState<any>(null);
 
   useEffect(() => {
-    console.log(session);
-    if (session?.user.name != null)
-      sessionStorage.setItem("username", session.user.name);
     const request = axios.post(
       "http://localhost:3333/defi/get_all_challenges/",
       JSON.stringify({ username: sessionStorage.getItem("username") }),

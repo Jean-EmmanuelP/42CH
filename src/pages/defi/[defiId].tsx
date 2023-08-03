@@ -18,7 +18,6 @@ function DefiPage() {
   // // const roomNumber = path.split('/').pop()
   // const roomNumber = 123;
   const [roomNumber, setRoomNumber] = useState<number>(0);
-  const { challengeData } = useContext(GlobalContext);
   const [isClient, setIsClient] = useState(false);
   const [gainTotal, setGainTotal] = useState<number>(0);
   const [userBet, setUserBet] = useState<number>(0);

@@ -1,28 +1,34 @@
 "use client";
 
-import { useSession } from "next-auth/react";
+import calendarIcon from "../utils/images/calendarIcon.svg";
 import Link from "next/link";
 import { api } from "~/utils/api";
+import axios from "axios";
+import { useEffect, useState } from "react";
 
 function extractUsername(email: string) {
   return email.split(" ")[0];
 }
 
 export default function Navbar() {
-  const { data: session } = useSession();
-  const sessionUrl = session ? "signout" : "signin";
-  const username = session?.user?.name
-    ? extractUsername(session.user.name)
-    : null;
+  const [infoUser, setInfoUser] = useState<any>({})
+  
+  useEffect(() => {
+    userInfo()
+  }, [])
 
-  const {
-    data: UsernameData,
-    error: UserError,
-    isLoading: UserIsLoading,
-  } = api.defi.getUserDataByName.useQuery({
-    name: session?.user?.name || "",
-  });
-
+  async function userInfo() {
+    const username = sessionStorage.getItem("username");
+    const request = await axios.post(
+      "http://localhost:3333/user/get_user_infos",
+      JSON.stringify({ username: username }),
+      { headers: { "Content-Type": "application/json" } }
+    );
+    if (request.data.success) {
+      console.log(request.data)
+      setInfoUser(request.data.user);
+    }
+  }
   return (
     <div className="flex h-full w-full items-center justify-between bg-[#272A30] text-white">
       <div>
@@ -40,20 +46,11 @@ export default function Navbar() {
 
       <a className="mr-10 flex items-center space-x-3 p-4 hover:text-blue-700">
         <img
-          src={`${session?.user.image}`}
+          src={infoUser.image}
           alt="Profile"
           className="h-12 w-12 rounded-full shadow-md"
         />
       </a>
-      {/* jai retire mais remets si ten as besoin c'est pour le rendu final */}
-      <div className="bg-white text-gray-950">
-        <Link href="/calendrier" className="button p-5">
-          Calendrier
-        </Link>
-        <Link href={`api/auth/${sessionUrl}`} className="button p-5">
-          {session ? "Logout" : "Login"}
-        </Link>
-      </div>
     </div>
   );
 }

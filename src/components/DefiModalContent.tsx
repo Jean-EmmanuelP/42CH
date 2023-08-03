@@ -1,5 +1,4 @@
 // Import des bibliothèques nécessaires
-import { useSession } from "next-auth/react";
 import { useState, useEffect, useContext } from "react";
 import { useRouter } from "next/router";
 import { ToastContainer, toast } from "react-toastify";
@@ -29,21 +28,16 @@ export default function DefiModalContent({
   socket,
 }: DefiModalContentProps) {
   // Utilisation des hooks et du contexte
-  const { data: sessionData } = useSession();
-  const { setChallengeData, challengeData } = useContext(GlobalContext);
-  const my_username = sessionData?.user.name;
-  const userId = sessionData?.user.id || "";
-  const router = useRouter();
+  const my_username = sessionStorage.getItem('username');
 
   // States pour les entrées utilisateur et les données API
   const [username, setUsername] = useState("");
-  const [inviteeName, setInviteeName] = useState("");
 
   // Les appels API
   const { data: users, refetch: refetchUsers } = api.defi.getUsers.useQuery(
     { query: username },
     {
-      enabled: sessionData?.user !== undefined && username !== "",
+      enabled: sessionStorage.getItem('username') !== undefined && username !== "",
     }
   );
 
@@ -76,10 +70,8 @@ export default function DefiModalContent({
         const usernameCheckResult = queryResult.data;
         if (usernameCheckResult?.success) {
           const userName = usernameCheckResult.invitee || "";
-          setChallengeData([userId, my_username, userName]);
           /* Mettre dans le localStorage */
           // console.log(challengeData);
-          setInviteeName(userName);
           toast.success(usernameCheckResult.message);
           onClose();
         } else {

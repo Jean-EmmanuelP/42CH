@@ -46,7 +46,7 @@ export default function HomePage() {
   // Context
   // const { weeklyEvents } = useContext(GlobalContext);
   const [weeklyEvents, setWeeklyEvents] = useState<Event[]>([]);
-  const [showModal, setShowModal] = useState<boolean>(true);
+  const [showModal, setShowModal] = useState<boolean>(false);
   const [eventToSend, setEventToSend] = useState<Event>();
   const [publicChallenges, setPublicChallenges] = useState<publicChallenge[]>([])
 
@@ -325,7 +325,7 @@ export default function HomePage() {
       </div>
       {eventToSend != undefined ? (
         <Modal isVisible={showModal} onClose={() => setShowModal(false)}>
-          <EventSubscribeModal eventToSend={eventToSend} />
+          <EventSubscribeModal eventToSend={eventToSend} showModal={setShowModal} />
         </Modal>
       ) : null}
     </div>

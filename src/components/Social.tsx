@@ -1,11 +1,14 @@
 import axios from "axios";
 import { useState, useEffect } from "react";
+import Modal from "./Modal";
+import EventProfileModal from "./EventProfileModal";
 
 export default function Social() {
   const [bio, setBio] = useState("");
   const [userProfile, setUserProfile] = useState<{ image: string, username: string, balance: number, statusMessage: string }>({ image: "", username: "", balance: 0, statusMessage: "" })
   const [friends, setFriends] = useState<{ image: string, username: string, balance: number, statusMessage: string }[]>([])
   const [onlineUsers, setOnlineUsers] = useState<{ image: string, username: string, balance: number, statusMessage: string }[]>([])
+  const [showModal, setShowModal] = useState<boolean>(true);
 
   async function getUserProfile() {
     const request = await axios.post("http://localhost:3333/user/get_user_infos/", JSON.stringify({ username: sessionStorage.getItem('username') }), { headers: { 'Content-Type': 'application/json' } })
@@ -56,6 +59,8 @@ export default function Social() {
             alt="User profile image"
             width={60}
             height={60}
+            className="hover:cursor-pointer"
+            onClick={() => {setShowModal(true)}}
           />
           <div className="m-auto ml-[3px] mt-[3px] h-2.5 w-2.5 rounded-full bg-green-500">
             {""}
@@ -143,6 +148,9 @@ export default function Social() {
           ))}
         </div>
       </div>
+      <Modal isVisible={showModal} onClose={() => setShowModal(false)}>
+        <EventProfileModal userProfile={userProfile} />
+      </Modal>
     </div>
   );
 }

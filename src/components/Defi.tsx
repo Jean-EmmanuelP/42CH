@@ -27,7 +27,7 @@ const DefiRightBar: React.FC = () => {
 
   useEffect(() => {
     const request = axios.post(
-      "http://localhost:3333/defi/get_all_challenges/",
+      process.env.API_URL+"/defi/get_all_challenges/",
       JSON.stringify({ username: sessionStorage.getItem("username"), accessToken: sessionStorage.getItem("accessToken") }),
       { headers: { "Content-Type": "application/json" } }
     );
@@ -45,7 +45,7 @@ const DefiRightBar: React.FC = () => {
       }
     });
     const request2 = axios.post(
-      "http://localhost:3333/defi/ongoing/",
+      process.env.API_URL+"/defi/ongoing/",
       JSON.stringify({ username: sessionStorage.getItem("username") }),
       { headers: { "Content-Type": "application/json" } }
     );
@@ -85,7 +85,7 @@ const DefiRightBar: React.FC = () => {
 
   async function fetchDefiRequestArray() {
     const request = await axios.post(
-      "http://localhost:3333/defi/get_all_defi_requests",
+      process.env.API_URL+"/defi/get_all_defi_requests",
       JSON.stringify({ username: username }),
       { headers: { "Content-Type": "application/json" } }
     );
@@ -97,7 +97,7 @@ const DefiRightBar: React.FC = () => {
 
   const handleAcceptChallenge = async (index: number) => {
     const request = await axios.post(
-      "http://localhost:3333/defi/create",
+      process.env.API_URL+"/defi/create",
       JSON.stringify({
         creatorUsername: defiRequestArray[index].senderUsername,
         opponentUsername: username,
@@ -118,7 +118,7 @@ const DefiRightBar: React.FC = () => {
 
   const handleRejectChallenge = (index: number) => {
     const request = axios.post(
-      "http://localhost:3333/defi/delete_defi_request/",
+      process.env.API_URL+"/defi/delete_defi_request/",
       JSON.stringify({ id: defiRequestArray[index].id }),
       { headers: { "Content-Type": "application/json" } }
     );
@@ -282,7 +282,7 @@ const DefiRightBar: React.FC = () => {
               <button
                 onClick={async () => {
                   const request = await axios.post(
-                    "http://localhost:3333/defi/finish",
+                    process.env.API_URL+"/defi/finish",
                     JSON.stringify({
                       username: sessionStorage.getItem("username"),
                       challengeId: challengeOpened.id,
@@ -300,7 +300,7 @@ const DefiRightBar: React.FC = () => {
               <button
                 onClick={async () => {
                   const request = await axios.post(
-                    "http://localhost:3333/defi/finish",
+                    process.env.API_URL+"/defi/finish",
                     JSON.stringify({
                       username: sessionStorage.getItem("username"),
                       challengeId: challengeOpened.id,

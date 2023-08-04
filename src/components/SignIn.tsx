@@ -7,7 +7,7 @@ import { redirect } from 'next/navigation'
 export default function SignIn() {
   async function RedirectTo42() {
     const request = await axios.get(
-      "http://localhost:3333/auth/redirect_fortytwo/"
+      process.env.API_URL+"/auth/redirect_fortytwo/"
     );
     console.log(request);
     window.location.href = request.data;
@@ -17,7 +17,7 @@ export default function SignIn() {
   async function fetchData() {
     if (code !== null) {
       const request = await axios.post(
-        "http://localhost:3333/auth/signin",
+        process.env.API_URL+"/auth/signin",
         JSON.stringify({ code: code }),
         { headers: { "Content-Type": "application/json" } }
       );

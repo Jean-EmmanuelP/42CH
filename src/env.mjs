@@ -23,6 +23,7 @@ export const env = createEnv({
     // Add `.min(1) on ID and SECRET if you want to make sure they're not empty
     GOOGLE_CLIENT_ID: z.string(),
     GOOGLE_CLIENT_SECRET: z.string(),
+    API_URL: process.env.SERVER_API_URL,
   },
 
   /**
@@ -31,6 +32,7 @@ export const env = createEnv({
    * `NEXT_PUBLIC_`.
    */
   client: {
+    API_URL: process.env.PUBLIC_API_URL,
     // NEXT_PUBLIC_CLIENTVAR: z.string().min(1),
   },
 

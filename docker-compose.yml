@@ -16,5 +16,21 @@ services:
       - test_api_data:/data/postgres
     ports:
       - 5432:5432
+    # restart: always
+
+  # app:
+  #   container_name: 42ch
+  #   build: .
+  #   ports:
+  #     - 3000:3000
+  #   depends_on:
+  #     - mongo
+  #     - postgres-user
+  #   environment:
+  #     - JWT_ACCESS_SECRET=d5c6be5ea6f55fed6f9247d66df26543e733f9c180bac042849205820b725ac4
+  #     - FORTY_TWO_CLIENT_SECRET=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
+  #     - FORTY_TWO_CLIENT_ID=u-s4t2ud-3c1fad8697f8326af9434fb8146ff1101367143e885927ea3b5c0f94ec78065b
+  #   restart: always
+
 volumes:
   test_api_data: {}

@@ -23,7 +23,6 @@ EXPOSE 3000
 
 WORKDIR /usr/src/app/
 
-RUN rm .env
 
 RUN chmod +x ./entrypoint.sh
 

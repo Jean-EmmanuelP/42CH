@@ -28,7 +28,7 @@ export default function DefiModalContent({
   socket,
 }: DefiModalContentProps) {
   // Utilisation des hooks et du contexte
-  const my_username = sessionStorage.getItem('username');
+  const my_username = sessionStorage.getItem("username");
 
   // States pour les entrées utilisateur et les données API
   const [username, setUsername] = useState("");
@@ -37,7 +37,7 @@ export default function DefiModalContent({
   const { data: users, refetch: refetchUsers } = api.defi.getUsers.useQuery(
     { query: username },
     {
-      enabled: sessionStorage.getItem('username') !== undefined && username !== "",
+      enabled: my_username !== undefined && username !== "",
     }
   );
 
@@ -118,7 +118,7 @@ export default function DefiModalContent({
       <div className="h-[60%] w-full">
         <form
           onSubmit={handleDefiSubmit}
-          className="relative flex w-full h-full flex-col items-center gap-2 border"
+          className="relative flex h-full w-full flex-col items-center gap-2 border"
         >
           <p className="text-gray mr-2 pt-2 text-[10px] font-medium text-[#909090]">
             Commence un defi avec n'importe qui.
@@ -133,33 +133,35 @@ export default function DefiModalContent({
               onChange={(e) => setUsername(e.target.value)}
             />
           </div>
-          {users?.map((user: any) => (
-            <div
-              key={user.id}
-              className="m-2 flex items-center justify-center rounded-md border border-white/10 bg-[#272A30] p-2 shadow-sm"
-            >
-              <Image
-                src={user.image}
-                width={50}
-                height={50}
-                alt="user image"
-                className="rounded-md border border-white/10"
-              />
-              <a
-                href="#"
-                onClick={(e) => {
-                  e.preventDefault();
-                  setUsername(user.name);
-                }}
-                className="pl-2 text-[12px] text-white/40 hover:text-white/70"
+           <div className="no-scrollbar flex max-h-28 flex-col overflow-y-auto">
+            {users?.map((user: any) => (
+              <div
+                key={user.id}
+                className="m-2 flex items-center justify-center rounded-md border border-white/10 bg-[#272A30] p-2 shadow-sm"
               >
-                {user.name}
-              </a>
-            </div>
-          ))}
+                <Image
+                  src={user.image}
+                  width={50}
+                  height={50}
+                  alt="user image"
+                  className="rounded-md border border-white/10"
+                />
+                <a
+                  href="#"
+                  onClick={(e) => {
+                    e.preventDefault();
+                    setUsername(user.name);
+                  }}
+                  className="pl-2 text-[12px] text-white/40 hover:text-white/70"
+                >
+                  {user.name}
+                </a>
+              </div>
+            ))}
+          </div>
           <button
             type="submit"
-            className="absolute bottom-5 rounded-md border border-white bg-red-600 py-2 px-4 text-white shadow-md"
+            className="absolute bottom-5 rounded-md border border-white bg-red-600 px-4 py-2 text-white shadow-md"
             onClick={() => {
               socket.emit("sendDefi", {
                 senderUsername: my_username,

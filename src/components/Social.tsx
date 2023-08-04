@@ -8,7 +8,7 @@ export default function Social() {
   const [userProfile, setUserProfile] = useState<{ image: string, username: string, balance: number, statusMessage: string }>({ image: "", username: "", balance: 0, statusMessage: "" })
   const [friends, setFriends] = useState<{ image: string, username: string, balance: number, statusMessage: string }[]>([])
   const [onlineUsers, setOnlineUsers] = useState<{ image: string, username: string, balance: number, statusMessage: string }[]>([])
-  const [showModal, setShowModal] = useState<boolean>(false);
+  const [showModal, setShowModal] = useState<boolean>(true);
 
   async function getUserProfile() {
     const request = await axios.post("http://localhost:3333/user/get_user_infos/", JSON.stringify({ username: sessionStorage.getItem('username') }), { headers: { 'Content-Type': 'application/json' } })
@@ -148,7 +148,7 @@ export default function Social() {
           ))}
         </div>
       </div>
-      <Modal isVisible={showModal} onClose={() => setShowModal(false)}>
+      <Modal isVisible={showModal} onClose={() => setShowModal(false)} width="w-[500px]">
         <EventProfileModal userProfile={userProfile} />
       </Modal>
     </div>

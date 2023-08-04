@@ -271,10 +271,10 @@ const DefiRightBar: React.FC = () => {
           Defier un challenger
         </button>
       </div>
-      <Modal isVisible={showModal} onClose={() => setShowModal(false)}>
+      <Modal isVisible={showModal} onClose={() => setShowModal(false)} width="w-[600px]">
         <DefiModalContent socket={socket} onClose={() => setShowModal(false)} />
       </Modal>
-      <Modal isVisible={showModalFin} onClose={() => setShowModalFin(false)}>
+      <Modal isVisible={showModalFin} onClose={() => setShowModalFin(false)} width="w-[600px]">
         <div className="items-center gap-2">
           <p className="block items-center text-xl font-bold">Qui a gagné ?</p>
           {challengeOpened != null ? (

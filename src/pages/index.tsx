@@ -48,7 +48,9 @@ export default function HomePage() {
   const [weeklyEvents, setWeeklyEvents] = useState<Event[]>([]);
   const [showModal, setShowModal] = useState<boolean>(false);
   const [eventToSend, setEventToSend] = useState<Event>();
-  const [publicChallenges, setPublicChallenges] = useState<publicChallenge[]>([])
+  const [publicChallenges, setPublicChallenges] = useState<publicChallenge[]>(
+    []
+  );
 
   async function setWeekly() {
     const today = dayjs().startOf("day");
@@ -80,12 +82,13 @@ export default function HomePage() {
   }
 
   async function getPublicChallenges() {
-    const request = await axios.get('http://localhost:3333/defi/get_all_public_challenges/')
+    const request = await axios.get(
+      "http://localhost:3333/defi/get_all_public_challenges/"
+    );
 
     if (request.data.success == true)
-      setPublicChallenges(request.data.publicChallenges)
-    else
-      console.error(request.data.error)
+      setPublicChallenges(request.data.publicChallenges);
+    else console.error(request.data.error);
   }
 
   useEffect(() => {
@@ -151,7 +154,6 @@ export default function HomePage() {
       return sentence;
     }
   }
-
   useEffect(() => {
     (async () => {
       await BestPlayersOfTheWeek();
@@ -270,8 +272,9 @@ export default function HomePage() {
                     width={100}
                     height={100}
                     alt="Player Image"
-                    className={`${index === 1 ? "shadow-xl" : "shadow-md"
-                      } rounded-md`}
+                    className={`${
+                      index === 1 ? "shadow-xl" : "shadow-md"
+                    } rounded-md`}
                   />
                   <p className="flex w-full justify-center pt-1 text-[10px]">
                     {index + 1}
@@ -295,37 +298,51 @@ export default function HomePage() {
             />
           </button>
           {publicChallenges.map((challenge: any) => (
-            <div key={challenge.id} className="relative mx-6 mt-4 h-1/3 w-[88%] rounded-md border border-black bg-[#272A30]">
+            <div
+              key={challenge.id}
+              className="relative mx-6 mt-4 h-1/3 w-[88%] rounded-md border border-black bg-[#272A30]"
+            >
               <Image
                 src={challenge.creatorImage}
                 alt="Challenge image"
                 width={60}
                 height={60}
-                className="rounded-full absolute top-[10%] left-[15%] border border-white shadow-md"
+                className="absolute left-[15%] top-[10%] rounded-full border border-white shadow-md"
               />
               <Image
                 src={challenge.opponentImage}
                 alt="Opponent image"
                 width={60}
                 height={60}
-                className="rounded-full absolute top-[10%] right-[15%] border border-white shadow-md"
+                className="absolute right-[15%] top-[10%] rounded-full border border-white shadow-md"
               />
               <Image
                 src={Versus}
                 alt="versus"
                 width={40}
                 height={40}
-                className="absolute top-[13%] left-[43%]"
+                className="absolute left-[43%] top-[13%]"
               />
-              <p className="absolute text-white top-[44%] left-[45%] text-[12px]">{challenge.creatorBid} : {challenge.opponentBid}</p>
-              <button className="absolute border border-white top-[64%] left-[43%] rounded-md bg-[#DD0000] p-1 text-white text-sm">Miser</button>
+              <p className="absolute left-[45%] top-[44%] text-[12px] text-white">
+                {challenge.creatorBid} : {challenge.opponentBid}
+              </p>
+              <button className="absolute left-[43%] top-[64%] rounded-md border border-white bg-[#DD0000] p-1 text-sm text-white">
+                Miser
+              </button>
             </div>
           ))}
         </div>
       </div>
       {eventToSend != undefined ? (
-        <Modal isVisible={showModal} onClose={() => setShowModal(false)}>
-          <EventSubscribeModal eventToSend={eventToSend} showModal={setShowModal} />
+        <Modal
+          isVisible={showModal}
+          onClose={() => setShowModal(false)}
+          width="w-[600px]"
+        >
+          <EventSubscribeModal
+            eventToSend={eventToSend}
+            showModal={setShowModal}
+          />
         </Modal>
       ) : null}
     </div>

@@ -14,26 +14,42 @@ interface UserProfileReceived {
 
 export default function EventProfileModal({userProfile}: UserProfileReceived) {
     return (
-        <div className="h-[65vh] text-[#02111B] bg-[#D9D9D9] p-2">
-            <div className="h-[35%] w-full flex">
-                <div className="w-[20%] h-full"></div>
-                <div className="w-[60%] h-full flex justify-center"><Image src={userProfile.image} width={150} height={150} alt="userProfile Image" className="rounded-md shadow-md" /></div>
-                <div className="w-[20%] h-full relative"><p className="absolute top-2 right-2 font-bold">#25</p></div>
-            </div>
-            <div className="h-[35%] w-full flex">
-                <div className="w-[20%] h-full relative flex justify-center font-bold"><p className="absolute bottom-0">Rank</p></div>
-                <div className="w-[60%] h-full flex flex-col">
-                    <div className="w-full h-1/3 flex flex-col items-center justify-center"><p className="text-medium">{userProfile.username}</p><p className="text-sm">{userProfile.statusMessage}</p></div>
-                    <div className="w-full h-1/3 flex items-center justify-center relative"><p className="font-bold">Wallet: {userProfile.balance}</p></div>
-                    <div className="w-full h-1/3 flex justify-center items-center"><p className="font-bold">Statistiques</p></div>
+        <div className="h-[65vh] text-white bg-[#272A30] p-2 border border-red-500">
+            <div className="h-[50%] w-full border border-yellow-500 flex">
+                <div className="relative w-[60%] h-full border border-white rounded-md shadow-md">
+                    <Image
+                        src={userProfile.image}
+                        layout="fill"
+                        objectFit="cover"
+                        alt="Profile image"
+                    />
+                    <div className="absolute bottom-[-8px] right-[-25px] rounded-full border border-white bg-[#272A30] z-50 h-9 w-9 flex items-center justify-center">
+                        😋
+                    </div>
                 </div>
-                <div className="w-[20%] h-full relative flex justify-center font-bold"><p className="absolute bottom-0">Wallet</p></div>
+                <div className="w-[40%] h-full border border-orange-500 pt-2">
+                    <div className="h-[20%] w-full border border-gray-500 bg-white flex">
+                        <div className="w-[50%] h-full text-black text-[10px] flex items-center justify-center">Plus de statistiques</div>
+                        <div className="w-[50%] h-full text-black text-[10px] flex items-center justify-center">Coming Soon...</div>
+                    </div>
+                    <div className="h-[80%] w-full border border-gray-500 flex flex-col">
+                        <div className="h-[20%] w-full border border-red-400"></div>
+                        <div className="h-[80%] w-full border border-red-400 flex justify-center">
+                            <div className="flex flex-col gap-2">
+                                <p className="text-[35px] text-center">#25</p>
+                                <p className="text-[15px] text-center">Wallet: 203K</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
             </div>
-            <div className="h-[30%] w-full gap-2 p-2 flex">
-                <div className="w-[50%] h-full border border-black"><p>graphique a prendre du back [Rank]</p></div>
-                <div className="w-[50%] h-full border border-black"><p>graphique a prendre du back [Wallet]</p></div>
+            <div className="h-[15%] w-full border border-yellow-500 flex">
+                <div className="w-[60%] h-full border border-red-600">
+                    <p className="text-center" >{userProfile.username}</p>
+                </div>
+                <div className="w-[40%] h-full border border-red-600">B</div>
             </div>
+            <div className="h-[35%] w-full border border-yellow-500">A</div>
         </div>
-
     )
 }

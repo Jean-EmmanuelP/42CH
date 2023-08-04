@@ -8,6 +8,8 @@ RUN npm install --force --legacy-peer-deps
 
 COPY . .
 
+RUN rm .env
+
 EXPOSE 3333
 
 CMD [ "npm", "start" ]

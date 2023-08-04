@@ -1,6 +1,6 @@
 {
   "prisma": {
-    "schema": "../prisma/schema.prisma"
+    "schema": "./prisma/schema.prisma"
   },
   "name": "backend",
   "version": "0.0.1",

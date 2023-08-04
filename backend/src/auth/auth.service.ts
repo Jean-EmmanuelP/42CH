@@ -21,7 +21,7 @@ export class AuthService {
             client_id: process.env.FORTY_TWO_CLIENT_ID,
             client_secret: process.env.FORTY_TWO_CLIENT_SECRET,
             code: userCode,
-            redirect_uri: "http://localhost:3000"
+            redirect_uri: process.env.BASE_URL
         });
 
         try {
@@ -30,7 +30,7 @@ export class AuthService {
                 client_id: process.env.FORTY_TWO_CLIENT_ID,
                 client_secret: process.env.FORTY_TWO_CLIENT_SECRET,
                 code: userCode,
-                redirect_uri: "http://localhost:3000"
+                redirect_uri: process.env.BASE_URL
             }, {
                 headers: {
                     // "Content-Type": "application/json"

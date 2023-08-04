@@ -45,11 +45,20 @@ export default function EventProfileModal({userProfile}: UserProfileReceived) {
             </div>
             <div className="h-[15%] w-full border border-yellow-500 flex">
                 <div className="w-[60%] h-full border border-red-600">
-                    <p className="text-center" >{userProfile.username}</p>
+                    <div className="text-center border border-green-500 relative">
+                        {userProfile.username}
+                        <div className="absolute bottom-[-40px] right-[-30px] px-4 py-4 bg-white flex items-center justify-center text-black/75 text-sm italic rounded-br-md rounded-bl-md rounded-tr-md h-1/2"><div className="relative">{userProfile.statusMessage}<div className="absolute bg-white rotate-45 bg-white w-2 h-2 border-l-50 border-transparent border-r-50 border-t-100 border-black top-[-10px] left-[-14.22px]"></div></div></div>
+                    </div>
                 </div>
-                <div className="w-[40%] h-full border border-red-600">B</div>
+                <div className="w-[40%] h-full border border-red-600"></div>
             </div>
-            <div className="h-[35%] w-full border border-yellow-500">A</div>
+            <div className="h-[35%] w-full border border-yellow-500">
+                <div className="h-[20%] w-full border border-red-500 flex">
+                    <div className="h-full w-[40%] border border-yellow-500"><p>The 3 players above you</p></div>
+                    <div className="h-full w-[60%] border border-yellow-500"></div>
+                </div>
+                <div className="h-[80%] w-full border border-red-500"></div>
+            </div>
         </div>
     )
 }

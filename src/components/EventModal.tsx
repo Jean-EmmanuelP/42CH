@@ -139,7 +139,7 @@ export default function EventModal() {
               <BookMarkBorder />
               <button className="rounded border border-black bg-white p-2" onClick={() => { }}><p>clique si event de la semaine</p></button>
               <label htmlFor="limitedseats">Nombre de place:</label>
-              <input type="number" id="number" max={100} min={-1} name="limitedseats" value={limitedSeats} onChange={(e) => setLimitedSeats(e.target.value)} className="rounded border border-black bg-white" />
+              <input type="number" id="number" max={100} min={-1} name="limitedseats" value={limitedSeats} onChange={(e) => setLimitedSeats(parseInt(e.target.value))} className="rounded border border-black bg-white" />
             </span>
             <div className="flex gap-x-2">
               {labelsClasses.map((lblClass, i) => (

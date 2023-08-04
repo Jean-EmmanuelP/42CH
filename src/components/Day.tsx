@@ -1,5 +1,6 @@
 import React, { useContext, useEffect, useState } from "react";
-import dayjs, { Dayjs } from "dayjs";
+import dayjs from "dayjs";
+import { Dayjs } from "dayjs"; // Correct import for type
 import isSameOrAfter from "dayjs/plugin/isSameOrAfter";
 import isSameOrBefore from "dayjs/plugin/isSameOrBefore";
 import GlobalContext from "../context/GlobalContext";
@@ -25,46 +26,41 @@ export default function Day({ day, rowIdx }: DayProps) {
   const {
     setDaySelected,
     setShowEventModal,
-    filteredEvents,
     setSelectedEvent,
     setWeeklyEvents,
-    weeklyEvents,
   } = useContext(GlobalContext);
 
   const [dayEvents, setDayEvents] = useState<Event[]>([]);
 
   async function setDaily() {
     const request = await axios.get('http://localhost:3333/events/incoming-events/');
-
-    request.data.forEach((element: Event) => {
-      element.day = Number(element.day)
-    });
-    const events: Event[] = request.data.filter((evt: Event) =>
+    const eventData: Event[] = request.data.map((element: Event) => ({...element, day: Number(element.day)}));
+    const events: Event[] = eventData.filter((evt: Event) =>
       dayjs(evt.day).isSame(day, "day")
     );
-    if (events.length > 0)
+    if (events.length > 0) {
       setDayEvents(events);
+    }
   }
 
   async function setWeekly() {
     const today = dayjs();
     const tenDaysFromNow = dayjs().add(10, "day");
     const request = await axios.get('http://localhost:3333/events/incoming-events/');
-    request.data.forEach((element: Event) => {
-      element.day = Number(element.day)
-    });
-    const events: Event[] = request.data.filter((evt: Event) =>
+    const eventData: Event[] = request.data.map((element: Event) => ({...element, day: Number(element.day)}));
+    const events: Event[] = eventData.filter((evt: Event) =>
       dayjs(evt.day).isSameOrAfter(today) &&
       dayjs(evt.day).isSameOrBefore(tenDaysFromNow)
     );
-    if (events.length > 0)
+    if (events.length > 0) {
       setWeeklyEvents(events);
+    }
   }
 
   useEffect(() => {
-    setDaily()
-    setWeekly()
-  }, []);
+    void setDaily();
+    void setWeekly();
+  }, [setDaily, setWeekly]);
 
   function getCurrentDayClass() {
     return day.isSame(dayjs(), "day")

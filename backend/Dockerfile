@@ -8,7 +8,7 @@ RUN npm install --force --legacy-peer-deps
 
 COPY . .
 
-RUN npx prisma generate --force --legacy-peer-deps
+RUN npx prisma generate
 
 EXPOSE 3333
 

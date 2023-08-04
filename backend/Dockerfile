@@ -8,7 +8,7 @@ RUN npm install --force --legacy-peer-deps
 
 COPY . .
 
-RUN npx prisma migrate dev
+RUN npx prisma generate
 
 EXPOSE 3333
 

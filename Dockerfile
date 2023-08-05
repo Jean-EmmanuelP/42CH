@@ -17,7 +17,7 @@ EXPOSE 3000
 RUN npm install @prisma/client@dev prisma@dev --legacy-peer-deps --force
 
 
-RUN npm run build
+RUN npm run build --force
 
 RUN chmod +x ./entrypoint.sh
 

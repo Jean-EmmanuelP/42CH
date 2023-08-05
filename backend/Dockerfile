@@ -1,12 +1,13 @@
 FROM node:18
 
-WORKDIR /usr/src/app
+WORKDIR /usr/src/app/backend
 
-COPY package*.json ./
+
+COPY ../ /usr/src/app
+
+
 
 RUN npm install --force --legacy-peer-deps
-
-COPY . .
 
 EXPOSE 3333
 

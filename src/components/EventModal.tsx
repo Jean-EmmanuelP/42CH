@@ -54,7 +54,7 @@ export default function EventModal() {
       id: selectedEvent ? selectedEvent.id : Date.now(),
       limitedSeats,
     };
-    const request = await axios.post(process.env.API_URL+'/events/create/', calendarEvent);
+    const request = await axios.post(process.env.NEXT_PUBLIC_API_URL+'/events/create/', calendarEvent);
     if (request.data.success == true) {
       // reload le state qui contient tous les events
       window.location.reload();
@@ -69,7 +69,7 @@ export default function EventModal() {
       dispatchCalEvent({ type: "push", payload: calendarEvent });
     }
 
-    const test = await axios.get(process.env.API_URL+'/events/incoming-events/');
+    const test = await axios.get(process.env.NEXT_PUBLIC_API_URL+'/events/incoming-events/');
     console.log(test.data)
     setShowEventModal(false);
     setSelectedEvent(null);
@@ -90,7 +90,7 @@ export default function EventModal() {
               <span
                 className="text-gray-400 cursor-pointer"
                 onClick={async () => {
-                  const request = await axios.post(process.env.API_URL+'/events/delete/', selectedEvent);
+                  const request = await axios.post(process.env.NEXT_PUBLIC_API_URL+'/events/delete/', selectedEvent);
                   dispatchCalEvent({
                     type: "delete",
                     payload: selectedEvent,

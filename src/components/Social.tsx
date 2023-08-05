@@ -13,7 +13,7 @@ export default function Social() {
   const [showModal, setShowModal] = useState<boolean>(true);
 
   async function getUserProfile() {
-    const request = await axios.post(process.env.API_URL+"/user/get_user_infos/", JSON.stringify({ username: sessionStorage.getItem('username') }), { headers: { 'Content-Type': 'application/json' } })
+    const request = await axios.post(process.env.NEXT_PUBLIC_API_URL+"/user/get_user_infos/", JSON.stringify({ username: sessionStorage.getItem('username') }), { headers: { 'Content-Type': 'application/json' } })
 
     if (request.data.success == true)
       setUserProfile(request.data.user);
@@ -22,7 +22,7 @@ export default function Social() {
   }
 
   async function getFriends() {
-    const request = await axios.post(process.env.API_URL+"/user/get_friends/", JSON.stringify({ username: sessionStorage.getItem('username') }), { headers: { 'Content-Type': 'application/json' } })
+    const request = await axios.post(process.env.NEXT_PUBLIC_API_URL+"/user/get_friends/", JSON.stringify({ username: sessionStorage.getItem('username') }), { headers: { 'Content-Type': 'application/json' } })
 
     if (request.data.success == true)
       setFriends(request.data.friends);
@@ -31,7 +31,7 @@ export default function Social() {
   }
 
   async function getOnlineUsers() {
-    const request = await axios.get(process.env.API_URL+"/user/get_online_users/")
+    const request = await axios.get(process.env.NEXT_PUBLIC_API_URL+"/user/get_online_users/")
 
     if (request.data.success == true) {
       let toSet = request.data.onlineUsers.filter((user: any) => user.username != sessionStorage.getItem('username'))

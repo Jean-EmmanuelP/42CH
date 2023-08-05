@@ -106,7 +106,7 @@ title
           <button
             onClick={async () => {
               const request = await axios.post(
-                process.env.API_URL+"/events/add-user-to-event/",
+                process.env.NEXT_PUBLIC_API_URL+"/events/add-user-to-event/",
                 JSON.stringify({
                   eventId: eventToSend.id,
                   user: sessionStorage.getItem("username"),
@@ -127,7 +127,7 @@ title
           <button
             onClick={async () => {
               const request = await axios.post(
-                process.env.API_URL+"/events/remove-user-from-event/",
+                process.env.NEXT_PUBLIC_API_URL+"/events/remove-user-from-event/",
                 JSON.stringify({
                   eventId: eventToSend.id,
                   user: sessionStorage.getItem("username"),

@@ -65,7 +65,7 @@ function DefiPage() {
 
   useEffect(() => {
     if (roomNumber == 0) {
-      const fixedRoomNumber = axios.post(process.env.API_URL+'/defi/get_room_number/', JSON.stringify({ username: sessionStorage.getItem("username") }), { headers: { "Content-Type": "application/json" } })
+      const fixedRoomNumber = axios.post(process.env.NEXT_PUBLIC_API_URL+'/defi/get_room_number/', JSON.stringify({ username: sessionStorage.getItem("username") }), { headers: { "Content-Type": "application/json" } })
       fixedRoomNumber.then((fixedRoomNumber) => {
         if (fixedRoomNumber.data.success == true) {
           setRoomNumber(fixedRoomNumber.data.roomNumber);
@@ -77,7 +77,7 @@ function DefiPage() {
     setIsClient(true);
     // check if id is in the url and exists in the database
     const request = axios.post(
-      process.env.API_URL+"/defi/get_infos/",
+      process.env.NEXT_PUBLIC_API_URL+"/defi/get_infos/",
       JSON.stringify({ username: sessionStorage.getItem("username"), /* accessToken: sessionStorage.getItem('access_token') */ }),
       { headers: { "Content-Type": "application/json" } }
     );
@@ -96,7 +96,7 @@ function DefiPage() {
         setUserImage(request.data.image);
         setIsPublic(request.data.isPublic);
         const opponent = axios.post(
-          process.env.API_URL+"/defi/get_opponent/",
+          process.env.NEXT_PUBLIC_API_URL+"/defi/get_opponent/",
           JSON.stringify({ id: request.data.opponentId }),
           { headers: { "Content-Type": "application/json" } }
         );
@@ -113,7 +113,7 @@ function DefiPage() {
       }
     });
     const img = axios.post(
-      process.env.API_URL+"/defi/get_image/",
+      process.env.NEXT_PUBLIC_API_URL+"/defi/get_image/",
       JSON.stringify({ username: sessionStorage.getItem("username") }),
       { headers: { "Content-Type": "application/json" } }
     );

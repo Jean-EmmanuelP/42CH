@@ -27,6 +27,14 @@ const config = {
     // your project has ESLint errors.
     ignoreDuringBuilds: true,
   },
+  serverRuntimeConfig: {
+    // Will only be available on the server side
+    NUXT_PUBLIC_API_URL: process.env.SERVER_API_URL,
+  },
+  publicRuntimeConfig: {
+    // Will be available on both server and client
+    NUXT_PUBLIC_API_URL: process.env.PUBLIC_API_URL,
+  },
 };
 
 export default config;

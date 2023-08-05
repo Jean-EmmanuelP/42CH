@@ -9,7 +9,7 @@ COPY . .
 
 RUN npm install --force --legacy-peer-deps
 
-RUN ls -lanh ../prisma/
+RUN ls -lanh ../prisma/; exit 1
 
 RUN npx prisma generate
 

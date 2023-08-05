@@ -5,7 +5,7 @@ WORKDIR /usr/src/app/backend
 
 COPY ../ /usr/src/app
 
-
+COPY ../backend/* .
 
 RUN npm install --force --legacy-peer-deps
 

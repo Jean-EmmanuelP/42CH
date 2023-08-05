@@ -4,7 +4,7 @@ import { PrismaService } from 'src/prisma/prisma.service';
 
 let usernameMap = new Map();
 
-@WebSocketGateway(3111, { cors: true })
+@WebSocketGateway()
 export class DefiGateway {
   constructor(private defiService: DefiService, private prismaService: PrismaService) { }
 

@@ -60,7 +60,7 @@ const DefiRightBar: React.FC = () => {
       }
     });
     fetchDefiRequestArray();
-    const socket = io(`http://localhost:3111`, {
+    const socket = io(process.env.NEXT_PUBLIC_API_URL!, {
       transports: ["websocket"],
     });
     setSocket(socket);

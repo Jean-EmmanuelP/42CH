@@ -15,11 +15,13 @@ function create_schema() {
     local database=$1
 	echo "  Creating schema '$database'"
 	find /migrations -type f -name "*.sql" | while read sqlfile; do
+		echo "    Running $sqlfile on $database with $POSTGRES_USER"
 		psql -v ON_ERROR_STOP=1 --username "$POSTGRES_USER" -d $database -f $sqlfile
+		echo "    Done running $sqlfile on $database $POSTGRES_USER"
 	done
 	echo "  Schema '$database' created"
 }
-psql -v ON_ERROR_STOP=1 --username "$POSTGRES_USER"
+
 if [ -n "$POSTGRES_MULTIPLE_DATABASES" ]; then
 	echo "Multiple database creation requested: $POSTGRES_MULTIPLE_DATABASES"
 	for db in $(echo $POSTGRES_MULTIPLE_DATABASES | tr ',' ' '); do

@@ -6,6 +6,7 @@ WORKDIR /usr/src/app
 # Bundle app source
 COPY . .
 
+RUN rm -Rf backend
 
 RUN npm install --legacy-peer-deps --force
 

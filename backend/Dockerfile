@@ -9,8 +9,8 @@ COPY ../ /usr/src/app
 
 RUN npm install --force --legacy-peer-deps
 
-RUN npm build
+RUN npm run build
 
 EXPOSE 3333
 
-CMD [ "npm", "start:prod" ]
+CMD [ "npm", "run", "start:prod" ]

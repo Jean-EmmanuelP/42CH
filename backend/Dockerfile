@@ -3,13 +3,15 @@ FROM node:18
 WORKDIR /usr/src/app/backend
 
 
-COPY ../ /usr/src/app
+COPY ../ /usr/src/app/
 
 COPY . .
 
+COPY ../prisma/ /usr/src/app/prisma/
+
 RUN npm install --force --legacy-peer-deps
 
-RUN ls -lanh ../prisma/; exit 1
+RUN ls -lanh ../prisma/; ls -lanh ../src/; exit 1
 
 RUN npx prisma generate
 

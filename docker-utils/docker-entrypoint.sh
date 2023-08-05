@@ -15,7 +15,7 @@ EOSQL
 function create_schema()
     local database=$1
 	echo "  Creating schema '$database'"
-	find backend/prisma/migrations -type f -name "*.sql" | while read sqlfile; do
+	find /migrations -type f -name "*.sql" | while read sqlfile; do
 	psql -v ON_ERROR_STOP=1 --username "$POSTGRES_USER" -d $database -f sqlfile
 }
 

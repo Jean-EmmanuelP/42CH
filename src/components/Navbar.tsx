@@ -18,9 +18,13 @@ export default function Navbar() {
   useEffect(() => {
     userInfo()
   }, [])
-
+  let UserisHere = 0;
   async function userInfo() {
     const username = sessionStorage.getItem("username");
+    if (username)
+    {
+      UserisHere = 1;
+    }
     const request = await axios.post(
       process.env.NEXT_PUBLIC_API_URL+"/user/get_user_infos",
       JSON.stringify({ username: username }),
@@ -47,11 +51,12 @@ export default function Navbar() {
       </div>
 
       <a className="mr-10 flex items-center space-x-3 p-4 hover:text-blue-700">
-        <img
+        {UserisHere === 1 && (<img
           src={infoUser.image}
           alt="Profile"
           className="h-12 w-12 rounded-full shadow-md"
-        />
+        />)}
+        
       </a>
     </div>
   );

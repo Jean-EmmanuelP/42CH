@@ -57,7 +57,7 @@ model User {
     access_token   String? // @db.Text
     // accounts       Account[]
     // sessions       Session[]
-    balance        Int         @default(0)
+    balance        Int         @default(10000)
     status         String      @default("offline")
     statusMessage  String?     @default("")
     challenges     Challenge[] @relation("CreatedChallenges")

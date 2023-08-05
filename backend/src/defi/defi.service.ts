@@ -247,7 +247,6 @@ export class DefiService {
 
     async getAllChallenges(username: string, accessToken: string) {
         let ret = await this.authService.checkToken(username, accessToken);
-        console.log("getAllChallenges", ret)
         if (ret.success == false)
             return { success: false, error: 'Token' };
         if (username == null) {

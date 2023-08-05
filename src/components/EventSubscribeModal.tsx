@@ -6,6 +6,8 @@ import { ReactNode } from "react";
 import CalendarIcon from "../utils/images/calendarIcon.svg";
 import LocationIcon from "../utils/images/Location.svg";
 import Image from "next/image";
+import getConfig from 'next/config';
+const { publicRuntimeConfig } = getConfig();
 
 interface Event {
   title: string;
@@ -104,7 +106,7 @@ title
           <button
             onClick={async () => {
               const request = await axios.post(
-                process.env.NEXT_PUBLIC_API_URL+"/events/add-user-to-event/",
+                publicRuntimeConfig.NEXT_PUBLIC_API_URL+"/events/add-user-to-event/",
                 JSON.stringify({
                   eventId: eventToSend.id,
                   user: sessionStorage.getItem("username"),
@@ -125,7 +127,7 @@ title
           <button
             onClick={async () => {
               const request = await axios.post(
-                process.env.NEXT_PUBLIC_API_URL+"/events/remove-user-from-event/",
+                publicRuntimeConfig.NEXT_PUBLIC_API_URL+"/events/remove-user-from-event/",
                 JSON.stringify({
                   eventId: eventToSend.id,
                   user: sessionStorage.getItem("username"),

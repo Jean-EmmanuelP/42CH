@@ -8,6 +8,8 @@ import { createReactProxyDecoration } from "@trpc/react-query/shared";
 import Modal from "./Modal";
 import DefiModalContent from "./DefiModalContent";
 import io from "socket.io-client";
+import getConfig from 'next/config';
+const { publicRuntimeConfig } = getConfig();
 
 const DefiRightBar: React.FC = () => {
   const [showModal, setShowModal] = useState<boolean>(false);
@@ -24,10 +26,11 @@ const DefiRightBar: React.FC = () => {
   const [showModalFin, setShowModalFin] = useState<boolean>(false);
   const [challengeOpened, setChallengeOpened] = useState<any>(null);
   const [socket, setSocket] = useState<any>(null);
+  
 
   useEffect(() => {
     const request = axios.post(
-      process.env.NEXT_PUBLIC_API_URL+"/defi/get_all_challenges/",
+      publicRuntimeConfig.NEXT_PUBLIC_API_URL+"/defi/get_all_challenges/",
       JSON.stringify({ username: sessionStorage.getItem("username"), accessToken: sessionStorage.getItem("accessToken") }),
       { headers: { "Content-Type": "application/json" } }
     );
@@ -45,7 +48,7 @@ const DefiRightBar: React.FC = () => {
       }
     });
     const request2 = axios.post(
-      process.env.NEXT_PUBLIC_API_URL+"/defi/ongoing/",
+      publicRuntimeConfig.NEXT_PUBLIC_API_URL+"/defi/ongoing/",
       JSON.stringify({ username: sessionStorage.getItem("username") }),
       { headers: { "Content-Type": "application/json" } }
     );
@@ -85,7 +88,7 @@ const DefiRightBar: React.FC = () => {
 
   async function fetchDefiRequestArray() {
     const request = await axios.post(
-      process.env.NEXT_PUBLIC_API_URL+"/defi/get_all_defi_requests",
+      publicRuntimeConfig.NEXT_PUBLIC_API_URL+"/defi/get_all_defi_requests",
       JSON.stringify({ username: username }),
       { headers: { "Content-Type": "application/json" } }
     );
@@ -97,7 +100,7 @@ const DefiRightBar: React.FC = () => {
 
   const handleAcceptChallenge = async (index: number) => {
     const request = await axios.post(
-      process.env.NEXT_PUBLIC_API_URL+"/defi/create",
+      publicRuntimeConfig.NEXT_PUBLIC_API_URL+"/defi/create",
       JSON.stringify({
         creatorUsername: defiRequestArray[index].senderUsername,
         opponentUsername: username,
@@ -118,7 +121,7 @@ const DefiRightBar: React.FC = () => {
 
   const handleRejectChallenge = (index: number) => {
     const request = axios.post(
-      process.env.NEXT_PUBLIC_API_URL+"/defi/delete_defi_request/",
+      publicRuntimeConfig.NEXT_PUBLIC_API_URL+"/defi/delete_defi_request/",
       JSON.stringify({ id: defiRequestArray[index].id }),
       { headers: { "Content-Type": "application/json" } }
     );
@@ -282,7 +285,7 @@ const DefiRightBar: React.FC = () => {
               <button
                 onClick={async () => {
                   const request = await axios.post(
-                    process.env.NEXT_PUBLIC_API_URL+"/defi/finish",
+                    publicRuntimeConfig.NEXT_PUBLIC_API_URL+"/defi/finish",
                     JSON.stringify({
                       username: sessionStorage.getItem("username"),
                       challengeId: challengeOpened.id,
@@ -300,7 +303,7 @@ const DefiRightBar: React.FC = () => {
               <button
                 onClick={async () => {
                   const request = await axios.post(
-                    process.env.NEXT_PUBLIC_API_URL+"/defi/finish",
+                    publicRuntimeConfig.NEXT_PUBLIC_API_URL+"/defi/finish",
                     JSON.stringify({
                       username: sessionStorage.getItem("username"),
                       challengeId: challengeOpened.id,

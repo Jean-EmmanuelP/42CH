@@ -2,12 +2,14 @@ import axios from "axios";
 import { usePathname, useSearchParams } from "next/navigation";
 import { useEffect } from "react";
 import { redirect } from 'next/navigation'
+import getConfig from 'next/config';
+const { publicRuntimeConfig } = getConfig();
 
 
 export default function SignIn() {
   async function RedirectTo42() {
     const request = await axios.get(
-      process.env.NEXT_PUBLIC_API_URL+"/auth/redirect_fortytwo/"
+      publicRuntimeConfig.NEXT_PUBLIC_API_URL+"/auth/redirect_fortytwo/"
     );
     console.log(request);
     window.location.href = request.data;
@@ -17,7 +19,7 @@ export default function SignIn() {
   async function fetchData() {
     if (code !== null) {
       const request = await axios.post(
-        process.env.NEXT_PUBLIC_API_URL+"/auth/signin",
+        publicRuntimeConfig.NEXT_PUBLIC_API_URL+"/auth/signin",
         JSON.stringify({ code: code }),
         { headers: { "Content-Type": "application/json" } }
       );

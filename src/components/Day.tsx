@@ -5,6 +5,8 @@ import isSameOrAfter from "dayjs/plugin/isSameOrAfter";
 import isSameOrBefore from "dayjs/plugin/isSameOrBefore";
 import GlobalContext from "../context/GlobalContext";
 import axios from "axios";
+import getConfig from 'next/config';
+const { publicRuntimeConfig } = getConfig();
 
 dayjs.extend(isSameOrAfter);
 dayjs.extend(isSameOrBefore);
@@ -33,7 +35,7 @@ export default function Day({ day, rowIdx }: DayProps) {
   const [dayEvents, setDayEvents] = useState<Event[]>([]);
 
   async function setDaily() {
-    const request = await axios.get(process.env.NEXT_PUBLIC_API_URL+'/events/incoming-events/');
+    const request = await axios.get(publicRuntimeConfig.NEXT_PUBLIC_API_URL+'/events/incoming-events/');
     const eventData: Event[] = request.data.map((element: Event) => ({...element, day: Number(element.day)}));
     const events: Event[] = eventData.filter((evt: Event) =>
       dayjs(evt.day).isSame(day, "day")
@@ -46,7 +48,7 @@ export default function Day({ day, rowIdx }: DayProps) {
   async function setWeekly() {
     const today = dayjs();
     const tenDaysFromNow = dayjs().add(10, "day");
-    const request = await axios.get(process.env.NEXT_PUBLIC_API_URL+'/events/incoming-events/');
+    const request = await axios.get(publicRuntimeConfig.NEXT_PUBLIC_API_URL+'/events/incoming-events/');
     const eventData: Event[] = request.data.map((element: Event) => ({...element, day: Number(element.day)}));
     const events: Event[] = eventData.filter((evt: Event) =>
       dayjs(evt.day).isSameOrAfter(today) &&

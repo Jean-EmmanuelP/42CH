@@ -6,6 +6,8 @@ import EventSubscribeModal from "~/components/EventSubscribeModal";
 import dayjs from "dayjs";
 import isSameOrAfter from "dayjs/plugin/isSameOrAfter";
 import isSameOrBefore from "dayjs/plugin/isSameOrBefore";
+import getConfig from 'next/config';
+const { publicRuntimeConfig } = getConfig();
 import PokerImage from "../utils/images/poker.svg";
 import Position from "../utils/images/position.svg";
 import ClockIcon from "../utils/images/clockicon.svg";
@@ -54,7 +56,7 @@ export default function HomePage() {
     const today = dayjs().startOf("day");
     const tenDaysFromNow = dayjs().add(10, "day");
     const request = await axios.get(
-      process.env.NEXT_PUBLIC_API_URL+"/events/incoming-events/"
+      publicRuntimeConfig.NEXT_PUBLIC_API_URL+"/events/incoming-events/"
     );
     request.data.forEach((element: Event) => {
       element.day = Number(element.day);
@@ -81,7 +83,7 @@ export default function HomePage() {
 
   async function getPublicChallenges() {
     const request = await axios.get(
-      process.env.NEXT_PUBLIC_API_URL+"/defi/get_all_public_challenges/"
+      publicRuntimeConfig.NEXT_PUBLIC_API_URL+"/defi/get_all_public_challenges/"
     );
 
     if (request.data.success == true)
@@ -116,7 +118,7 @@ export default function HomePage() {
       const today = dayjs().startOf("day");
       const tenDaysFromNow = dayjs().add(10, "day");
       const request = await axios.get(
-        process.env.NEXT_PUBLIC_API_URL+"/events/incoming-events/"
+        publicRuntimeConfig.NEXT_PUBLIC_API_URL+"/events/incoming-events/"
       );
       request.data.forEach((element: Event) => {
         element.day = Number(element.day);
@@ -136,7 +138,7 @@ export default function HomePage() {
   const [players, setPlayers] = useState<PlayerProps[]>([]);
   async function BestPlayersOfTheWeek() {
     const request = await axios.get(
-      process.env.NEXT_PUBLIC_API_URL+"/user/get_top_users/"
+      publicRuntimeConfig.NEXT_PUBLIC_API_URL+"/user/get_top_users/"
     );
     const topUsers = request.data.topUsers;
     console.log(`those are the top Users`, topUsers);

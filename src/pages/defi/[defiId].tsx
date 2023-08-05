@@ -10,6 +10,8 @@ import Image from "next/image";
 import io from "socket.io-client";
 import axios from "axios";
 import { set } from "lodash";
+import getConfig from 'next/config';
+const { publicRuntimeConfig } = getConfig();
 
 function DefiPage() {
   // need to fix this
@@ -63,7 +65,7 @@ function DefiPage() {
 
   useEffect(() => {
     if (roomNumber == 0) {
-      const fixedRoomNumber = axios.post(process.env.NEXT_PUBLIC_API_URL+'/defi/get_room_number/', JSON.stringify({ username: sessionStorage.getItem("username") }), { headers: { "Content-Type": "application/json" } })
+      const fixedRoomNumber = axios.post(publicRuntimeConfig.NEXT_PUBLIC_API_URL+'/defi/get_room_number/', JSON.stringify({ username: sessionStorage.getItem("username") }), { headers: { "Content-Type": "application/json" } })
       fixedRoomNumber.then((fixedRoomNumber) => {
         if (fixedRoomNumber.data.success == true) {
           setRoomNumber(fixedRoomNumber.data.roomNumber);
@@ -75,7 +77,7 @@ function DefiPage() {
     setIsClient(true);
     // check if id is in the url and exists in the database
     const request = axios.post(
-      process.env.NEXT_PUBLIC_API_URL+"/defi/get_infos/",
+      publicRuntimeConfig.NEXT_PUBLIC_API_URL+"/defi/get_infos/",
       JSON.stringify({ username: sessionStorage.getItem("username"), /* accessToken: sessionStorage.getItem('access_token') */ }),
       { headers: { "Content-Type": "application/json" } }
     );
@@ -94,7 +96,7 @@ function DefiPage() {
         setUserImage(request.data.image);
         setIsPublic(request.data.isPublic);
         const opponent = axios.post(
-          process.env.NEXT_PUBLIC_API_URL+"/defi/get_opponent/",
+          publicRuntimeConfig.NEXT_PUBLIC_API_URL+"/defi/get_opponent/",
           JSON.stringify({ id: request.data.opponentId }),
           { headers: { "Content-Type": "application/json" } }
         );
@@ -111,7 +113,7 @@ function DefiPage() {
       }
     });
     const img = axios.post(
-      process.env.NEXT_PUBLIC_API_URL+"/defi/get_image/",
+      publicRuntimeConfig.NEXT_PUBLIC_API_URL+"/defi/get_image/",
       JSON.stringify({ username: sessionStorage.getItem("username") }),
       { headers: { "Content-Type": "application/json" } }
     );

@@ -5,6 +5,8 @@ import Link from "next/link";
 import { api } from "~/utils/api";
 import axios from "axios";
 import { useEffect, useState } from "react";
+import getConfig from 'next/config';
+const { publicRuntimeConfig } = getConfig();
 
 function extractUsername(email: string) {
   return email.split(" ")[0];
@@ -20,7 +22,7 @@ export default function Navbar() {
   async function userInfo() {
     const username = sessionStorage.getItem("username");
     const request = await axios.post(
-      process.env.NEXT_PUBLIC_API_URL+"/user/get_user_infos",
+      publicRuntimeConfig.NEXT_PUBLIC_API_URL+"/user/get_user_infos",
       JSON.stringify({ username: username }),
       { headers: { "Content-Type": "application/json" } }
     );

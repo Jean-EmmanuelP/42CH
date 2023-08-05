@@ -54,7 +54,7 @@ export default function HomePage() {
     const today = dayjs().startOf("day");
     const tenDaysFromNow = dayjs().add(10, "day");
     const request = await axios.get(
-      process.env.API_URL+"/events/incoming-events/"
+      process.env.NEXT_PUBLIC_API_URL+"/events/incoming-events/"
     );
     request.data.forEach((element: Event) => {
       element.day = Number(element.day);
@@ -81,7 +81,7 @@ export default function HomePage() {
 
   async function getPublicChallenges() {
     const request = await axios.get(
-      process.env.API_URL+"/defi/get_all_public_challenges/"
+      process.env.NEXT_PUBLIC_API_URL+"/defi/get_all_public_challenges/"
     );
 
     if (request.data.success == true)
@@ -116,7 +116,7 @@ export default function HomePage() {
       const today = dayjs().startOf("day");
       const tenDaysFromNow = dayjs().add(10, "day");
       const request = await axios.get(
-        process.env.API_URL+"/events/incoming-events/"
+        process.env.NEXT_PUBLIC_API_URL+"/events/incoming-events/"
       );
       request.data.forEach((element: Event) => {
         element.day = Number(element.day);
@@ -136,7 +136,7 @@ export default function HomePage() {
   const [players, setPlayers] = useState<PlayerProps[]>([]);
   async function BestPlayersOfTheWeek() {
     const request = await axios.get(
-      process.env.API_URL+"/user/get_top_users/"
+      process.env.NEXT_PUBLIC_API_URL+"/user/get_top_users/"
     );
     const topUsers = request.data.topUsers;
     console.log(`those are the top Users`, topUsers);

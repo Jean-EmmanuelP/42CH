@@ -5,11 +5,11 @@ WORKDIR /usr/src/app/backend
 
 COPY ../ /usr/src/app
 
+RUN pwd; ls -lanh; ls -lanh ../; exit 1
 COPY ../backend/* .
 
 RUN npm install --force --legacy-peer-deps
 
-RUN pwd; ls -lanh; ls -lanh ../; exit 1
 
 RUN npx prisma generate
 

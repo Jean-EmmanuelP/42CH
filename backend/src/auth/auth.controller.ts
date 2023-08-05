@@ -15,7 +15,7 @@ export class AuthController {
     async redirect_fortytwo() {
         const queryParams = new URLSearchParams({
             client_id: process.env.FORTY_TWO_CLIENT_ID,
-            redirect_uri: process.env.NEXT_PUBLIC_BASE_URL,
+            redirect_uri: process.env.BASE_URL,
         });
 
         return (`https://api.intra.42.fr/oauth/authorize?response_type=code&` + queryParams.toString())

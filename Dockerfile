@@ -11,7 +11,6 @@ RUN npm install
 # Bundle app source
 COPY . .
 
-WORKDIR /usr/src/app/backend/
 
 RUN npm install --legacy-peer-deps --force
 
@@ -25,8 +24,6 @@ WORKDIR /usr/src/app/
 
 
 RUN chmod +x ./entrypoint.sh
-
-EXPOSE 3000
 
 # Run the app
 CMD [ "./entrypoint.sh" ]

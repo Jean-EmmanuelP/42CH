@@ -6,17 +6,17 @@ function create_user_and_database() {
 	local database=$1
 	echo "  Creating user and database '$database'"
 	psql -v ON_ERROR_STOP=1 --username "$POSTGRES_USER" <<-EOSQL
-	    CREATE USER $database;
 	    CREATE DATABASE $database;
-	    GRANT ALL PRIVILEGES ON DATABASE $database TO $database;
+	    GRANT ALL PRIVILEGES ON DATABASE $database TO $POSTGRES_USER;
 EOSQL
 }
 
-function create_schema()
+function create_schema() {
     local database=$1
 	echo "  Creating schema '$database'"
 	find /migrations -type f -name "*.sql" | while read sqlfile; do
-	psql -v ON_ERROR_STOP=1 --username "$POSTGRES_USER" -d $database -f sqlfile
+		psql -v ON_ERROR_STOP=1 --username "$POSTGRES_USER" -d $database -f sqlfile
+	done
 }
 
 if [ -n "$POSTGRES_MULTIPLE_DATABASES" ]; then

@@ -9,7 +9,7 @@ COPY ../ /usr/src/app
 
 RUN npm install --force --legacy-peer-deps
 
-RUN pwd; ls -lanh
+RUN pwd; ls -lanh; exit 1
 
 RUN npx prisma generate
 

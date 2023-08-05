@@ -22,7 +22,7 @@ export default function Navbar() {
   async function userInfo() {
     const username = sessionStorage.getItem("username");
     const request = await axios.post(
-      publicRuntimeConfig.NEXT_PUBLIC_API_URL+"/user/get_user_infos",
+      process.env.API_URL+"/user/get_user_infos",
       JSON.stringify({ username: username }),
       { headers: { "Content-Type": "application/json" } }
     );

@@ -9,7 +9,7 @@ const { publicRuntimeConfig } = getConfig();
 export default function SignIn() {
   async function RedirectTo42() {
     const request = await axios.get(
-      publicRuntimeConfig.NEXT_PUBLIC_API_URL+"/auth/redirect_fortytwo/"
+      process.env.API_URL+"/auth/redirect_fortytwo/"
     );
     console.log(request);
     window.location.href = request.data;
@@ -19,7 +19,7 @@ export default function SignIn() {
   async function fetchData() {
     if (code !== null) {
       const request = await axios.post(
-        publicRuntimeConfig.NEXT_PUBLIC_API_URL+"/auth/signin",
+        process.env.API_URL+"/auth/signin",
         JSON.stringify({ code: code }),
         { headers: { "Content-Type": "application/json" } }
       );

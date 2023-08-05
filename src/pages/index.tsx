@@ -16,8 +16,6 @@ dayjs.extend(isSameOrAfter);
 dayjs.extend(isSameOrBefore);
 
 import axios from "axios";
-import { PrismaClientKnownRequestError } from "@prisma/client/runtime";
-import { StringSupportOption } from "prettier";
 
 interface publicChallenge {
   id: string;

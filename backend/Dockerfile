@@ -4,9 +4,7 @@ WORKDIR /usr/src/app/
 
 COPY . .
 
-#RUN ls -lanh /usr/src/app/prisma/; ls -lanh /usr/src/app/src/; ls -lanh /usr/src/app/backend/; exit 1
-
-RUN cd backend
+WORKDIR /usr/src/app/backend/
 
 RUN npm install --force --legacy-peer-deps
 

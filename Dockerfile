@@ -3,11 +3,6 @@ FROM node:18
 # Create app directory
 WORKDIR /usr/src/app
 
-# Install app dependencies
-COPY package*.json ./
-
-RUN npm install
-
 # Bundle app source
 COPY . .
 
@@ -18,10 +13,10 @@ RUN npm install --legacy-peer-deps --force
 EXPOSE 3000
 
 # RUN npm install prisma --save-dev --legacy-peer-deps --force
-# RUN npm install @prisma/client@dev prisma@dev --legacy-peer-deps --force
+RUN npm install @prisma/client@dev prisma@dev --legacy-peer-deps --force
 
-WORKDIR /usr/src/app/
 
+RUN npm run build
 
 RUN chmod +x ./entrypoint.sh
 

@@ -170,4 +170,5 @@ model Event {
     limitedSeats          Int?
     participantsUsernames String[]
     isFull                Boolean  @default(false)
+    isEventOfTheWeek      Boolean  @default(false)
 }

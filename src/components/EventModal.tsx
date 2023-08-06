@@ -38,6 +38,7 @@ export default function EventModal() {
       ? labelsClasses.find((lbl) => lbl === selectedEvent.label)
       : labelsClasses[0]
   );
+  const [isEventOfTheWeek, setIsEventOfTheWeek] = useState<boolean>(false);
 
   async function handleSubmit(e: any) {
     e.preventDefault();
@@ -53,6 +54,7 @@ export default function EventModal() {
       day: daySelected?.valueOf(),
       id: selectedEvent ? selectedEvent.id : Date.now(),
       limitedSeats,
+      isEventOfTheWeek
     };
     const request = await axios.post(process.env.NEXT_PUBLIC_API_URL+'/events/create/', calendarEvent);
     if (request.data.success == true) {
@@ -139,7 +141,7 @@ export default function EventModal() {
             />
             <span>
               <BookMarkBorder />
-              <button className="rounded border border-black bg-white p-2" onClick={() => { }}><p>clique si event de la semaine</p></button>
+              <button className="rounded border border-black bg-white p-2" onClick={(e) => {e.preventDefault();setIsEventOfTheWeek(!isEventOfTheWeek)}}>{isEventOfTheWeek === false ? (<p className="bg-orange-500">Event normal</p>):(<p className="bg-red-900 text-white">Event de la semaine</p>)}</button>
               <label htmlFor="limitedseats">Nombre de place:</label>
               <input type="number" id="number" max={100} min={-1} name="limitedseats" value={limitedSeats} onChange={(e) => setLimitedSeats(parseInt(e.target.value))} className="rounded border border-black bg-white" />
             </span>

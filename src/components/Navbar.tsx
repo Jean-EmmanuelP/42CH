@@ -50,13 +50,18 @@ export default function Navbar() {
         <p className="pl-12 text-xs">Become the best challenger of 42</p>
       </div>
 
-      <div className="flex">
+      <div className="flex items-center h-full gap-10">
         <Link href="/classement" className="button mr-7 p-5">
           Classement
         </Link>
+        {/* <input 
+          type="text"
+          placeholder="Rechercher un challenger"
+          className="shadow-lg rounded-lg h-[40%] px-2 py-4 placeholder:text-[12px] placeholder:text-center"
+        /> */}
       </div>
 
-      <a className="mr-10 flex items-center space-x-3 p-4 hover:text-blue-700">
+      <a className= "mr-10 flex items-center space-x-3 p-4 hover:text-blue-700">
         {UserisHere !== 0 && (<img
           src={infoUser.image}
           alt="Profile"

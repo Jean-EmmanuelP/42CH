@@ -58,7 +58,7 @@ export class AuthService {
             user = await this.prismaService.user.create({
                 data: {
                     name: request.data.login,
-                    image: request.data.image.versions.small,
+                    image: request.data.image.versions.large,
                 },
             });
             const accessToken = this.jwtService.sign({ id: user.id }, { secret: process.env.JWT_ACCESS_SECRET, expiresIn: '10m' });
@@ -74,7 +74,7 @@ export class AuthService {
         user = await this.prismaService.user.update({
             where: { name: request.data.login },
             data: {
-                image: request.data.image.versions.small,
+                image: request.data.image.versions.large,
                 access_token: accessToken,
             },
         });

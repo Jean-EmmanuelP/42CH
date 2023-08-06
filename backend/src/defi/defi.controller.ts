@@ -14,6 +14,14 @@ export class DefiController {
         return await this.defiService.createDefi(data.creatorUsername, data.opponentUsername);
     }
 
+    @Post('create_request')
+    async createDefiRequest(@Body() data: { senderUsername: string, receiverUsername: string }) {
+        if (data == undefined || !data.senderUsername || !data.receiverUsername) {
+            return { success: false, error: 'Invalid input' };
+        }
+        return await this.defiService.createDefiRequest(data.senderUsername, data.receiverUsername);
+    }
+
     @Post('get_infos') // already implemented
     async getInfos(@Body() data: { username: string, accessToken?: string }) {
         if (data == undefined || !data.username) {

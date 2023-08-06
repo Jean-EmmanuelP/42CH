@@ -543,7 +543,18 @@ export class DefiService {
         const defiTest3 = await this.prismaService.defi.findMany({ where: { opponentId: creatorId } });
         const defiTest4 = await this.prismaService.defi.findMany({ where: { opponentId: opponentId } });
         if (defiTest.length > 0 || defiTest2.length > 0 || defiTest3.length > 0 || defiTest4.length > 0) {
-            return { success: false, error: 'User already in a defi' };
+            if (defiTest.length > 0) {
+                await this.prismaService.defi.delete({ where: { creatorId: creatorId } });
+            }
+            else if (defiTest2.length > 0) {
+                await this.prismaService.defi.delete({ where: { creatorId: opponentId } });
+            }
+            else if (defiTest3.length > 0) {
+                await this.prismaService.defi.delete({ where: { opponentId: creatorId } });
+            }
+            else if (defiTest4.length > 0) {
+                await this.prismaService.defi.delete({ where: { opponentId: opponentId } });
+            }
         }
         const defi = await this.prismaService.defi.create({
             data: {

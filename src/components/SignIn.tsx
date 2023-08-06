@@ -38,8 +38,8 @@ export default function SignIn() {
     fetchData();
   }, [code]);
   return (
-    <div className="flex h-full w-full flex-col items-center justify-center">
-      <div className="h-[55%] w-[40%] rounded-md bg-white p-2 shadow-md border border black">
+    <div className="flex h-full w-full flex-col items-center justify-center border border-black">
+      <div className="h-[55%] w-[40%] rounded-md bg-white p-2 shadow-md border border-black">
         <div className="h-[30%] flex justify-center items-center border border-black"><h1 className="text-black font-bold text-[25px]">Welcome to 42Ch</h1></div>
         <div className="h-[70%] flex gap-1 flex-col items-center w-full">
           <p className="text-center">

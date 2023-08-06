@@ -351,6 +351,7 @@ export default function HomePage() {
           isVisible={showModal}
           onClose={() => setShowModal(false)}
           width="w-[600px]"
+          verticalPosition="80px"
         >
           <EventSubscribeModal
             eventToSend={eventToSend}
@@ -363,6 +364,7 @@ export default function HomePage() {
           isVisible={showBigModal}
           onClose={() => setShowBigModal(false)}
           width="w-[600px]"
+          verticalPosition="300px"
         >
           <EventSubscribeModal
             eventToSend={eventOTW}

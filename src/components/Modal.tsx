@@ -7,9 +7,10 @@ interface ModalProperties {
   onClose: () => void;
   children: React.ReactNode;
   width: string;
+  verticalPosition?: string;
 }
 
-const Modal = ({ isVisible, onClose, children, width }: ModalProperties) => {
+const Modal = ({ isVisible, onClose, children, width, verticalPosition = '100px'}: ModalProperties) => {
   const [show, setShow] = useState(false);
   const [transitioning, setTransitioning] = useState(false);
 
@@ -50,10 +51,10 @@ const Modal = ({ isVisible, onClose, children, width }: ModalProperties) => {
   if (!show) return null;
   return (
     <div
-      className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-25 bg-white backdrop-blur-sm transition-opacity duration-500 ease-in-out"
+      className="fixed inset-0 z-50 flex bg-black bg-opacity-25 justify-center backdrop-blur-sm transition-opacity duration-500 ease-in-out"
       id="wrapper"
       onClick={handleClose}
-      style={{ opacity: isVisible ? 1 : 0 }}
+      style={{ opacity: isVisible ? 1 : 0, paddingTop: verticalPosition }}
     >
       <div
         className={`${width} flex flex-col transition-transform duration-500`}

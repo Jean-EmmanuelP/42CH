@@ -13,11 +13,8 @@ export default function Social() {
   const [onlineUsers, setOnlineUsers] = useState<{ image: string, username: string, balance: number, statusMessage: string }[]>([])
   const [showUserModal, setShowUserModal] = useState<boolean>(false);
   const [eventToSend, setEventToSend] = useState<{ image: string, username: string, balance: number, statusMessage: string }>({ image: "", username: "", balance: 0, statusMessage: "" });
-<<<<<<< HEAD
-  const [showDefiModal, setShowDefiModal]= useState<boolean>(false);
-=======
-  const [showDefiModal, setShowDefiModal] = useState<boolean>(true);
->>>>>>> 9051f35ed9b8b57001ef1ac43e71ce46c76d83d2
+  
+  const [showDefiModal, setShowDefiModal] = useState<boolean>(false);
 
   async function getUserProfile() {
     const request = await axios.post(process.env.NEXT_PUBLIC_API_URL + "/user/get_user_infos/", JSON.stringify({ username: sessionStorage.getItem('username') }), { headers: { 'Content-Type': 'application/json' } })

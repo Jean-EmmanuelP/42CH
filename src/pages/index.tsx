@@ -43,10 +43,9 @@ interface Event {
 }
 
 export default function HomePage() {
-  // Context
-  // const { weeklyEvents } = useContext(GlobalContext);
   const [weeklyEvents, setWeeklyEvents] = useState<Event[]>([]);
   const [showModal, setShowModal] = useState<boolean>(false);
+  const [showBigModal, setShowBigModal] = useState<boolean>(false);
   const [eventToSend, setEventToSend] = useState<Event>();
   const [publicChallenges, setPublicChallenges] = useState<publicChallenge[]>(
     []
@@ -164,7 +163,7 @@ export default function HomePage() {
   // Render
   return (
     <div className="flex h-full w-full flex-col">
-      <button className="flex h-2/5 w-full items-center justify-center overflow-hidden rounded-[15px] shadow-md" onClick={() => {setShowModal(true)}}>
+      <button className="flex h-2/5 w-full items-center justify-center overflow-hidden rounded-[15px] shadow-md" onClick={() => {setShowBigModal(true)}}>
         <Image
           src={PokerImage}
           alt="Event of the Week"
@@ -347,6 +346,7 @@ export default function HomePage() {
           />
         </Modal>
       ) : null}
+      {}
     </div>
   );
 }

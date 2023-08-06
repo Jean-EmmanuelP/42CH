@@ -55,7 +55,7 @@ export default function Social() {
     <div className="flex h-full w-full flex-col  rounded-r-md bg-white shadow-md">
       <div className="h-[15%]">
         <p className="w-full pt-2 pl-4 font-bold">Social</p>
-        <div className="flex w-full items-center border-y border-black shadow-sm">
+        <div className="flex w-full items-center border-y border-[#612727] shadow-sm">
           <img
             src={userProfile.image}
             alt="User profile image"
@@ -86,7 +86,7 @@ export default function Social() {
         <p className="pl-4 pt-1 font-bold h-[15%]">Amis</p>
         <div className="flex flex-col gap-4 h-[85%] overflow-y-auto no-scrollbar">
           {friends.map((friend: any) => (
-            <div key={friend.username} className="flex w-full items-center border-y border-black shadow-sm">
+            <div key={friend.username} className="flex w-full items-center border-y border-[#612727] shadow-sm">
               <img
                 src={friend.image}
                 alt="Friend profile image"
@@ -120,7 +120,7 @@ export default function Social() {
         <p className="pl-4 pt-1 font-bold h-[10%]">En ligne</p>
         <div className="font-bold h-[90%] overflow-y-auto flex flex-col gap-4 no-scrollbar">
           {onlineUsers.map((user: any) => (
-            <div key={user.username} className="flex w-full items-center border-y border-black shadow-sm">
+            <div key={user.username} className="flex w-full items-center border-y border-[#612727] shadow-sm">
               <img
                 src={user.image}
                 alt="User profile mage"

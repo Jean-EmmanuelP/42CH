@@ -40,12 +40,14 @@ interface Event {
   id: number;
   participantsUsernames: string[];
   isFull: boolean;
+  isEventOfTheWeek: boolean;
 }
 
 export default function HomePage() {
   const [weeklyEvents, setWeeklyEvents] = useState<Event[]>([]);
   const [showModal, setShowModal] = useState<boolean>(false);
   const [showBigModal, setShowBigModal] = useState<boolean>(false);
+  const [eventOTW, setEventOTW] = useState<Event>();
   const [eventToSend, setEventToSend] = useState<Event>();
   const [publicChallenges, setPublicChallenges] = useState<publicChallenge[]>(
     []
@@ -76,6 +78,8 @@ export default function HomePage() {
         }
         return 0;
       });
+      const isEventOfTheWeek = events.find((event) => event.isEventOfTheWeek)
+      setEventOTW(isEventOfTheWeek);
       setWeeklyEvents(events);
     }
   }
@@ -346,7 +350,12 @@ export default function HomePage() {
           />
         </Modal>
       ) : null}
-      {}
+      {eventOTW !== undefined ? (
+        <Modal isVisible={showBigModal} onClose={() =>setShowBigModal(false)} width="w-[600px]">
+          <EventSubscribeModal eventToSend={eventOTW} showModal={setShowBigModal} />
+        </Modal>
+      ): null
+      }
     </div>
   );
 }

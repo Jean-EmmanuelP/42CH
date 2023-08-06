@@ -14,7 +14,6 @@ interface UserProfileProps {
 
 interface UserProfileReceived {
   userProfile: UserProfileProps;
-  onClose: () => void;
 }
 
 export default function DefiModal({

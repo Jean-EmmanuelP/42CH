@@ -3,6 +3,7 @@ import { usePathname, useSearchParams } from "next/navigation";
 import { useEffect } from "react";
 import { redirect } from "next/navigation";
 import getConfig from "next/config";
+import Marquee from "react-fast-marquee";
 const { publicRuntimeConfig } = getConfig();
 
 export default function SignIn() {
@@ -38,9 +39,14 @@ export default function SignIn() {
     fetchData();
   }, [code]);
   return (
-    <div className="flex h-full w-full flex-col items-center justify-center border border-black">
-      <div className="h-[55%] w-[40%] rounded-md bg-white p-2 shadow-md border border-black">
-        <div className="h-[30%] flex justify-center items-center border border-black"><h1 className="text-black font-bold text-[25px]">Welcome to 42Ch</h1></div>
+    <div className="flex h-full w-full flex-col items-center">
+      <div className="w-full font-bold text-[50px] text-roboto flex items-center justify-center h-[20%]">
+        <Marquee speed={90}>
+          <p className="pr-[25px]">BETA, THE FIRST VERSION WILL COME SOON...</p>
+        </Marquee>
+      </div>
+      <div className="h-[60%] w-[40%] rounded-md bg-white p-2 shadow-md">
+        <div className="h-[30%] flex justify-center items-center"><h1 className="text-black font-bold text-[25px]">Welcome to 42Ch</h1></div>
         <div className="h-[70%] flex gap-1 flex-col items-center w-full">
           <p className="text-center">
             Participe aux Evenements, Defi les membres de 42Ch
@@ -57,6 +63,7 @@ export default function SignIn() {
           </button>
         </div>
       </div>
+      <div className="h-[20%] w-full border border-black">E</div>
     </div>
   );
 }

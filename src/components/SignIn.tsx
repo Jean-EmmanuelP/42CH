@@ -40,11 +40,7 @@ export default function SignIn() {
   }, [code]);
   return (
     <div className="flex h-full w-full flex-col items-center">
-      <div className="w-full font-bold text-[50px] text-roboto flex items-center justify-center h-[20%]">
-        <Marquee speed={90}>
-          <p className="pr-[25px]">BETA, THE FIRST VERSION WILL COME SOON...</p>
-        </Marquee>
-      </div>
+      <div className="w-full h-[10%]"></div>
       <div className="h-[60%] w-[40%] rounded-md bg-white p-2 shadow-md">
         <div className="h-[30%] flex justify-center items-center"><h1 className="text-black font-bold text-[25px]">Welcome to 42Ch</h1></div>
         <div className="h-[70%] flex gap-1 flex-col items-center w-full">
@@ -63,7 +59,12 @@ export default function SignIn() {
           </button>
         </div>
       </div>
-      <div className="h-[20%] w-full border border-black">E</div>
+      <div className="w-full h-[10%]"></div>
+      <div className="h-[20%] w-full font-bold text-[40px] text-roboto flex">
+      <Marquee speed={90}>
+          <p className="pr-[25px]">BETA, THE FIRST VERSION WILL COME SOON...</p>
+        </Marquee>
+      </div>
     </div>
   );
 }

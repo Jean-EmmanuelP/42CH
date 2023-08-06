@@ -154,15 +154,17 @@ export default function HomePage() {
       return sentence;
     }
   }
+
   useEffect(() => {
     (async () => {
       await BestPlayersOfTheWeek();
     })();
   }, []);
+
   // Render
   return (
     <div className="flex h-full w-full flex-col">
-      <button className="flex h-2/5 w-full items-center justify-center overflow-hidden rounded-[15px] shadow-md">
+      <button className="flex h-2/5 w-full items-center justify-center overflow-hidden rounded-[15px] shadow-md" onClick={() => {setShowModal(true)}}>
         <Image
           src={PokerImage}
           alt="Event of the Week"

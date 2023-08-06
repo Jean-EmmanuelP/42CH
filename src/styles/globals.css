@@ -26,3 +26,16 @@ body {
     }
   }
 }
+
+/* @keyframes scroll {
+  from {
+    transform: translateY(100%)
+  }
+  to {
+    transform: translateY(-100%)
+  }
+}
+
+.scroll-animation {
+  animation: scroll 5s linear infinite;
+} */

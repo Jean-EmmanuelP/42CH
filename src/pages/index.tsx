@@ -6,13 +6,14 @@ import EventSubscribeModal from "~/components/EventSubscribeModal";
 import dayjs from "dayjs";
 import isSameOrAfter from "dayjs/plugin/isSameOrAfter";
 import isSameOrBefore from "dayjs/plugin/isSameOrBefore";
-import getConfig from 'next/config';
+import getConfig from "next/config";
 const { publicRuntimeConfig } = getConfig();
 import PokerImage from "../utils/images/poker.svg";
 import Position from "../utils/images/position.svg";
 import ClockIcon from "../utils/images/clockicon.svg";
 import QuestionMark from "../utils/images/questionmark.svg";
 import Versus from "../utils/images/versus.png";
+import Marquee from "react-fast-marquee";
 
 dayjs.extend(isSameOrAfter);
 dayjs.extend(isSameOrBefore);
@@ -57,7 +58,7 @@ export default function HomePage() {
     const today = dayjs().startOf("day");
     const tenDaysFromNow = dayjs().add(10, "day");
     const request = await axios.get(
-      process.env.NEXT_PUBLIC_API_URL+"/events/incoming-events/"
+      process.env.NEXT_PUBLIC_API_URL + "/events/incoming-events/"
     );
     request.data.forEach((element: Event) => {
       element.day = Number(element.day);
@@ -78,7 +79,7 @@ export default function HomePage() {
         }
         return 0;
       });
-      const isEventOfTheWeek = events.find((event) => event.isEventOfTheWeek)
+      const isEventOfTheWeek = events.find((event) => event.isEventOfTheWeek);
       setEventOTW(isEventOfTheWeek);
       setWeeklyEvents(events);
     }
@@ -86,7 +87,7 @@ export default function HomePage() {
 
   async function getPublicChallenges() {
     const request = await axios.get(
-      process.env.NEXT_PUBLIC_API_URL+"/defi/get_all_public_challenges/"
+      process.env.NEXT_PUBLIC_API_URL + "/defi/get_all_public_challenges/"
     );
 
     if (request.data.success == true)
@@ -141,7 +142,7 @@ export default function HomePage() {
   const [players, setPlayers] = useState<PlayerProps[]>([]);
   async function BestPlayersOfTheWeek() {
     const request = await axios.get(
-      process.env.NEXT_PUBLIC_API_URL+"/user/get_top_users/"
+      process.env.NEXT_PUBLIC_API_URL + "/user/get_top_users/"
     );
     const topUsers = request.data.topUsers;
     console.log(`those are the top Users`, topUsers);
@@ -167,7 +168,12 @@ export default function HomePage() {
   // Render
   return (
     <div className="flex h-full w-full flex-col">
-      <button className="flex h-2/5 w-full items-center justify-center overflow-hidden rounded-[15px] shadow-md" onClick={() => {setShowBigModal(true)}}>
+      <button
+        className="flex h-2/5 w-full items-center justify-center overflow-hidden rounded-[15px] shadow-md"
+        onClick={() => {
+          setShowBigModal(true);
+        }}
+      >
         <Image
           src={PokerImage}
           alt="Event of the Week"
@@ -179,86 +185,86 @@ export default function HomePage() {
           <div className="mb-[2%] h-[56%] w-full rounded-md bg-white">
             <h2 className="mb-2 pl-7 pt-4 font-bold">Evenements</h2>
             <div className="flex-grow overflow-auto rounded-b-md bg-white px-2">
-              <div className="max-h-32">
-                {weeklyEvents.map((event: Event, index: number) => (
-                  // Première chose, if event.isFull == true event marqué comme full + quand on click dessus on peut pas s'inscrire
-                  // Deuxième chose si sessionStorage.getItem('username') est dans event.participantsUsernames marqué event comme inscrit
-                  // et quand on click dessus on peut se désinscrire
-                  // Sinon juste afficher l'event et quand on click dessus on peut s'inscrire
+                  <div className="max-h-32">
+                  {weeklyEvents.map((event: Event, index: number) => (
+                    // Première chose, if event.isFull == true event marqué comme full + quand on click dessus on peut pas s'inscrire
+                    // Deuxième chose si sessionStorage.getItem('username') est dans event.participantsUsernames marqué event comme inscrit
+                    // et quand on click dessus on peut se désinscrire
+                    // Sinon juste afficher l'event et quand on click dessus on peut s'inscrire
 
-                  <div
-                    key={index}
-                    className={`mb-2 flex h-12 w-full rounded-md border bg-white hover:cursor-pointer`}
-                    style={{ borderColor: getColorFromLabel(event.label) }}
-                    onClick={() => {
-                      setEventToSend(event);
-                      setShowModal(true);
-                    }}
-                  >
                     <div
-                      className={`w-1/3 ${event.label} rounded-l-md text-center text-sm text-white`}
+                      key={index}
+                      className={`mb-2 flex h-12 w-full rounded-md border bg-white hover:cursor-pointer`}
+                      style={{ borderColor: getColorFromLabel(event.label) }}
+                      onClick={() => {
+                        setEventToSend(event);
+                        setShowModal(true);
+                      }}
                     >
-                      <p>{new Date(event.day).getDate()}</p>
-                      <p>
-                        {new Date(event.day).toLocaleString("default", {
-                          month: "long",
-                        })}
-                      </p>
-                    </div>
-                    <div className="flex h-full w-2/3 flex-row pl-1">
-                      <div className="h-full w-2/3">
-                        <h3
-                          className="h-1/3 text-sm text-black"
-                          style={{ color: getColorFromLabel(event.label) }}
-                        >
-                          {event.title}
-                        </h3>
-                        <p className="flex h-1/3 items-center overflow-hidden pl-2 text-[9px] text-gray-500">
-                          {truncateWords(event.description, 6)}
+                      <div
+                        className={`w-1/3 ${event.label} rounded-l-md text-center text-sm text-white`}
+                      >
+                        <p>{new Date(event.day).getDate()}</p>
+                        <p>
+                          {new Date(event.day).toLocaleString("default", {
+                            month: "long",
+                          })}
                         </p>
-                        <div className="flex h-1/3 w-full flex-row items-center">
-                          <div className="flex w-1/2 justify-center">
-                            <Image
-                              src={ClockIcon}
-                              alt="clockicon"
-                              height={10}
-                              width={10}
-                            />
-                            <p className="pl-1 text-[8px]">16h</p>
-                          </div>
-                          <div className="flex w-1/2 justify-center">
-                            <Image
-                              src={Position}
-                              alt="position"
-                              height={10}
-                              width={10}
-                            />
-                            <p className="text-[8px]">Paul F5</p>
+                      </div>
+                      <div className="flex h-full w-2/3 flex-row pl-1">
+                        <div className="h-full w-2/3">
+                          <h3
+                            className="h-1/3 text-sm text-black"
+                            style={{ color: getColorFromLabel(event.label) }}
+                          >
+                            {event.title}
+                          </h3>
+                          <p className="flex h-1/3 items-center overflow-hidden pl-2 text-[9px] text-gray-500">
+                            {truncateWords(event.description, 6)}
+                          </p>
+                          <div className="flex h-1/3 w-full flex-row items-center">
+                            <div className="flex w-1/2 justify-center">
+                              <Image
+                                src={ClockIcon}
+                                alt="clockicon"
+                                height={10}
+                                width={10}
+                              />
+                              <p className="pl-1 text-[8px]">16h</p>
+                            </div>
+                            <div className="flex w-1/2 justify-center">
+                              <Image
+                                src={Position}
+                                alt="position"
+                                height={10}
+                                width={10}
+                              />
+                              <p className="text-[8px]">Paul F5</p>
+                            </div>
                           </div>
                         </div>
-                      </div>
-                      <div className="h-full w-1/3">
-                        {!event.isFull ? (
-                          <div className="flex flex-col  pl-1 pt-1 text-center text-[10px] text-green-500">
-                            {event.participantsUsernames.includes(
-                              sessionStorage.getItem("username") as string
-                            ) ? (
-                              <p>Inscrit</p>
-                            ) : (
-                              <p>S'inscrire</p>
-                            )}
-                            {/* ici il faut relier le back pour mettre l'heure et l'endroit et il faut le mettre ici */}
-                            <div className="rounded-tl-md pt-2 text-black"></div>
-                          </div>
-                        ) : (
-                          <div className="flex px-1 pt-1 text-center text-xs text-green-500">
-                            Full
-                          </div>
-                        )}
-                      </div>
+                        <div className="h-full w-1/3">
+                          {!event.isFull ? (
+                            <div className="flex flex-col  pl-1 pt-1 text-center text-[10px] text-green-500">
+                              {event.participantsUsernames.includes(
+                                sessionStorage.getItem("username") as string
+                              ) ? (
+                                <p>Inscrit</p>
+                              ) : (
+                                <p>S'inscrire</p>
+                              )}
+                              {/* ici il faut relier le back pour mettre l'heure et l'endroit et il faut le mettre ici */}
+                              <div className="rounded-tl-md pt-2 text-black"></div>
+                            </div>
+                          ) : (
+                            <div className="flex px-1 pt-1 text-center text-xs text-green-500">
+                              Full
+                            </div>
+                          )}
+                        </div>
+                        </div>
                     </div>
-                  </div>
-                ))}
+                  ))}
               </div>
             </div>
           </div>
@@ -351,11 +357,17 @@ export default function HomePage() {
         </Modal>
       ) : null}
       {eventOTW !== undefined ? (
-        <Modal isVisible={showBigModal} onClose={() =>setShowBigModal(false)} width="w-[600px]">
-          <EventSubscribeModal eventToSend={eventOTW} showModal={setShowBigModal} />
+        <Modal
+          isVisible={showBigModal}
+          onClose={() => setShowBigModal(false)}
+          width="w-[600px]"
+        >
+          <EventSubscribeModal
+            eventToSend={eventOTW}
+            showModal={setShowBigModal}
+          />
         </Modal>
-      ): null
-      }
+      ) : null}
     </div>
   );
 }

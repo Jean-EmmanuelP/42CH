@@ -6,6 +6,7 @@ import { api } from "~/utils/api";
 import axios from "axios";
 import { useEffect, useState } from "react";
 import getConfig from 'next/config';
+import Image from "next/image";
 const { publicRuntimeConfig } = getConfig();
 
 function extractUsername(email: string) {
@@ -62,8 +63,10 @@ export default function Navbar() {
       </div>
 
       <a className= "mr-10 flex items-center space-x-3 p-4 hover:text-blue-700">
-        {UserisHere !== 0 && (<img
+        {UserisHere !== 0 && (<Image
           src={infoUser.image}
+          width={50}
+          height={50}
           alt="Profile"
           className="h-12 w-12 rounded-full shadow-md"
         />)}

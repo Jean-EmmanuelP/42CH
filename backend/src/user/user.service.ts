@@ -151,13 +151,29 @@ export class UserService {
         if (user == null) {
             return { success: false, error: 'User not found' }
         }
-        //todo envoyer un historique?
+        // get the ranking of the user, based on the balance
+        const users = await this.prismaService.user.findUnique({
+            where: { name: username },
+            select: { balance: true }
+        })
+        if (!users)
+            return;
+        const higherBalanceCount = await this.prismaService.user.count({
+            where: {
+                balance: {
+                    gt: users.balance
+                }
+            }
+        })
+        let classment = higherBalanceCount + 1;
+
         return {
             success: true, user: {
                 username: user.name,
                 image: user.image,
                 balance: user.balance,
                 statusMessage: user.statusMessage,
+                classment: classment,
             }
         }
     }

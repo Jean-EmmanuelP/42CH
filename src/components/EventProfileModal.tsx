@@ -5,13 +5,14 @@ interface UserProfileProps {
     image: string
     statusMessage: string
     balance: number
+    classment: string
 }
 
 interface UserProfileReceived {
     userProfile: UserProfileProps
 }
 
-export default function EventProfileModal({userProfile}: UserProfileReceived) {
+export default function EventProfileModal({ userProfile }: UserProfileReceived) {
     return (
         <div className="h-[65vh] text-white bg-[#272A30] p-2">
             <div className="h-[50%] w-full flex">
@@ -35,8 +36,8 @@ export default function EventProfileModal({userProfile}: UserProfileReceived) {
                         <div className="h-[20%] w-full"></div>
                         <div className="h-[80%] w-full flex justify-center">
                             <div className="flex flex-col gap-2">
-                                <p className="text-[35px] text-center">#25</p>
-                                <p className="text-[15px] text-center">Wallet: 203K</p>
+                                <p className="text-[35px] text-center">#{userProfile.classment}</p>
+                                <p className="text-[15px] text-center">Wallet: {userProfile.balance}</p>
                             </div>
                         </div>
                     </div>
@@ -60,30 +61,12 @@ export default function EventProfileModal({userProfile}: UserProfileReceived) {
                     <div className="bg-red-500 h-[33%] w-full flex shadow-md border-y border-black">
                         <div className="relative w-[15%] h-full">
 
-                        <Image
-                        src={userProfile.image}
-                        layout="fill"
-                        objectFit="contain"
-                        alt="User Image"
-                        />
-                        </div>
-                        <div className="w-[60%] h-full pl-2 flex flex-col">
-                            <h1 className="font-bold text-[12px]">Jean-Emmanuel Perramant</h1>
-                            <h2 className="font-gray-900 text-[9px] pl-4">je te mange a tout les jeux</h2>
-                        </div>
-                        <div className="w-[25%]">
-                            <h1 className="text-center">#25</h1>
-                        </div>
-                        </div>
-                    <div className="bg-red-500 h-[33%] w-full flex shadow-md border-y border-black">
-                        <div className="relative w-[15%] h-full">
-
-                        <Image
-                        src={userProfile.image}
-                        layout="fill"
-                        objectFit="contain"
-                        alt="User Image"
-                        />
+                            <Image
+                                src={userProfile.image}
+                                layout="fill"
+                                objectFit="contain"
+                                alt="User Image"
+                            />
                         </div>
                         <div className="w-[60%] h-full pl-2 flex flex-col">
                             <h1 className="font-bold text-[12px]">Jean-Emmanuel Perramant</h1>
@@ -96,12 +79,30 @@ export default function EventProfileModal({userProfile}: UserProfileReceived) {
                     <div className="bg-red-500 h-[33%] w-full flex shadow-md border-y border-black">
                         <div className="relative w-[15%] h-full">
 
-                        <Image
-                        src={userProfile.image}
-                        layout="fill"
-                        objectFit="contain"
-                        alt="User Image"
-                        />
+                            <Image
+                                src={userProfile.image}
+                                layout="fill"
+                                objectFit="contain"
+                                alt="User Image"
+                            />
+                        </div>
+                        <div className="w-[60%] h-full pl-2 flex flex-col">
+                            <h1 className="font-bold text-[12px]">Jean-Emmanuel Perramant</h1>
+                            <h2 className="font-gray-900 text-[9px] pl-4">je te mange a tout les jeux</h2>
+                        </div>
+                        <div className="w-[25%]">
+                            <h1 className="text-center">#25</h1>
+                        </div>
+                    </div>
+                    <div className="bg-red-500 h-[33%] w-full flex shadow-md border-y border-black">
+                        <div className="relative w-[15%] h-full">
+
+                            <Image
+                                src={userProfile.image}
+                                layout="fill"
+                                objectFit="contain"
+                                alt="User Image"
+                            />
                         </div>
                         <div className="w-[60%] h-full pl-2 flex flex-col">
                             <h1 className="font-bold text-[12px]">Jean-Emmanuel Perramant</h1>

@@ -13,10 +13,10 @@ export default function Social() {
   const [onlineUsers, setOnlineUsers] = useState<{ image: string, username: string, balance: number, statusMessage: string }[]>([])
   const [showUserModal, setShowUserModal] = useState<boolean>(false);
   const [eventToSend, setEventToSend] = useState<{ image: string, username: string, balance: number, statusMessage: string }>({ image: "", username: "", balance: 0, statusMessage: "" });
-  const [showDefiModal, setShowDefiModal]= useState<boolean>(true);
+  const [showDefiModal, setShowDefiModal] = useState<boolean>(true);
 
   async function getUserProfile() {
-    const request = await axios.post(process.env.NEXT_PUBLIC_API_URL+"/user/get_user_infos/", JSON.stringify({ username: sessionStorage.getItem('username') }), { headers: { 'Content-Type': 'application/json' } })
+    const request = await axios.post(process.env.NEXT_PUBLIC_API_URL + "/user/get_user_infos/", JSON.stringify({ username: sessionStorage.getItem('username') }), { headers: { 'Content-Type': 'application/json' } })
 
     if (request.data.success == true)
       setUserProfile(request.data.user);
@@ -25,7 +25,7 @@ export default function Social() {
   }
 
   async function getFriends() {
-    const request = await axios.post(process.env.NEXT_PUBLIC_API_URL+"/user/get_friends/", JSON.stringify({ username: sessionStorage.getItem('username') }), { headers: { 'Content-Type': 'application/json' } })
+    const request = await axios.post(process.env.NEXT_PUBLIC_API_URL + "/user/get_friends/", JSON.stringify({ username: sessionStorage.getItem('username') }), { headers: { 'Content-Type': 'application/json' } })
 
     if (request.data.success == true)
       setFriends(request.data.friends);
@@ -34,7 +34,7 @@ export default function Social() {
   }
 
   async function getOnlineUsers() {
-    const request = await axios.get(process.env.NEXT_PUBLIC_API_URL+"/user/get_online_users/")
+    const request = await axios.get(process.env.NEXT_PUBLIC_API_URL + "/user/get_online_users/")
 
     if (request.data.success == true) {
       let toSet = request.data.onlineUsers.filter((user: any) => user.username != sessionStorage.getItem('username'))
@@ -65,7 +65,7 @@ export default function Social() {
             width={60}
             height={60}
             className="hover:cursor-pointer"
-            onClick={() => {setShowUserModal(true), setEventToSend(userProfile)}}
+            onClick={() => { setShowUserModal(true), setEventToSend(userProfile) }}
           />
           <div className="m-auto ml-[3px] mt-[3px] h-2.5 w-2.5 rounded-full bg-green-500">
             {""}
@@ -96,7 +96,7 @@ export default function Social() {
                 width={60}
                 height={60}
                 className="hover:cursor-pointer"
-                onClick={() => {setShowUserModal(true), setEventToSend(friend)}}
+                onClick={() => { setShowUserModal(true), setEventToSend(friend) }}
               />
               <div className="m-auto ml-[3px] mt-[3px] h-2.5 w-2.5 rounded-full bg-green-500">
                 {""}
@@ -108,7 +108,7 @@ export default function Social() {
                 <p className="h-4 text-[10px] text-black font-bold">{friend.statusMessage}</p>
                 <div className="flex items-center justify-between px-[2px]">
                   <p className="text-[11px] font-bold">Wallet : ${friend.balance}</p>
-                  <button className="mb-[1px] rounded-md bg-red-600 px-3.5 py-[2px] text-[11px] text-white" onClick={() => {setEventToSend(friend),setShowDefiModal(true)}}>
+                  <button className="mb-[1px] rounded-md bg-red-600 px-3.5 py-[2px] text-[11px] text-white" onClick={() => { setEventToSend(friend), setShowDefiModal(true) }}>
                     Defier
                   </button>
                 </div>
@@ -131,7 +131,7 @@ export default function Social() {
                 width={60}
                 height={60}
                 className="hover:cursor-pointer"
-                onClick={() => {setShowUserModal(true), setEventToSend(user)}}
+                onClick={() => { setShowUserModal(true), setEventToSend(user) }}
               />
               <div className="m-auto ml-[3px] mt-[3px] h-2.5 w-2.5 rounded-full bg-green-500">
                 {""}
@@ -143,7 +143,7 @@ export default function Social() {
                 <p className="h-4 text-[10px] text-black font-bold">{user.bio}</p>
                 <div className="flex items-center justify-between px-[2px]">
                   <p className="text-[11px] font-bold">Wallet : ${user.balance}</p>
-                  <button className="mb-[1px] rounded-md bg-red-600 px-3.5 py-[2px] text-[11px] text-white" onClick={() => {setEventToSend(user),setShowDefiModal(true)}}>
+                  <button className="mb-[1px] rounded-md bg-red-600 px-3.5 py-[2px] text-[11px] text-white" onClick={() => { setEventToSend(user), setShowDefiModal(true) }}>
                     Defier
                   </button>
                 </div>

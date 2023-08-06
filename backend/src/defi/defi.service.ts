@@ -561,8 +561,7 @@ export class DefiService {
     }
 
 
-    async createDefiRequest(senderUsername: any, receiverUsername: any) {
-        console.log('.')
+    async createDefiRequest(senderUsername: any, receiverUsername: any, fix?: boolean) {
         const sender = await this.prismaService.user.findUnique({ where: { name: senderUsername } });
         const receiver = await this.prismaService.user.findUnique({ where: { name: receiverUsername } });
         if (!sender || !receiver) {
@@ -576,6 +575,9 @@ export class DefiService {
         const defiRequest = await this.prismaService.defiRequest.create({ data: { senderUsername: senderUsername, receiverUsername: receiverUsername } });
         if (!defiRequest) {
             return { success: false, error: 'Defi request not created' };
+        }
+        if (fix != undefined && fix == true) {
+            // 
         }
         return { success: true };
     }

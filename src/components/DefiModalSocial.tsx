@@ -24,7 +24,7 @@ export default function DefiModal({
   };
   return (
     <div className="flex h-[65vh] w-full flex-col items-center justify-center bg-[#EEF0F3]">
-      <div className="h[40%] flex w-full flex-col items-center justify-center border border-black">
+      <div className="h[40%] flex w-full flex-col items-center justify-center">
         <Image
           src={FightImage}
           width={100}
@@ -36,26 +36,26 @@ export default function DefiModal({
           Envoie ton invitation de defi a ce challenger !
         </p>
       </div>
-      <div className="h-[60%] w-full border border-black">
-        <div className="h-[40%] flex justify-center">
+      <div className="h-[60%] w-full">
+        <div className="h-[70%] flex justify-center">
         <Image
           src={userProfile.image}
-          width={100}
-          height={100}
+          width={200}
+          height={200}
           alt="UserProfile Image"
           className="rounded-full shadow-md pt-2"
         />
         </div>
         <form
           onSubmit={handleDefiSubmit}
-          className="flex w-full h-[60%] relative flex-col items-center gap-2 border border-red-500"
+          className="flex w-full h-[30%] relative flex-col items-center gap-2"
         >
           <p className="text-gray mr-2 text-[10px] font-medium text-[#909090] pt-2">
             Envoie le defi a ce challenger, recupere un maximum de ses coins pour accroitre ta fortune
           </p>
           <button
             type="submit"
-            className="absolute bottom-5 rounded-md border border-white bg-red-600 px-4 py-2 text-white shadow-md"
+            className="absolute bottom-3 rounded-md border border-white bg-red-600 px-4 py-2 text-white shadow-md"
           >
             Envoyer le defi a {userProfile.username}
           </button>

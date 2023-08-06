@@ -3,6 +3,7 @@ import { useState, useEffect } from "react";
 import Modal from "./Modal";
 import EventProfileModal from "./EventProfileModal";
 import getConfig from 'next/config';
+import DefiModal from "./DefiModalSocial";
 const { publicRuntimeConfig } = getConfig();
 
 export default function Social() {
@@ -10,7 +11,9 @@ export default function Social() {
   const [userProfile, setUserProfile] = useState<{ image: string, username: string, balance: number, statusMessage: string }>({ image: "", username: "", balance: 0, statusMessage: "" })
   const [friends, setFriends] = useState<{ image: string, username: string, balance: number, statusMessage: string }[]>([])
   const [onlineUsers, setOnlineUsers] = useState<{ image: string, username: string, balance: number, statusMessage: string }[]>([])
-  const [showModal, setShowModal] = useState<boolean>(false);
+  const [showUserModal, setShowUserModal] = useState<boolean>(false);
+  const [eventToSend, setEventToSend] = useState<{ image: string, username: string, balance: number, statusMessage: string }>({ image: "", username: "", balance: 0, statusMessage: "" });
+  const [showDefiModal, setShowDefiModal]= useState<boolean>(true);
 
   async function getUserProfile() {
     const request = await axios.post(process.env.NEXT_PUBLIC_API_URL+"/user/get_user_infos/", JSON.stringify({ username: sessionStorage.getItem('username') }), { headers: { 'Content-Type': 'application/json' } })
@@ -62,7 +65,7 @@ export default function Social() {
             width={60}
             height={60}
             className="hover:cursor-pointer"
-            onClick={() => {setShowModal(true)}}
+            onClick={() => {setShowUserModal(true), setEventToSend(userProfile)}}
           />
           <div className="m-auto ml-[3px] mt-[3px] h-2.5 w-2.5 rounded-full bg-green-500">
             {""}
@@ -92,7 +95,8 @@ export default function Social() {
                 alt="Friend profile image"
                 width={60}
                 height={60}
-                className=""
+                className="hover:cursor-pointer"
+                onClick={() => {setShowUserModal(true), setEventToSend(friend)}}
               />
               <div className="m-auto ml-[3px] mt-[3px] h-2.5 w-2.5 rounded-full bg-green-500">
                 {""}
@@ -104,7 +108,7 @@ export default function Social() {
                 <p className="h-4 text-[10px] text-black font-bold">{friend.statusMessage}</p>
                 <div className="flex items-center justify-between px-[2px]">
                   <p className="text-[11px] font-bold">Wallet : ${friend.balance}</p>
-                  <button className="mb-[1px] rounded-md bg-red-600 px-3.5 py-[2px] text-[11px] text-white">
+                  <button className="mb-[1px] rounded-md bg-red-600 px-3.5 py-[2px] text-[11px] text-white" onClick={() => {setEventToSend(friend),setShowDefiModal(true)}}>
                     Defier
                   </button>
                 </div>
@@ -126,7 +130,8 @@ export default function Social() {
                 alt="User profile mage"
                 width={60}
                 height={60}
-                className=""
+                className="hover:cursor-pointer"
+                onClick={() => {setShowUserModal(true), setEventToSend(user)}}
               />
               <div className="m-auto ml-[3px] mt-[3px] h-2.5 w-2.5 rounded-full bg-green-500">
                 {""}
@@ -138,7 +143,7 @@ export default function Social() {
                 <p className="h-4 text-[10px] text-black font-bold">{user.bio}</p>
                 <div className="flex items-center justify-between px-[2px]">
                   <p className="text-[11px] font-bold">Wallet : ${user.balance}</p>
-                  <button className="mb-[1px] rounded-md bg-red-600 px-3.5 py-[2px] text-[11px] text-white">
+                  <button className="mb-[1px] rounded-md bg-red-600 px-3.5 py-[2px] text-[11px] text-white" onClick={() => {setEventToSend(user),setShowDefiModal(true)}}>
                     Defier
                   </button>
                 </div>
@@ -150,8 +155,11 @@ export default function Social() {
           ))}
         </div>
       </div>
-      <Modal isVisible={showModal} onClose={() => setShowModal(false)} width="w-[500px]">
-        <EventProfileModal userProfile={userProfile} />
+      <Modal isVisible={showUserModal} onClose={() => setShowUserModal(false)} width="w-[500px]">
+        <EventProfileModal userProfile={eventToSend} />
+      </Modal>
+      <Modal isVisible={showDefiModal} onClose={() => setShowDefiModal(false)} width="w-[500px]">
+        <DefiModal userProfile={eventToSend} />
       </Modal>
     </div>
   );

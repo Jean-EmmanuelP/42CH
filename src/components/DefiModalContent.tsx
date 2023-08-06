@@ -1,15 +1,12 @@
 // Import des bibliothèques nécessaires
 import { useState, useEffect, useContext } from "react";
-import { useRouter } from "next/router";
-import { ToastContainer, toast } from "react-toastify";
+import { toast } from "react-toastify";
 import Pusher from "pusher-js";
 import FightImage from "../utils/images/fightImg.png";
 import Loop from "../utils/images/LoopIcon.svg";
 
 // Import des composants et des utilitaires
-import Navbar from "~/components/Navbar";
 import { api } from "../utils/api";
-import GlobalContext from "~/context/GlobalContext";
 
 // Import des styles
 import "react-toastify/dist/ReactToastify.css";

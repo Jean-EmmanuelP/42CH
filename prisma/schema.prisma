@@ -4,7 +4,7 @@
 generator client {
     provider        = "prisma-client-js"
 // ceci permet de generer prisma dans le back la premiere fois que je lutilise [pour Jean-E/Window]
-//  output          = "../backend/node_modules/.prisma/client"
+    output          = "../backend/node_modules/.prisma/client"
     previewFeatures = ["jsonProtocol"]
     binaryTargets   = ["native", "debian-openssl-3.0.x"]
 }

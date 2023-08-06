@@ -77,11 +77,11 @@ export class EventsService {
         return events;
     }
 
-    async createEvent(event: { title: string, description: string, label: string, day: number, id: string, limitedSeats: number }) {
-        const { title, description, label, day, id } = event;
+    async createEvent(event: { title: string, description: string, label: string, day: number, id: string, limitedSeats: number, isEventOfTheWeek: boolean }) {
+        const { title, description, label, day, id, isEventOfTheWeek } = event;
         const stringDay = day.toString();
         const intLimited = parseInt(event.limitedSeats.toString())
-        const createdEvent = await this.prismaService.event.create({ data: { title: title, description: description, label: label, day: stringDay, limitedSeats: intLimited } })
+        const createdEvent = await this.prismaService.event.create({ data: { title: title, description: description, label: label, day: stringDay, limitedSeats: intLimited, isEventOfTheWeek:isEventOfTheWeek } })
         if (createdEvent == null) {
             return { success: false, error: "Event not created" }
         }

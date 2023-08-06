@@ -81,6 +81,7 @@ export default function HomePage() {
       });
       const isEventOfTheWeek = events.find((event) => event.isEventOfTheWeek);
       setEventOTW(isEventOfTheWeek);
+      console.log(`is event of the week`, isEventOfTheWeek);
       setWeeklyEvents(events);
     }
   }
@@ -171,7 +172,10 @@ export default function HomePage() {
       <button
         className="flex h-2/5 w-full items-center justify-center overflow-hidden rounded-[15px] shadow-md"
         onClick={() => {
+          setEventToSend(eventOTW);
+          console.log(eventOTW)
           setShowBigModal(true);
+          console.log(`showBigModal`, showBigModal);
         }}
       >
         <Image

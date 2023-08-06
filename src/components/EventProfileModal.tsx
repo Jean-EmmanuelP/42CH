@@ -1,4 +1,3 @@
-import { divide } from "lodash"
 import Image from "next/image"
 
 interface UserProfileProps {

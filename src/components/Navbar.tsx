@@ -14,16 +14,22 @@ function extractUsername(email: string) {
 
 export default function Navbar() {
   const [infoUser, setInfoUser] = useState<any>({})
+  const [UserisHere, setUserIsHere] = useState(0);
   
   useEffect(() => {
     userInfo()
   }, [])
-  let UserisHere = 0;
+
+ 
+  useEffect(() => {
+    console.log(`User is here`, UserisHere)
+  }, [UserisHere])
+
   async function userInfo() {
     const username = sessionStorage.getItem("username");
     if (username)
     {
-      UserisHere = 1;
+      setUserIsHere(1);
     }
     const request = await axios.post(
       process.env.NEXT_PUBLIC_API_URL+"/user/get_user_infos",
@@ -51,7 +57,7 @@ export default function Navbar() {
       </div>
 
       <a className="mr-10 flex items-center space-x-3 p-4 hover:text-blue-700">
-        {UserisHere === 1 && (<img
+        {UserisHere !== 0 && (<img
           src={infoUser.image}
           alt="Profile"
           className="h-12 w-12 rounded-full shadow-md"

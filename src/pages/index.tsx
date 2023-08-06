@@ -185,7 +185,8 @@ export default function HomePage() {
           <div className="mb-[2%] h-[56%] w-full rounded-md bg-white">
             <h2 className="mb-2 pl-7 pt-4 font-bold">Evenements</h2>
             <div className="flex-grow overflow-auto rounded-b-md bg-white px-2">
-                  <div className="max-h-32">
+              <div className="max-h-32 w-full">
+                <div className="h-full w-full">
                   {weeklyEvents.map((event: Event, index: number) => (
                     // Première chose, if event.isFull == true event marqué comme full + quand on click dessus on peut pas s'inscrire
                     // Deuxième chose si sessionStorage.getItem('username') est dans event.participantsUsernames marqué event comme inscrit
@@ -262,9 +263,10 @@ export default function HomePage() {
                             </div>
                           )}
                         </div>
-                        </div>
+                      </div>
                     </div>
                   ))}
+                </div>                
               </div>
             </div>
           </div>

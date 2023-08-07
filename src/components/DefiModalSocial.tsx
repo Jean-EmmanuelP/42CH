@@ -36,16 +36,25 @@ export default function DefiModal({
       }),
       { headers: { "Content-Type": "application/json" } }
     );
-    console.log("🚀 ~ file: DefiModalSocial.tsx:38 ~ sendRequest ~ request:", request)
+    console.log(
+      "🚀 ~ file: DefiModalSocial.tsx:38 ~ sendRequest ~ request:",
+      request
+    );
 
     if (request.data.success === true) {
       setMessage("Défi envoyé avec succès!");
       setError(null);
+      setTimeout(() => {
+        onClose();
+      }, 1500);
       onClose();
     } else {
       const errorRequest = request.data.error;
       setError(`Erreur lors de l'envoi du défi : ${errorRequest}`);
       setMessage(null);
+      setTimeout(() => {
+        setError(null);
+      }, 1500);
     }
   };
 
@@ -87,8 +96,12 @@ export default function DefiModal({
           </button>
         </form>
       </div>
-      {message && <p className="absolute top-0 flex items-center bg-red-900 text-green-600">{message}</p>}
-      {error && <p className="absolute top-0 text-red-600 bg-gray-900 p-1 rounded-md border border-red-500 flex items-center">{error}</p>}
+      <div
+        className={`{message === null && error === null ? ''} absolute top-0 flex items-center bg-red-900 p-2`}
+      >
+        {message && <p>{message}</p>}
+        {error && <p>{error}</p>}
+      </div>
     </div>
   );
 }

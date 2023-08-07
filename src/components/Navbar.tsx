@@ -63,11 +63,11 @@ export default function Navbar() {
         <Link href="/classement" className="button mr-7 p-5">
           Classement
         </Link>
-        <input
+        {/* <input
           type="text"
           placeholder="Rechercher un challenger"
           className="h-[40%] rounded-lg px-2 py-4 shadow-lg placeholder:text-center placeholder:text-[12px]"
-        />
+        /> */}
       </div>
 
       <div>

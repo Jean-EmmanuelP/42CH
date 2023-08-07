@@ -1,5 +1,4 @@
-import { useContext, useEffect, useState } from "react";
-import GlobalContext from "~/context/GlobalContext";
+import { useEffect, useState } from "react";
 import Image from "next/image";
 import Modal from "~/components/Modal";
 import EventSubscribeModal from "~/components/EventSubscribeModal";
@@ -13,12 +12,12 @@ import Position from "../utils/images/position.svg";
 import ClockIcon from "../utils/images/clockicon.svg";
 import QuestionMark from "../utils/images/questionmark.svg";
 import Versus from "../utils/images/versus.png";
-import Marquee from "react-fast-marquee";
 
 dayjs.extend(isSameOrAfter);
 dayjs.extend(isSameOrBefore);
 
 import axios from "axios";
+import EventProfileModal from "~/components/EventProfileModal";
 
 interface publicChallenge {
   id: string;
@@ -47,9 +46,11 @@ interface Event {
 export default function HomePage() {
   const [weeklyEvents, setWeeklyEvents] = useState<Event[]>([]);
   const [showModal, setShowModal] = useState<boolean>(false);
+  const [showUserModal, setShowUserModal] = useState<boolean>(false);
   const [showBigModal, setShowBigModal] = useState<boolean>(false);
   const [eventOTW, setEventOTW] = useState<Event>();
   const [eventToSend, setEventToSend] = useState<Event>();
+  const [playerOTW, setPlayerOTW] = useState<PlayerProps>();
   const [publicChallenges, setPublicChallenges] = useState<publicChallenge[]>(
     []
   );
@@ -139,6 +140,8 @@ export default function HomePage() {
     username: string;
     image: string;
     balance: number;
+    statusMessage: string;
+    classement: string;
   }
   const [players, setPlayers] = useState<PlayerProps[]>([]);
   async function BestPlayersOfTheWeek() {
@@ -292,6 +295,7 @@ export default function HomePage() {
                     className={`${
                       index === 1 ? "shadow-xl" : "shadow-md"
                     } rounded-md`}
+                    onClick={() => { setShowUserModal(true), setPlayerOTW(player) }}
                   />
                   <p className="flex w-full justify-center pt-1 text-[10px]">
                     {index + 1}
@@ -376,6 +380,13 @@ export default function HomePage() {
           />
         </Modal>
       ) : null}
+      { playerOTW !== undefined ? (
+
+      <Modal isVisible={showUserModal} onClose={() => setShowUserModal(false)} width="w-[500px]">
+        <EventProfileModal userProfile={playerOTW} />
+      </Modal>
+      ): null
+      }
     </div>
   );
 }

@@ -5,10 +5,10 @@ interface UserProfileProps {
     image: string
     statusMessage: string
     balance: number
-    classment: string
+    classement: number
 }
 
-interface UserProfileReceived {
+export interface UserProfileReceived {
     userProfile: UserProfileProps
 }
 

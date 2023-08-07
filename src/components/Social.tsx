@@ -8,11 +8,11 @@ const { publicRuntimeConfig } = getConfig();
 
 export default function Social() {
   const [bio, setBio] = useState("");
-  const [userProfile, setUserProfile] = useState<{ image: string, username: string, balance: number, statusMessage: string, classment: string }>({ image: "", username: "", balance: 0, statusMessage: "", classment: "" })
-  const [friends, setFriends] = useState<{ image: string, username: string, balance: number, statusMessage: string }[]>([])
-  const [onlineUsers, setOnlineUsers] = useState<{ image: string, username: string, balance: number, statusMessage: string }[]>([])
+  const [userProfile, setUserProfile] = useState<{ image: string, username: string, balance: number, statusMessage: string, classement: number }>({ image: "", username: "", balance: 0, statusMessage: "", classment: "" })
+  const [friends, setFriends] = useState<{ image: string, username: string, balance: number, statusMessage: string, classement: number }[]>([])
+  const [onlineUsers, setOnlineUsers] = useState<{ image: string, username: string, balance: number, statusMessage: string, classement: number }[]>([])
   const [showUserModal, setShowUserModal] = useState<boolean>(false);
-  const [eventToSend, setEventToSend] = useState<{ image: string, username: string, balance: number, statusMessage: string, classment: string }>({ image: "", username: "", balance: 0, statusMessage: "", classment: "" });
+  const [eventToSend, setEventToSend] = useState<{ image: string, username: string, balance: number, statusMessage: string, classement: number }>({ image: "", username: "", balance: 0, statusMessage: "", classement: "" });
 
   const [showDefiModal, setShowDefiModal] = useState<boolean>(false);
 

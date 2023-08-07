@@ -160,7 +160,7 @@ export default function Social() {
         <EventProfileModal userProfile={eventToSend} />
       </Modal>
       <Modal isVisible={showDefiModal} onClose={() => setShowDefiModal(false)} width="w-[500px]">
-        <DefiModal userProfile={eventToSend} />
+        <DefiModal userProfile={eventToSend} onClose={() => setShowDefiModal(false)} />
       </Modal>
     </div>
   );

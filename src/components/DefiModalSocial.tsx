@@ -14,10 +14,12 @@ interface UserProfileProps {
 
 interface UserProfileReceived {
   userProfile: UserProfileProps;
+  onClose: () => void;
 }
 
 export default function DefiModal({
   userProfile,
+  onClose,
 }: UserProfileReceived) {
   const handleDefiSubmit = async (e: any) => {
     e.preventDefault();
@@ -58,6 +60,7 @@ export default function DefiModal({
             className="absolute bottom-3 rounded-md border border-white bg-red-600 px-4 py-2 text-white shadow-md"
             onClick={async () => {
               const request = await axios.post(process.env.NEXT_PUBLIC_API_URL + "/defi/create_request/", JSON.stringify({ senderUsername: sessionStorage.getItem("username"), receiverUsername: userProfile.username }), { headers: { 'Content-Type': 'application/json' } })
+              onClose();
             }}
           >
             Envoyer le defi a {userProfile.username}

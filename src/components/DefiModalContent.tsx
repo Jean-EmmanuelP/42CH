@@ -164,6 +164,7 @@ export default function DefiModalContent({
                 senderUsername: my_username,
                 receiverUsername: username,
               });
+              onClose()
             }}
           >
             Envoyer le defi

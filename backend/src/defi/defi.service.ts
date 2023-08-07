@@ -584,12 +584,12 @@ export class DefiService {
             return { success: false, error: 'Defi request already exists' };
         }
         const defiRequest = await this.prismaService.defiRequest.create({ data: { senderUsername: senderUsername, receiverUsername: receiverUsername } });
-        setTimeout(async () => {
-            let defi = await this.prismaService.defiRequest.findUnique({ where: { id: defiRequest.id } });
-            if (defi) {
-                await this.prismaService.defiRequest.delete({ where: { id: defiRequest.id } });
-            }
-        }, 300000);
+        // setTimeout(async () => {
+        //     let defi = await this.prismaService.defiRequest.findUnique({ where: { id: defiRequest.id } });
+        //     if (defi) {
+        //         await this.prismaService.defiRequest.delete({ where: { id: defiRequest.id } });
+        //     }
+        // }, 300000);
         if (!defiRequest) {
             return { success: false, error: 'Defi request not created' };
         }

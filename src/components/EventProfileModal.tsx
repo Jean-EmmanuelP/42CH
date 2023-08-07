@@ -89,7 +89,7 @@ export default function EventProfileModal({ userProfile }: UserProfileReceived) 
                             </div>
                             <div className="w-[60%] h-full pl-2 flex flex-col justify-center">
                                 <h1 className="font-bold text-[15px]">{usersRanking[0]!.username}</h1>
-                                <h2 className="font-gray-900 text-[9px] pl-4">{usersRanking[0]!.statusMessage !== null ? usersRanking[0]!.statusMessage : "No message status"}</h2>
+                                <h2 className="font-gray-900 text-[12px] pl-4">{usersRanking[0]!.statusMessage !== '' ? usersRanking[0]!.statusMessage : "No message status"}</h2>
                             </div>
                             <div className="w-[25%] flex justify-center items-center">
                                 <h1 className="text-center">#{usersRanking[0]!.ranking}</h1>
@@ -107,7 +107,7 @@ export default function EventProfileModal({ userProfile }: UserProfileReceived) 
                             </div>
                             <div className="w-[60%] h-full pl-2 flex flex-col justify-center">
                                 <h1 className="font-bold text-[15px]">{usersRanking[1]!.username}</h1>
-                                <h2 className="font-gray-900 text-[12px] pl-4">{usersRanking[1]!.statusMessage !== null ? usersRanking[1]!.statusMessage : "No message status"}</h2>
+                                <h2 className="font-gray-900 text-[12px] pl-4">{usersRanking[1]!.statusMessage !== "" ? usersRanking[1]!.statusMessage : "No message status"}</h2>
                             </div>
                             <div className="w-[25%] flex justify-center items-center">
                                 <h1 className="text-center">#{usersRanking[1]!.ranking}</h1>
@@ -124,7 +124,7 @@ export default function EventProfileModal({ userProfile }: UserProfileReceived) 
                             </div>
                             <div className="w-[60%] h-full pl-2 flex flex-col justify-center">
                                 <h1 className="font-bold text-[15px]">{usersRanking[2]!.username}</h1>
-                                <h2 className="font-gray-900 text-[12px] pl-4">{usersRanking[2]!.statusMessage !== null ? usersRanking[2]!.statusMessage : "No message status"}</h2>
+                                <h2 className="font-gray-900 text-[12px] pl-4">{usersRanking[2]!.statusMessage !== '' ? usersRanking[2]!.statusMessage : "No message status"}</h2>
                             </div>
                             <div className="w-[25%] flex justify-center items-center">
                                 <h1 className="text-center">#{usersRanking[2]!.ranking}</h1>

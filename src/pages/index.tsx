@@ -363,6 +363,7 @@ export default function HomePage() {
           <EventSubscribeModal
             eventToSend={eventToSend}
             showModal={setShowModal}
+            setWeekly={setWeekly}
           />
         </Modal>
       ) : null}
@@ -376,6 +377,7 @@ export default function HomePage() {
           <EventSubscribeModal
             eventToSend={eventOTW}
             showModal={setShowBigModal}
+            setWeekly={setWeekly}
           />
         </Modal>
       ) : null}

@@ -12,7 +12,7 @@ export class UserService {
             select: { name: true },
             orderBy: [
                 { balance: 'desc' },
-                { name: 'desc' }
+                { name: 'asc' }
             ],
         })
         if (!user)
@@ -205,7 +205,7 @@ export class UserService {
         const users = await this.prismaService.user.findMany({
             orderBy: [
                 { balance: 'desc' },
-                { name: 'desc' }
+                { name: 'asc' }
             ],
         })
 
@@ -233,10 +233,11 @@ export class UserService {
         const users = await this.prismaService.user.findMany({
             orderBy: [
                 { balance: 'desc' },
-                { name: 'desc' }
+                { name: 'asc' }
             ],
             take: 3
         })
+        console.log("in top 3", users)
         if (users.length == 0) {
             return { success: false, error: 'No users found' }
         }
@@ -260,7 +261,7 @@ export class UserService {
         const users = await this.prismaService.user.findMany({
             orderBy: [
                 { balance: 'desc' },
-                { name: 'desc' }
+                { name: 'asc' }
             ],
             select: { name: true, balance: true, image: true, statusMessage: true }
         })

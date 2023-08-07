@@ -141,7 +141,7 @@ export class UserService {
             return { success: false, error: 'User not found' }
         await this.prismaService.user.update({
             where: { name: username },
-            data: { status: status }
+            data: { statusMessage: status }
         })
         return { success: true }
     }
@@ -179,22 +179,32 @@ export class UserService {
     }
 
     async getOnlineUsers() {
+        // const users = await this.prismaService.user.findMany({
+        //     where: {
+        //         status: "online",
+        //     },
+        // })
         const users = await this.prismaService.user.findMany({
-            where: {
-                status: "online",
-            }
+            orderBy: {
+                balance: 'desc'
+            },
         })
         if (users.length == 0) {
             return { success: false, error: 'No users found' }
         }
         let onlineUsers = [];
         for (let i = 0; i < users.length; i++) {
-            onlineUsers.push({
-                username: users[i].name,
-                image: users[i].image,
-                balance: users[i].balance,
-                statusMessage: users[i].statusMessage,
-            })
+            if (users[i].status == "online")
+                onlineUsers.push({
+                    username: users[i].name,
+                    image: users[i].image,
+                    balance: users[i].balance,
+                    statusMessage: users[i].statusMessage,
+                    classment: i + 1,
+                })
+        }
+        if (onlineUsers.length == 0) {
+            return { success: false, error: 'No online users found' }
         }
         return { success: true, onlineUsers: onlineUsers };
     }
@@ -215,6 +225,7 @@ export class UserService {
                 username: users[i].name,
                 balance: users[i].balance,
                 image: users[i].image,
+                classment: i + 1,
             })
         }
         return { success: true, topUsers: topUsers };

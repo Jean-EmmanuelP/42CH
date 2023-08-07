@@ -76,68 +76,69 @@ export default function EventProfileModal({ userProfile }: UserProfileReceived) 
                 </div>
                 <div className="w-[40%] h-full"></div>
             </div>
-            <div className="h-[35%] w-full">
-                <div className="h-[20%] w-full flex">
-                    <div className="h-full w-[40%] bg-white text-black"><p>The 3 players above you</p></div>
-                    <div className="h-full w-[60%]"></div>
+            {usersRanking != undefined && usersRanking.length > 0 ? (
+                <div className="h-[35%] w-full">
+                    <div className="h-[20%] w-full flex">
+                        <div className="h-full w-[40%] bg-white text-black"><p>The 3 players above you</p></div>
+                        <div className="h-full w-[60%]"></div>
+                    </div>
+                    <div className="flex flex-col h-[80%] w-full pt-1 gap-2 bg-white text-black">
+                        <div className="bg-red-500 h-[33%] w-full flex shadow-md border-y border-black">
+                            <div className="relative w-[15%] h-full">
+
+                                <Image
+                                    src={usersRanking[0]!.image}
+                                    layout="fill"
+                                    objectFit="contain"
+                                    alt="User Image"
+                                />
+                            </div>
+                            <div className="w-[60%] h-full pl-2 flex flex-col">
+                                <h1 className="font-bold text-[12px]">{usersRanking[0]!.username}</h1>
+                                <h2 className="font-gray-900 text-[9px] pl-4">{usersRanking[0]!.statusMessage !== null ? usersRanking[0]!.statusMessage : "No message status"}</h2>
+                            </div>
+                            <div className="w-[25%]">
+                                <h1 className="text-center">#{usersRanking[0]!.ranking}</h1>
+                            </div>
+                        </div>
+                        <div className="bg-red-500 h-[33%] w-full flex shadow-md border-y border-black">
+                            <div className="relative w-[15%] h-full">
+                                <Image
+                                    src={usersRanking[1]!.image}
+                                    layout="fill"
+                                    objectFit="contain"
+                                    alt="User Image"
+                                />
+                            </div>
+                            <div className="w-[60%] h-full pl-2 flex flex-col">
+                                <h1 className="font-bold text-[12px]">{usersRanking[1]!.username}</h1>
+                                <h2 className="font-gray-900 text-[9px] pl-4">{usersRanking[1]!.statusMessage !== null ? usersRanking[1]!.statusMessage : "No message status"}</h2>
+                            </div>
+                            <div className="w-[25%]">
+                                <h1 className="text-center">#{usersRanking[1]!.ranking}</h1>
+                            </div>
+                        </div>
+                        <div className="bg-red-500 h-[33%] w-full flex shadow-md border-y border-black">
+                            <div className="relative w-[15%] h-full">
+
+                                <Image
+                                    src={usersRanking[2]!.image}
+                                    layout="fill"
+                                    objectFit="contain"
+                                    alt="User Image"
+                                />
+                            </div>
+                            <div className="w-[60%] h-full pl-2 flex flex-col">
+                                <h1 className="font-bold text-[12px]">{usersRanking[2]!.username}</h1>
+                                <h2 className="font-gray-900 text-[9px] pl-4">{usersRanking[2]!.statusMessage !== null ? usersRanking[2]!.statusMessage : "No message status"}</h2>
+                            </div>
+                            <div className="w-[25%]">
+                                <h1 className="text-center">#{usersRanking[2]!.ranking}</h1>
+                            </div>
+                        </div>
+                    </div>
                 </div>
-                <div className="flex flex-col h-[80%] w-full pt-1 gap-2 bg-white text-black">
-                    <div className="bg-red-500 h-[33%] w-full flex shadow-md border-y border-black">
-                        <div className="relative w-[15%] h-full">
-
-                            <Image
-                                src={userProfile.image}
-                                layout="fill"
-                                objectFit="contain"
-                                alt="User Image"
-                            />
-                        </div>
-                        <div className="w-[60%] h-full pl-2 flex flex-col">
-                            <h1 className="font-bold text-[12px]">Jean-Emmanuel Perramant</h1>
-                            <h2 className="font-gray-900 text-[9px] pl-4">je te mange a tout les jeux</h2>
-                        </div>
-                        <div className="w-[25%]">
-                            <h1 className="text-center">#25</h1>
-                        </div>
-                    </div>
-                    <div className="bg-red-500 h-[33%] w-full flex shadow-md border-y border-black">
-                        <div className="relative w-[15%] h-full">
-
-                            <Image
-                                src={userProfile.image}
-                                layout="fill"
-                                objectFit="contain"
-                                alt="User Image"
-                            />
-                        </div>
-                        <div className="w-[60%] h-full pl-2 flex flex-col">
-                            <h1 className="font-bold text-[12px]">Jean-Emmanuel Perramant</h1>
-                            <h2 className="font-gray-900 text-[9px] pl-4">je te mange a tout les jeux</h2>
-                        </div>
-                        <div className="w-[25%]">
-                            <h1 className="text-center">#25</h1>
-                        </div>
-                    </div>
-                    <div className="bg-red-500 h-[33%] w-full flex shadow-md border-y border-black">
-                        <div className="relative w-[15%] h-full">
-
-                            <Image
-                                src={userProfile.image}
-                                layout="fill"
-                                objectFit="contain"
-                                alt="User Image"
-                            />
-                        </div>
-                        <div className="w-[60%] h-full pl-2 flex flex-col">
-                            <h1 className="font-bold text-[12px]">Jean-Emmanuel Perramant</h1>
-                            <h2 className="font-gray-900 text-[9px] pl-4">je te mange a tout les jeux</h2>
-                        </div>
-                        <div className="w-[25%]">
-                            <h1 className="text-center">#25</h1>
-                        </div>
-                    </div>
-                </div>
-            </div>
+            ) : null}
         </div>
     )
 }

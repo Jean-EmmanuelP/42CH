@@ -273,7 +273,7 @@ export default function HomePage() {
                       </div>
                     </div>
                   ))}
-                </div>                
+                </div>
               </div>
             </div>
           </div>
@@ -292,9 +292,8 @@ export default function HomePage() {
                     width={100}
                     height={100}
                     alt="Player Image"
-                    className={`${
-                      index === 1 ? "shadow-xl" : "shadow-md"
-                    } rounded-md`}
+                    className={`${index === 1 ? "shadow-xl" : "shadow-md"
+                      } rounded-md`}
                     onClick={() => { setShowUserModal(true), setPlayerOTW(player) }}
                   />
                   <p className="flex w-full justify-center pt-1 text-[10px]">
@@ -380,12 +379,12 @@ export default function HomePage() {
           />
         </Modal>
       ) : null}
-      { playerOTW !== undefined ? (
+      {playerOTW !== undefined ? (
 
-      <Modal isVisible={showUserModal} onClose={() => setShowUserModal(false)} width="w-[500px]">
-        <EventProfileModal userProfile={playerOTW} />
-      </Modal>
-      ): null
+        <Modal isVisible={showUserModal} onClose={() => setShowUserModal(false)} width="w-[500px]">
+          <EventProfileModal userProfile={playerOTW} />
+        </Modal>
+      ) : null
       }
     </div>
   );

@@ -4,6 +4,7 @@ import { toast } from "react-toastify";
 import Pusher from "pusher-js";
 import FightImage from "../utils/images/fightImg.png";
 import Loop from "../utils/images/LoopIcon.svg";
+import axios from "axios"
 
 // Import des composants et des utilitaires
 import { api } from "../utils/api";
@@ -24,32 +25,28 @@ export default function DefiModalContent({
   onClose,
   socket,
 }: DefiModalContentProps) {
-  // Utilisation des hooks et du contexte
   const my_username = sessionStorage.getItem("username");
-
-  // States pour les entrées utilisateur et les données API
   const [username, setUsername] = useState("");
+  const [users, setUsers] = useState<any[]>([]);
 
-  // Les appels API
-  const { data: users, refetch: refetchUsers } = api.defi.getUsers.useQuery(
-    { query: username },
-    {
-      enabled: my_username !== undefined && username !== "",
-    }
-  );
+  // const { data: usernameCheckResult, refetch: refetchUsernameCheck } =
+  //   api.defi.checkUsername.useQuery(
+  //     { username, my_username: my_username || "" },
+  //     {
+  //       enabled: false,
+  //     }
+  //   );
 
-  const { data: usernameCheckResult, refetch: refetchUsernameCheck } =
-    api.defi.checkUsername.useQuery(
-      { username, my_username: my_username || "" },
-      {
-        enabled: false,
-      }
-    );
+
+  async function refetchUsers(user: string) {
+    const request = await axios.post(process.env.NEXT_PUBLIC_API_URL + "/defi/search_user/", JSON.stringify({ user }), { headers: { "Content-Type": "application/json" } });
+    setUsers(request.data.users);
+  }
 
   // Mise à jour de l'utilisateur recherché
   useEffect(() => {
     if (username) {
-      refetchUsers();
+      refetchUsers(username);
     }
   }, [username, refetchUsers]);
 
@@ -61,41 +58,21 @@ export default function DefiModalContent({
       toast.error("Vous ne pouvez pas vous inviter vous-même !");
       return;
     }
-
-    refetchUsernameCheck().then((queryResult) => {
-      if (queryResult.isSuccess) {
-        const usernameCheckResult = queryResult.data;
-        if (usernameCheckResult?.success) {
-          const userName = usernameCheckResult.invitee || "";
-          /* Mettre dans le localStorage */
-          // console.log(challengeData);
-          toast.success(usernameCheckResult.message);
-          onClose();
-        } else {
-          toast.error(usernameCheckResult.message);
-        }
-      }
-    });
+    // refetchUsernameCheck().then((queryResult) => {
+    //   if (queryResult.isSuccess) {
+    //     const usernameCheckResult = queryResult.data;
+    //     if (usernameCheckResult?.success) {
+    //       const userName = usernameCheckResult.invitee || "";
+    //       /* Mettre dans le localStorage */
+    //       // console.log(challengeData);
+    //       toast.success(usernameCheckResult.message);
+    //       onClose();
+    //     } else {
+    //       toast.error(usernameCheckResult.message);
+    //     }
+    //   }
+    // });
   };
-
-  // Ecoute des notifications Pusher
-  // useEffect(() => {
-  //   const pusher = new Pusher("374519cdfad60d3b237f", {
-  //     cluster: "eu",
-  //   });
-
-  //   const channel = pusher.subscribe(userId.toString());
-
-  //   channel.bind("my-channel", (data: any) => {
-  //     const uniqueChallengeId = data.message; // ajuster cette ligne en fonction du format de `data`
-  //     router.push(`/defi/${uniqueChallengeId}`);
-  //   });
-
-  //   return () => {
-  //     pusher.unsubscribe(userId.toString());
-  //     pusher.disconnect();
-  //   };
-  // }, [userId]);
 
   // Retour du composant JSX
   return (

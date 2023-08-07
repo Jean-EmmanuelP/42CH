@@ -4,6 +4,9 @@ import { PrismaService } from 'src/prisma/prisma.service';
 
 @Injectable()
 export class DefiService {
+    searchUser(username: string) {
+        throw new Error('Method not implemented.');
+    }
     constructor(private prismaService: PrismaService, private authService: AuthService) { }
 
     async getRoomNumber(username: string) {

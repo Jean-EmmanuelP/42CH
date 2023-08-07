@@ -7,6 +7,20 @@ export class UserService {
 
     // Friends related functions
 
+    async getClassment(username: string) {
+        const user = await this.prismaService.user.findMany({
+            select: { name: true },
+            orderBy: { balance: 'desc' }
+        })
+        if (!user)
+            return String(0);
+        for (let i = 0; i < user.length; i++) {
+            if (user[i].name == username)
+                return String(i + 1);
+        }
+        return String(0);
+    }
+
     async getFriends(username: string) {
         const user = await this.prismaService.user.findUnique({ where: { name: username } })
         if (user == null)
@@ -21,6 +35,7 @@ export class UserService {
                 image: friend.image,
                 balance: friend.balance,
                 statusMessage: friend.statusMessage,
+                classment: await this.getClassment(friend.name),
             })
         }
         return { success: true, friends: friends }
@@ -239,7 +254,6 @@ export class UserService {
         const users = await this.prismaService.user.findMany({ orderBy: { balance: 'desc' }, select: { name: true, balance: true, image: true, statusMessage: true } })
         if (users.length == 0)
             return { success: false, error: 'No users found' }
-        console.log("users", users)
         let usersRanking = [];
         if (users[0].name == username) {
             usersRanking.push({

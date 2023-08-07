@@ -50,7 +50,7 @@ export default function DefiModal({
       onClose();
     } else {
       const errorRequest = request.data.error;
-      setError(`Erreur lors de l'envoi du défi : ${errorRequest}`);
+      setError(`Le defi a deja ete envoye`);
       setMessage(null);
       setTimeout(() => {
         setError(null);

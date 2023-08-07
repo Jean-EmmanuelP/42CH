@@ -52,7 +52,10 @@ export default function Social() {
   }, [])
 
   const handleBioChange = async (e: any) => {
-    setUserProfile({ ...userProfile, statusMessage: e.target.value })
+    if (e.target.value.length < 40)
+      setUserProfile({ ...userProfile, statusMessage: e.target.value })
+    else
+      return;
     const request = await axios.post(process.env.NEXT_PUBLIC_API_URL + "/user/change_status/", JSON.stringify({ username: sessionStorage.getItem('username'), status: e.target.value }), { headers: { 'Content-Type': 'application/json' } })
   };
 

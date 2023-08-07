@@ -224,5 +224,19 @@ export class UserService {
         return { success: true, topUsers: topUsers };
     }
 
+    // function to get the ranking of the user, and the user above and below him
+    async threeUsersRanking(username: string) {
+        const user = await this.prismaService.user.findUnique({ where: { name: username } })
+        if (!user)
+            return { success: false, error: 'User not found' }
+        const users = await this.prismaService.user.findMany({ orderBy: { balance: 'desc' } })
+        if (users.length == 0)
+            return { success: false, error: 'No users found' }
+        let usersRanking = [];
+        for (let i = 0; i < users.length; i++) {
+            if (usersRanking[i].name == username){
 
+            }
+        }
+    }
 }

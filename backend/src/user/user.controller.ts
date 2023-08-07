@@ -5,17 +5,25 @@ import { UserService } from './user.service';
 export class UserController {
     constructor(private userService: UserService) { }
 
-    @Get('get_top_users') // figma done
+    @Post('three_users_ranking')
+    async threeUsersRanking(@Body() data: { username: string }) {
+        if (data == undefined || data.username == undefined) {
+            return { success: false, error: 'Invalid input' };
+        }
+        return await this.userService.threeUsersRanking(data.username);
+    }
+
+    @Get('get_top_users')
     async getTopUsers() {
         return await this.userService.getTopUsers();
     }
 
-    @Get('get_online_users') // figma done
+    @Get('get_online_users')
     async getOnlineUsers() {
         return await this.userService.getOnlineUsers();
     }
 
-    @Post('get_user_infos') // figma done
+    @Post('get_user_infos')
     async getUserInfos(@Body() data: { username: string }) {
         if (data == undefined || data.username == undefined) {
             return { success: false, error: 'Invalid input' };
@@ -63,7 +71,7 @@ export class UserController {
         return await this.userService.getFriendRequests(data.username);
     }
 
-    @Post('get_friends') // figma done
+    @Post('get_friends')
     async getFriends(@Body() data: { username: string }) {
         if (data == undefined || !data.username) {
             return { success: false, error: 'Invalid input' };

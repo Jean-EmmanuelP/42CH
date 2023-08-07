@@ -97,7 +97,7 @@ export default function DefiModal({
         </form>
       </div>
       <div
-        className={`{message === null && error === null ? ''} absolute top-0 flex items-center bg-red-900 p-2`}
+        className={`${message === null && error === null ? 'bg-transparent h-0 w-0 hidden': `${error && 'text-red-600'} ${message && 'text-green-500'} bg-white w-full flex items-center justify-center border-b border-gray-500/10`} absolute top-0 flex items-center p-2`}
       >
         {message && <p>{message}</p>}
         {error && <p>{error}</p>}

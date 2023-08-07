@@ -51,8 +51,9 @@ export default function Social() {
     getOnlineUsers();
   }, [])
 
-  const handleBioChange = (e: any) => {
-    setBio(e.target.value);
+  const handleBioChange = async (e: any) => {
+    setUserProfile({ ...userProfile, statusMessage: e.target.value })
+    const request = await axios.post(process.env.NEXT_PUBLIC_API_URL + "/user/change_status/", JSON.stringify({ username: sessionStorage.getItem('username'), status: e.target.value }), { headers: { 'Content-Type': 'application/json' } })
   };
 
   return (
@@ -73,12 +74,12 @@ export default function Social() {
           </div>
           <div className="flex h-full w-full flex-col pl-2">
             <p className="flex pt-2 text-[12px] font-bold">{userProfile.username}</p>
-            <textarea
-              className="h-4 resize-none text-[10px] caret-red-500 focus:outline-none"
+            <input
               value={userProfile.statusMessage}
+              className="h-4 resize-none text-[10px] caret-red-500 focus:outline-none"
               onChange={handleBioChange}
               placeholder="clique pour changer ta bio"
-            ></textarea>
+            ></input>
             <div className="flex justify-between px-[2px]">
               <p className="text-[11px] font-bold">Wallet : ${userProfile.balance}</p>
               {/* <p className="text-[11px] font-bold">#25</p> */}

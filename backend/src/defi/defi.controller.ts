@@ -22,7 +22,7 @@ export class DefiController {
         return await this.defiService.createDefiRequest(data.senderUsername, data.receiverUsername);
     }
 
-    @Post('get_infos') // already implemented
+    @Post('get_infos')
     async getInfos(@Body() data: { username: string, accessToken?: string }) {
         if (data == undefined || !data.username) {
             return { success: false, error: 'Invalid input' };
@@ -30,7 +30,7 @@ export class DefiController {
         return await this.defiService.getInfos(data.username, data.accessToken);
     }
 
-    @Post('get_all_challenges') // figma done
+    @Post('get_all_challenges')
     async getAllChallenges(@Body() data: { username: string, accessToken?: string }) {
         if (data == undefined || !data.username) {
             return { success: false, error: 'Invalid input' };
@@ -38,7 +38,7 @@ export class DefiController {
         return await this.defiService.getAllChallenges(data.username, data.accessToken);
     }
 
-    @Post('finish') // already implemented
+    @Post('finish')
     async finish(@Body() data: { username: string, challengeId: string, winner: string }) {
         if (data == undefined || !data.username || !data.challengeId || !data.winner) {
             return { success: false, error: 'Invalid input' };
@@ -46,7 +46,7 @@ export class DefiController {
         return await this.defiService.finish(data.username, data.challengeId, data.winner);
     }
 
-    @Post('get_all_defi_requests') // already implemented
+    @Post('get_all_defi_requests')
     async getAllDefiRequests(@Body() data: { username: string }) {
         if (data == undefined || !data.username) {
             return { success: false, error: 'Invalid input' };
@@ -54,12 +54,12 @@ export class DefiController {
         return await this.defiService.getAllDefiRequests(data.username);
     }
 
-    @Get('get_all_public_challenges') // figma done
+    @Get('get_all_public_challenges')
     async getAllPublicChallenges() {
         return await this.defiService.getAllPublicChallenges();
     }
 
-    @Post('delete_defi_request') // already implemented
+    @Post('delete_defi_request')
     async deleteDefiRequest(@Body() data: { id: string }) {
         if (data == undefined || !data.id) {
             return { success: false, error: 'Invalid input' };
@@ -96,7 +96,7 @@ export class DefiController {
         return await this.defiService.ongoing(data.username);
     }
 
-    @Post('bet_public_challenge') // figma done
+    @Post('bet_public_challenge')
     async betPublicChallenge(@Body() data: { username: string, challengeId: string, amount: number, winner: string }) {
         if (data == undefined || !data.username || !data.challengeId || !data.amount || !data.winner) {
             return { success: false, error: 'Invalid input' };
@@ -104,7 +104,7 @@ export class DefiController {
         return await this.defiService.betPublicChallenge(data.username, data.challengeId, data.amount, data.winner);
     }
 
-    @Post('user_bet_on_public_challenge') // figma done
+    @Post('user_bet_on_public_challenge')
     async userBetOnPublicChallenge(@Body() data: { username: string, challengeId: string }) {
         if (data == undefined || !data.username || !data.challengeId) {
             return { success: false, error: 'Invalid input' };

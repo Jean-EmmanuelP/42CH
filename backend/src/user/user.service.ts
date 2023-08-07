@@ -10,7 +10,10 @@ export class UserService {
     async getClassment(username: string) {
         const user = await this.prismaService.user.findMany({
             select: { name: true },
-            orderBy: { balance: 'desc', name: 'desc' }
+            orderBy: [
+                { balance: 'desc' },
+                { name: 'desc' }
+            ],
         })
         if (!user)
             return String(0);
@@ -200,10 +203,12 @@ export class UserService {
         //     },
         // })
         const users = await this.prismaService.user.findMany({
-            orderBy: {
-                balance: 'desc', name: 'desc'
-            },
+            orderBy: [
+                { balance: 'desc' },
+                { name: 'desc' }
+            ],
         })
+
         if (users.length == 0) {
             return { success: false, error: 'No users found' }
         }
@@ -226,9 +231,10 @@ export class UserService {
 
     async getTopUsers() {
         const users = await this.prismaService.user.findMany({
-            orderBy: {
-                balance: 'desc', name: 'desc'
-            },
+            orderBy: [
+                { balance: 'desc' },
+                { name: 'desc' }
+            ],
             take: 3
         })
         if (users.length == 0) {
@@ -251,7 +257,13 @@ export class UserService {
         const user = await this.prismaService.user.findUnique({ where: { name: username } })
         if (!user)
             return { success: false, error: 'User not found' }
-        const users = await this.prismaService.user.findMany({ orderBy: { balance: 'desc', name: 'desc' }, select: { name: true, balance: true, image: true, statusMessage: true } })
+        const users = await this.prismaService.user.findMany({
+            orderBy: [
+                { balance: 'desc' },
+                { name: 'desc' }
+            ],
+            select: { name: true, balance: true, image: true, statusMessage: true }
+        })
         if (users.length == 0)
             return { success: false, error: 'No users found' }
         let usersRanking = [];

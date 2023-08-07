@@ -29,26 +29,17 @@ export default function DefiModalContent({
   const [username, setUsername] = useState("");
   const [users, setUsers] = useState<any[]>([]);
 
-  // const { data: usernameCheckResult, refetch: refetchUsernameCheck } =
-  //   api.defi.checkUsername.useQuery(
-  //     { username, my_username: my_username || "" },
-  //     {
-  //       enabled: false,
-  //     }
-  //   );
-
-
   async function refetchUsers(user: string) {
-    const request = await axios.post(process.env.NEXT_PUBLIC_API_URL + "/defi/search_user/", JSON.stringify({ user }), { headers: { "Content-Type": "application/json" } });
+    const request = await axios.post(process.env.NEXT_PUBLIC_API_URL + "/defi/search_user/", JSON.stringify({ username: user }), { headers: { "Content-Type": "application/json" } });
     setUsers(request.data.users);
+    console.log(request.data.users)
   }
 
-  // Mise à jour de l'utilisateur recherché
   useEffect(() => {
     if (username) {
       refetchUsers(username);
     }
-  }, [username, refetchUsers]);
+  }, [username]);
 
   // Gestion de la soumission du défi
   const handleDefiSubmit = async (e: any) => {
@@ -58,23 +49,8 @@ export default function DefiModalContent({
       toast.error("Vous ne pouvez pas vous inviter vous-même !");
       return;
     }
-    // refetchUsernameCheck().then((queryResult) => {
-    //   if (queryResult.isSuccess) {
-    //     const usernameCheckResult = queryResult.data;
-    //     if (usernameCheckResult?.success) {
-    //       const userName = usernameCheckResult.invitee || "";
-    //       /* Mettre dans le localStorage */
-    //       // console.log(challengeData);
-    //       toast.success(usernameCheckResult.message);
-    //       onClose();
-    //     } else {
-    //       toast.error(usernameCheckResult.message);
-    //     }
-    //   }
-    // });
   };
 
-  // Retour du composant JSX
   return (
     <div className="flex h-[65vh] w-full flex-col items-center justify-center bg-[#EEF0F3]">
       <div className="h[40%] flex w-full flex-col items-center justify-center">
@@ -107,7 +83,7 @@ export default function DefiModalContent({
               onChange={(e) => setUsername(e.target.value)}
             />
           </div>
-          <div className="no-scrollbar flex max-h-28 flex-col overflow-y-auto">
+          <div className="no-scrollbar flex max-h-40 flex-col overflow-y-auto">
             {users?.map((user: any) => (
               <div
                 key={user.id}

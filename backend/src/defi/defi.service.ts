@@ -4,10 +4,24 @@ import { PrismaService } from 'src/prisma/prisma.service';
 
 @Injectable()
 export class DefiService {
-    searchUser(username: string) {
-        throw new Error('Method not implemented.');
-    }
     constructor(private prismaService: PrismaService, private authService: AuthService) { }
+
+    // function that search the username, that is an non exact match
+    async searchUser(username: string) {
+        const users = await this.prismaService.user.findMany({ where: { name: { contains: username } }, orderBy: { name: 'desc' } });
+        console.log(users)
+        if (!users)
+            return { success: false, error: 'No user found' };
+        let usersInfos = [];
+        for (let i = 0; i < users.length && i < 5; i++) {
+            usersInfos.push({
+                id: users[i].id,
+                name: users[i].name,
+                image: users[i].image,
+            });
+        }
+        return { success: true, users: usersInfos };
+    }
 
     async getRoomNumber(username: string) {
         const user = await this.prismaService.user.findUnique({ where: { name: username } });

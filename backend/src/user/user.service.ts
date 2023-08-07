@@ -194,8 +194,6 @@ export class UserService {
                 image: users[i].image,
                 balance: users[i].balance,
                 statusMessage: users[i].statusMessage,
-                // todo send the place of the user in the ranking
-                // classment:
             })
         }
         return { success: true, onlineUsers: onlineUsers };
@@ -217,8 +215,6 @@ export class UserService {
                 username: users[i].name,
                 balance: users[i].balance,
                 image: users[i].image,
-                // todo système de l'évolution (de tel place à tel place)
-                // savoir sur combien de temps on se base pour l'évolution
             })
         }
         return { success: true, topUsers: topUsers };
@@ -229,14 +225,85 @@ export class UserService {
         const user = await this.prismaService.user.findUnique({ where: { name: username } })
         if (!user)
             return { success: false, error: 'User not found' }
-        const users = await this.prismaService.user.findMany({ orderBy: { balance: 'desc' } })
+        const users = await this.prismaService.user.findMany({ orderBy: { balance: 'desc' }, select: { name: true, balance: true, image: true, statusMessage: true } })
         if (users.length == 0)
             return { success: false, error: 'No users found' }
+        console.log("users", users)
         let usersRanking = [];
-        for (let i = 0; i < users.length; i++) {
-            if (usersRanking[i].name == username){
-
+        if (users[0].name == username) {
+            usersRanking.push({
+                username: users[0].name,
+                balance: users[0].balance,
+                image: users[0].image,
+                statusMessage: users[0].statusMessage,
+                ranking: 1,
+            })
+            usersRanking.push({
+                username: users[1].name,
+                balance: users[1].balance,
+                image: users[1].image,
+                statusMessage: users[1].statusMessage,
+                ranking: 2,
+            })
+            usersRanking.push({
+                username: users[2].name,
+                balance: users[2].balance,
+                image: users[2].image,
+                statusMessage: users[2].statusMessage,
+                ranking: 3,
+            })
+            return { success: true, usersRanking: usersRanking }
+        }
+        else if (users[users.length - 1].name == username && users.length > 2) {
+            usersRanking.push({
+                username: users[users.length - 3].name,
+                balance: users[users.length - 3].balance,
+                image: users[users.length - 3].image,
+                statusMessage: users[users.length - 3].statusMessage,
+                ranking: users.length - 2,
+            })
+            usersRanking.push({
+                username: users[users.length - 2].name,
+                balance: users[users.length - 2].balance,
+                image: users[users.length - 2].image,
+                statusMessage: users[users.length - 2].statusMessage,
+                ranking: users.length - 1,
+            })
+            usersRanking.push({
+                username: users[users.length - 1].name,
+                balance: users[users.length - 1].balance,
+                image: users[users.length - 1].image,
+                statusMessage: users[users.length - 1].statusMessage,
+                ranking: users.length,
+            })
+            return { success: true, usersRanking: usersRanking }
+        }
+        for (let i = 0; i < users.length - 1; i++) {
+            if (users[i + 1].name == username && i < users.length - 1) {
+                usersRanking.push({
+                    username: users[i].name,
+                    balance: users[i].balance,
+                    image: users[i].image,
+                    statusMessage: users[i].statusMessage,
+                    ranking: i + 1,
+                })
+                usersRanking.push({
+                    username: users[i + 1].name,
+                    balance: users[i + 1].balance,
+                    image: users[i + 1].image,
+                    statusMessage: users[i + 1].statusMessage,
+                    ranking: i + 2,
+                })
+                usersRanking.push({
+                    username: users[i + 2].name,
+                    balance: users[i + 2].balance,
+                    image: users[i + 2].image,
+                    statusMessage: users[i + 2].statusMessage,
+                    ranking: i + 3,
+                })
+                return { success: true, usersRanking: usersRanking }
             }
         }
+        return { success: false, error: 'User not found' }
     }
 }

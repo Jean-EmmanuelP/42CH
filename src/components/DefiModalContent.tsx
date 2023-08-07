@@ -12,7 +12,7 @@ import { api } from "../utils/api";
 import "react-toastify/dist/ReactToastify.css";
 import Image from "next/image";
 
-Pusher.logToConsole = true;
+// Pusher.logToConsole = true;
 
 interface DefiModalContentProps {
   onClose: () => void;
@@ -130,7 +130,7 @@ export default function DefiModalContent({
               onChange={(e) => setUsername(e.target.value)}
             />
           </div>
-           <div className="no-scrollbar flex max-h-28 flex-col overflow-y-auto">
+          <div className="no-scrollbar flex max-h-28 flex-col overflow-y-auto">
             {users?.map((user: any) => (
               <div
                 key={user.id}

@@ -30,9 +30,9 @@ export default function EventSubscribeModal({
   showModal,
   setWeekly
 }: EventSubscribeModalProps) {
-  useEffect(() => {
-    console.log("eventToSend is", eventToSend);
-  });
+  // useEffect(() => {
+  //   console.log("eventToSend is", eventToSend);
+  // });
   /*
         eventToSend
 : 
@@ -111,54 +111,56 @@ title
       <div className="flex h-[35%] w-full rounded-b-md">
         <div className="h-full w-[60%]"></div>
         <div className="flex h-full w-[40%] gap-2 p-2">
-          {eventToSend.participantsUsernames.includes(sessionStorage.getItem("username") as string) ? 
-          (<button
-            onClick={async () => {
-              const request = await axios.post(
-                process.env.NEXT_PUBLIC_API_URL+"/events/remove-user-from-event/",
-                JSON.stringify({
-                  eventId: eventToSend.id,
-                  user: sessionStorage.getItem("username"),
-                }),
-                { headers: { "Content-Type": "application/json" } }
-              );
-              if (request.data.success == true) {
-                console.log("success");
-              } else {
-                console.error(request.data.error);
-              }
-              showModal(false);
-              // window.location.reload();
-              handleSetWeekly()
-            }}
-            className="w-[50%] rounded-md bg-gray-500 text-white/70 shadow-md"
-          >
-            Se desinscrire
-          </button>)
-          :
-          (<button
-            onClick={async () => {
-              const request = await axios.post(
-                process.env.NEXT_PUBLIC_API_URL+"/events/add-user-to-event/",
-                JSON.stringify({
-                  eventId: eventToSend.id,
-                  user: sessionStorage.getItem("username"),
-                }),
-                { headers: { "Content-Type": "application/json" } }
-              );
-              if (request.data.success == true) {
-                console.log("success");
-              } else {
-                console.error(request.data.error);
-              }
-              showModal(false);
-              // window.location.reload();
-              handleSetWeekly()
-            }}
-            className={`shadow-md ${eventToSend.label} w-[50%] rounded-md text-white`}
-          >
-            S'inscrire
-          </button>)
+          {eventToSend.participantsUsernames.includes(sessionStorage.getItem("username") as string) ?
+            (<button
+              onClick={async () => {
+                const request = await axios.post(
+                  process.env.NEXT_PUBLIC_API_URL + "/events/remove-user-from-event/",
+                  JSON.stringify({
+                    eventId: eventToSend.id,
+                    user: sessionStorage.getItem("username"),
+                  }),
+                  { headers: { "Content-Type": "application/json" } }
+                );
+                if (request.data.success == true) {
+                  // console.log("success");
+                  ;
+                } else {
+                  console.error(request.data.error);
+                }
+                showModal(false);
+                // window.location.reload();
+                handleSetWeekly()
+              }}
+              className="w-[50%] rounded-md bg-gray-500 text-white/70 shadow-md"
+            >
+              Se desinscrire
+            </button>)
+            :
+            (<button
+              onClick={async () => {
+                const request = await axios.post(
+                  process.env.NEXT_PUBLIC_API_URL + "/events/add-user-to-event/",
+                  JSON.stringify({
+                    eventId: eventToSend.id,
+                    user: sessionStorage.getItem("username"),
+                  }),
+                  { headers: { "Content-Type": "application/json" } }
+                );
+                if (request.data.success == true) {
+                  // console.log("success");
+                  ;
+                } else {
+                  console.error(request.data.error);
+                }
+                showModal(false);
+                // window.location.reload();
+                handleSetWeekly()
+              }}
+              className={`shadow-md ${eventToSend.label} w-[50%] rounded-md text-white`}
+            >
+              S'inscrire
+            </button>)
           }
         </div>
       </div>

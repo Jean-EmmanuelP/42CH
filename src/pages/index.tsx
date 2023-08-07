@@ -82,7 +82,7 @@ export default function HomePage() {
       });
       const isEventOfTheWeek = events.find((event) => event.isEventOfTheWeek);
       setEventOTW(isEventOfTheWeek);
-      console.log(`is event of the week`, isEventOfTheWeek);
+      // console.log(`is event of the week`, isEventOfTheWeek);
       setWeeklyEvents(events);
     }
   }
@@ -103,7 +103,7 @@ export default function HomePage() {
   }, []);
 
   function BiggestEvent() {
-    console.log(`you clicked on the image`);
+    // console.log(`you clicked on the image`);
     /*
       -> Mettre le pop up pour s'inscrire au big event
     */
@@ -149,7 +149,7 @@ export default function HomePage() {
       process.env.NEXT_PUBLIC_API_URL + "/user/get_top_users/"
     );
     const topUsers = request.data.topUsers;
-    console.log(`those are the top Users`, topUsers);
+    // console.log(`those are the top Users`, topUsers);
     setPlayers(topUsers);
     return topUsers;
   }
@@ -176,9 +176,9 @@ export default function HomePage() {
         className="flex h-2/5 w-full items-center justify-center overflow-hidden rounded-[15px] shadow-md"
         onClick={() => {
           setEventToSend(eventOTW);
-          console.log(eventOTW)
+          // console.log(eventOTW)
           setShowBigModal(true);
-          console.log(`showBigModal`, showBigModal);
+          // console.log(`showBigModal`, showBigModal);
         }}
       >
         <Image

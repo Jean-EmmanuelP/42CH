@@ -11,7 +11,6 @@ export default function SignIn() {
     const request = await axios.get(
       process.env.NEXT_PUBLIC_API_URL + "/auth/redirect_fortytwo/"
     );
-    console.log(request);
     window.location.href = request.data;
   }
   const searchParams = useSearchParams();
@@ -28,10 +27,8 @@ export default function SignIn() {
         sessionStorage.setItem("accessToken", request.data.access_token);
         window.location.reload();
       } else {
-        console.log(request);
         console.error(request.data.error);
       }
-      console.log(code);
     }
   }
 
@@ -61,7 +58,7 @@ export default function SignIn() {
       </div>
       <div className="w-full h-[10%]"></div>
       <div className="h-[20%] w-full font-bold text-[40px] text-roboto flex">
-      <Marquee speed={90}>
+        <Marquee speed={90}>
           <p className="pr-[25px]">BETA, THE FIRST VERSION WILL COME SOON...</p>
         </Marquee>
       </div>

@@ -29,10 +29,6 @@ export default function EventProfileModal({ userProfile }: UserProfileReceived) 
         getUsersRanking();
     }, [])
 
-    useEffect(() => {
-        console.log(usersRanking)
-    }, [usersRanking])
-
     return (
         <div className="h-[65vh] text-white bg-[#272A30] p-2">
             <div className="h-[48%] w-full flex">

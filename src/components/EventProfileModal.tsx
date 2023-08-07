@@ -5,7 +5,7 @@ interface UserProfileProps {
     image: string
     statusMessage: string
     balance: number
-    classement: number
+    classment: string
 }
 
 export interface UserProfileReceived {

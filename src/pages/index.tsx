@@ -141,7 +141,7 @@ export default function HomePage() {
     image: string;
     balance: number;
     statusMessage: string;
-    classement: string;
+    classment: string;
   }
   const [players, setPlayers] = useState<PlayerProps[]>([]);
   async function BestPlayersOfTheWeek() {

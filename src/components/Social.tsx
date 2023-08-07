@@ -8,11 +8,11 @@ const { publicRuntimeConfig } = getConfig();
 
 export default function Social() {
   const [bio, setBio] = useState("");
-  const [userProfile, setUserProfile] = useState<{ image: string, username: string, balance: number, statusMessage: string, classement: number }>({ image: "", username: "", balance: 0, statusMessage: "", classment: "" })
-  const [friends, setFriends] = useState<{ image: string, username: string, balance: number, statusMessage: string, classement: number }[]>([])
-  const [onlineUsers, setOnlineUsers] = useState<{ image: string, username: string, balance: number, statusMessage: string, classement: number }[]>([])
+  const [userProfile, setUserProfile] = useState<{ image: string, username: string, balance: number, statusMessage: string, classment: string }>({ image: "", username: "", balance: 0, statusMessage: "", classment: "" })
+  const [friends, setFriends] = useState<{ image: string, username: string, balance: number, statusMessage: string, classment: string }[]>([])
+  const [onlineUsers, setOnlineUsers] = useState<{ image: string, username: string, balance: number, statusMessage: string, classment: string }[]>([])
   const [showUserModal, setShowUserModal] = useState<boolean>(false);
-  const [eventToSend, setEventToSend] = useState<{ image: string, username: string, balance: number, statusMessage: string, classement: number }>({ image: "", username: "", balance: 0, statusMessage: "", classement: "" });
+  const [eventToSend, setEventToSend] = useState<{ image: string, username: string, balance: number, statusMessage: string, classment: string }>({ image: "", username: "", balance: 0, statusMessage: "", classment: "" });
 
   const [showDefiModal, setShowDefiModal] = useState<boolean>(false);
 
@@ -141,7 +141,7 @@ export default function Social() {
                 <p className="flex pt-2 text-[12px] font-bold">
                   {user.username}
                 </p>
-                <p className="h-4 text-[10px] text-black font-bold">{user.bio}</p>
+                <p className="h-4 text-[10px] text-black font-bold">{user.statusMessage}</p>
                 <div className="flex items-center justify-between px-[2px]">
                   <p className="text-[11px] font-bold">Wallet : ${user.balance}</p>
                   <button className="mb-[1px] rounded-md bg-red-600 px-3.5 py-[2px] text-[11px] text-white" onClick={() => { setEventToSend(user), setShowDefiModal(true) }}>

@@ -48,8 +48,8 @@ export default function EventProfileModal({ userProfile }: UserProfileReceived) 
                     <div className="text-center">
                         {userProfile.username}
                         {
-                            userProfile.statusMessage.length > 0 && (
-                                <div className="p-2 bg-white flex items-center justify-center text-black/75 text-sm italic rounded-md"><div className="relative">{userProfile.statusMessage}<div className="absolute bg-white rotate-45 bg-white w-2 h-2 border-l-50 border-transparent border-r-50 border-t-100 border-black top-[-10px]"></div></div></div>
+                            userProfile.statusMessage && userProfile.statusMessage.length > 0 && (
+                                <div className="p-2 bg-white flex items-center justify-center text-black/75 text-sm italic rounded-md"><div className="relative">{userProfile.statusMessage}<div className={`absolute bg-white rotate-45 bg-white w-2 h-2 border-l-50 border-transparent border-r-50 border-t-100 border-black top-[-10px] ${userProfile.statusMessage.length > 30 && 'right-[20px]'}`}></div></div></div>
                             )
                         }
                     </div>

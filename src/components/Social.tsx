@@ -12,7 +12,7 @@ export default function Social() {
   const [userProfile, setUserProfile] = useState<{ image: string, username: string, balance: number, statusMessage: string, classment: string }>({ image: "", username: "", balance: 0, statusMessage: "", classment: "" })
   const [friends, setFriends] = useState<{ image: string, username: string, balance: number, statusMessage: string, classment: string }[]>([])
   const [onlineUsers, setOnlineUsers] = useState<{ image: string, username: string, balance: number, statusMessage: string, classment: string }[]>([])
-  const [showUserModal, setShowUserModal] = useState<boolean>(true);
+  const [showUserModal, setShowUserModal] = useState<boolean>(false);
   const [showAddFriendModal, setShowAddFriendModal] = useState<boolean>(false);
   const [eventToSend, setEventToSend] = useState<{ image: string, username: string, balance: number, statusMessage: string, classment: string }>({ image: "", username: "", balance: 0, statusMessage: "", classment: "" });
 

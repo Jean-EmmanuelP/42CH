@@ -195,7 +195,7 @@ export default function HomePage() {
         <div className="flex w-[56%] flex-col rounded-md ">
           <div className="mb-[2%] h-[56%] w-full rounded-md bg-white">
             <h2 className="mb-2 pl-7 pt-4 font-bold">Evenements</h2>
-            <div className="flex-grow overflow-auto rounded-b-md bg-white px-2">
+            <div className="flex overflow-auto rounded-b-md bg-white px-2">
               <div className="max-h-32 w-full">
                 <div className="h-full w-full">
                   {weeklyEvents.map((event: Event, index: number) => (
@@ -289,7 +289,7 @@ export default function HomePage() {
               {players?.map((player, index) => (
                 <div
                   key={index}
-                  className={`mr-1 flex h-full w-full flex-grow flex-col items-center`}
+                  className={`mr-1 flex h-full w-full flex-grow flex-col items-center hover:cursor-pointer`}
                 >
                   <Image
                     src={player.image}

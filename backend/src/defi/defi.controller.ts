@@ -99,6 +99,7 @@ export class DefiController {
     @Post('bet_public_challenge')
     async betPublicChallenge(@Body() data: { username: string, challengeId: string, amount: number, winner: string }) {
         if (data == undefined || !data.username || !data.challengeId || !data.amount || !data.winner) {
+            console.log(data.username, data.amount, data.challengeId, data.winner)
             return { success: false, error: 'Invalid input' };
         }
         return await this.defiService.betPublicChallenge(data.username, data.challengeId, data.amount, data.winner);

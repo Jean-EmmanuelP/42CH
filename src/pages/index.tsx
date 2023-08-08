@@ -31,6 +31,7 @@ interface publicChallenge {
   opponentBid: number;
   gameSelected: string;
   contractTerms: string;
+  bid: number;
   timerPublic: number;
 }
 
@@ -97,8 +98,9 @@ export default function HomePage() {
       process.env.NEXT_PUBLIC_API_URL + "/defi/get_all_public_challenges/"
     );
 
-    if (request.data.success == true)
+    if (request.data.success == true) {
       setPublicChallenges(request.data.publicChallenges);
+    }
     else console.error(request.data.error);
   }
 
@@ -107,12 +109,18 @@ export default function HomePage() {
     getPublicChallenges();
   }, []);
 
-  function BiggestEvent() {
-    // console.log(`you clicked on the image`);
-    /*
-      -> Mettre le pop up pour s'inscrire au big event
-    */
+  async function setFix() {
+    let publicChallengesCpy = publicChallenges;
+    for (let i = 0; i < publicChallengesCpy.length; i++) {
+      publicChallengesCpy[i]!.bid = await asyncFix(publicChallengesCpy[i]!.id)
+    }
+    setPublicChallenges(publicChallengesCpy);
+    console.log(publicChallengesCpy)
   }
+
+  useEffect(() => {
+    setFix()
+  }, [publicChallenges]);
 
   function getColorFromLabel(label: any) {
     const parts = label.split("-");
@@ -123,24 +131,19 @@ export default function HomePage() {
     return parts[0];
   }
 
-  {
-    /*
-  ex : async function setWeekly() {
-      const today = dayjs().startOf("day");
-      const tenDaysFromNow = dayjs().add(10, "day");
-      const request = await axios.get(
-        process.env.NEXT_PUBLIC_API_URL+"/events/incoming-events/"
-      );
-      request.data.forEach((element: Event) => {
-        element.day = Number(element.day);
-      });
-      const events: Event[] = request.data.filter(
-        (evt: Event) =>
-          dayjs(evt.day).isSameOrAfter(today) &&
-          dayjs(evt.day).isSameOrBefore(tenDaysFromNow)
-      );
-  */
+  async function asyncFix(id: string) {
+    const request = await axios.post(process.env.NEXT_PUBLIC_API_URL + "/defi/user_bet_on_public_challenge/", JSON.stringify({ username: sessionStorage.getItem("username"), challengeId: id })
+      , { headers: { "Content-Type": "application/json" } })
+    if (request.data.success == true) {
+      console.log("returned", request.data.userBet, "ici")
+      return request.data.userBet
+    }
+    else {
+      console.log(request.data.error)
+      return 0
+    }
   }
+
   interface PlayerProps {
     username: string;
     image: string;
@@ -240,6 +243,7 @@ export default function HomePage() {
                 >
                   Miser
                 </button>
+                <p className="text-white text-xs block mt-28">Ta mise: {challenge.bid}</p>
               </div>
             ))}
           </div>
@@ -606,6 +610,7 @@ export default function HomePage() {
               >
                 Miser
               </button>
+              <p className="text-white text-xs block mt-28">Ta mise: {challenge.bid}</p>
             </div>
           ))}
         </div>

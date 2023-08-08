@@ -155,6 +155,7 @@ export class DefiService {
                 gameSelected: publicChallenges[i].gameSelected,
                 contractTerms: publicChallenges[i].contractTerms,
                 timerPublic: publicChallenges[i].timerPublic, // Timer de fin, comparé dans le front avec Date.now() / 1000 (seconds)
+                bid: 0,
             })
         }
         return { success: true, publicChallenges: publicChallengesInfos }
@@ -169,7 +170,7 @@ export class DefiService {
             return { success: false, error: 'Challenge not found' }
         const usersBet = await this.prismaService.usersBet.findMany({ where: { challengeId: challenge.id } })
         if (!usersBet)
-            return { success: false, error: 'No bets found' }
+            return { success: true, userBet: 0 }
         for (let i = 0; i < usersBet.length; i++) {
             if (usersBet[i].userId == user.id)
                 return { success: true, userBet: usersBet[i].amount }

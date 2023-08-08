@@ -72,8 +72,9 @@ export class UserService {
         const friend = await this.prismaService.user.findUnique({ where: { name: friendUsername } })
         if (friend == null)
             return { success: false, error: 'Friend not found' }
-        if (user.friends.includes(friend.id) || friend.friends.includes(user.id))
+        if (user.friends.includes(friend.id) || friend.friends.includes(user.id)) {
             return { success: false, error: 'Already friends' }
+        }
         else if (user.friendsRequests.includes(friend.id) || friend.friendsRequests.includes(user.id))
             return { success: false, error: 'Already sent a friend request' }
         else {

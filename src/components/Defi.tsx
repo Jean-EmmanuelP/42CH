@@ -1,4 +1,4 @@
-import React, { useContext, useEffect, useState } from "react";
+import React, { use, useContext, useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import GlobalContext from "~/context/GlobalContext";
 import Pusher from "pusher-js";
@@ -25,8 +25,24 @@ const DefiRightBar: React.FC = () => {
   const [ongoingDefiArray, setOngoingDefiArray] = useState<any[]>([]);
   const [showModalFin, setShowModalFin] = useState<boolean>(false);
   const [challengeOpened, setChallengeOpened] = useState<any>(null);
+  const [friendRequests, setFriendRequests] = useState<any[]>([]);
   const [socket, setSocket] = useState<any>(null);
 
+  async function getFriendRequests() {
+    const request = await axios.post(
+      process.env.NEXT_PUBLIC_API_URL + "/user/get_friend_requests/",
+      JSON.stringify({ username: sessionStorage.getItem("username") }),
+      { headers: { "Content-Type": "application/json" } }
+    );
+    if (request.data.success === true)
+      setFriendRequests(request.data.friendRequests);
+    else
+      console.error(request.data.error);
+  }
+
+  useEffect(() => {
+    getFriendRequests()
+  }, [])
 
   useEffect(() => {
     const request = axios.post(
@@ -147,7 +163,7 @@ const DefiRightBar: React.FC = () => {
   const tabs = [
     { label: "En cours", value: "En cours", position: 0 },
     { label: "Invitations", value: "Invitations", position: 1 },
-    { label: "En attente", value: "En attente", position: 2 },
+    { label: "Demande d'amis", value: "Amis", position: 2 },
   ];
   const [selectedTab, setSelectedTab] = useState(0);
   return (
@@ -261,8 +277,56 @@ const DefiRightBar: React.FC = () => {
             })}
           </div>
         )}
-        {activeTab === "En attente" && (
-          <div>A gerer, une fois que tu es sorti du defi</div>
+        {activeTab === "Amis" && (
+
+          <div className="overflow-y-auto w-full h-full"> {friendRequests != null ? (friendRequests.map((friendRequest, index) => {
+            return (
+              <div className="flex w-full h-16 rounded border-1 border-black bg-gray-450 p-2 text-black shadow-md">
+                <img
+                  className="w-[14%] h-[100%] rounded-full inline top-0 left-0 mr-4"
+                  src={friendRequest.image}
+                >
+                </img>
+                <p className="w-[40%] inline text-l h-full">{friendRequest.username}</p>
+                <button
+                  className="w-[24%] mr-[2%] inline rounded border-2 border-green-500 bg-green-500 text-white shadow-md text-sm"
+                  onClick={async () => {
+                    const request = await axios.post(
+                      process.env.NEXT_PUBLIC_API_URL + "/user/accept_friend/",
+                      JSON.stringify({ username: sessionStorage.getItem("username"), toAcceptUsername: friendRequest.username }),
+                      { headers: { "Content-Type": "application/json" } }
+                    );
+                    if (request.data.success === true) {
+                      window.location.reload()
+                    }
+                    else {
+                      console.error(request.data.error);
+                    }
+                  }}
+                >
+                  Accepter
+                </button>
+                <button
+                  className="w-[24%] inline rounded border-2 border-red-500 bg-red-500 p-2 text-white shadow-md text-sm"
+                  onClick={async () => {
+                    const request = await axios.post(
+                      process.env.NEXT_PUBLIC_API_URL + "/user/decline_friend/",
+                      JSON.stringify({ username: sessionStorage.getItem("username"), toDeclineUsername: friendRequest.username }),
+                      { headers: { "Content-Type": "application/json" } }
+                    );
+                    if (request.data.success === true) {
+                      window.location.reload()
+                    }
+                    else {
+                      console.error(request.data.error);
+                    }
+                  }}
+                >
+                  Refuser
+                </button>
+              </div>
+            );
+          })) : null}</div>
         )}
       </div>
       <div className="mb-2 w-full pb-2 flex justify-center">

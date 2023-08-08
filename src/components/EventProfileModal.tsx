@@ -45,7 +45,14 @@ export default function EventProfileModal({ userProfile }: UserProfileReceived) 
                         😋
                     </div>
                 </div>
-                <div className="w-[20%] flex items-center justify-center h-full">{sessionStorage.getItem("username") !== userProfile.username && (<button className="text-[10px] bg-red-500 text-white p-2 rounded-md">Add in friend</button>)}</div>
+                <div className="w-[20%] flex items-center justify-center h-full">{sessionStorage.getItem("username") !== userProfile.username && (<button className="text-[10px] bg-red-500 text-white p-2 rounded-md" onClick={async () => {
+                    const request = await axios.post(process.env.NEXT_PUBLIC_API_URL + "/user/add_friend/", JSON.stringify({ username: sessionStorage.getItem("username"), friendUsername: userProfile.username }), { headers: { 'Content-Type': 'application/json' } })
+                    if (request.data.success == true)
+                        alert("Request sent")
+                    else
+                        alert(request.data.error);
+                }}
+                >Add in friend</button>)}</div>
             </div>
             <div className="h-[12%] w-full flex">
                 <div className="w-[10%]"></div>
@@ -65,70 +72,72 @@ export default function EventProfileModal({ userProfile }: UserProfileReceived) 
                 </div>
                 <div className="w-[10%]"></div>
             </div>
-            {usersRanking.length > 0 ? (
-                <div className="h-[40%] w-full">
-                    <div className="h-[20%] w-full flex items-center justify-center gap-2">
-                        <div className="h-full w-[33%] bg-white flex items-center justify-center text-black rounded-t-md"><p>👇</p></div>
-                        <div className="h-full w-[33%] bg-white flex items-center justify-center text-black rounded-t-md"><p>🏆 {userProfile.classment}</p></div>
-                        <div className="h-full w-[33%] bg-white flex items-center justify-center text-black rounded-t-md"><p>💰 {userProfile.balance}</p></div>
-                    </div>
-                    <div className="flex flex-col h-[80%] w-full pt-1 gap-2 bg-white text-black">
-                        <div className="bg-gray-400 h-[33%] w-full flex shadow-md border-y border-black">
-                            <div className="relative w-[15%] h-full">
+            {
+                usersRanking.length > 0 ? (
+                    <div className="h-[40%] w-full">
+                        <div className="h-[20%] w-full flex items-center justify-center gap-2">
+                            <div className="h-full w-[33%] bg-white flex items-center justify-center text-black rounded-t-md"><p>👇</p></div>
+                            <div className="h-full w-[33%] bg-white flex items-center justify-center text-black rounded-t-md"><p>🏆 {userProfile.classment}</p></div>
+                            <div className="h-full w-[33%] bg-white flex items-center justify-center text-black rounded-t-md"><p>💰 {userProfile.balance}</p></div>
+                        </div>
+                        <div className="flex flex-col h-[80%] w-full pt-1 gap-2 bg-white text-black">
+                            <div className="bg-gray-400 h-[33%] w-full flex shadow-md border-y border-black">
+                                <div className="relative w-[15%] h-full">
 
-                                <Image
-                                    src={usersRanking[0]!.image}
-                                    layout="fill"
-                                    objectFit="contain"
-                                    alt="User Image"
-                                />
+                                    <Image
+                                        src={usersRanking[0]!.image}
+                                        layout="fill"
+                                        objectFit="contain"
+                                        alt="User Image"
+                                    />
+                                </div>
+                                <div className="w-[60%] h-full pl-2 flex flex-col justify-center">
+                                    <h1 className="font-bold text-[15px]">{usersRanking[0]!.username}</h1>
+                                    <h2 className="font-gray-900 text-[12px] pl-4">{usersRanking[0]!.statusMessage !== '' ? usersRanking[0]!.statusMessage : "No message status"}</h2>
+                                </div>
+                                <div className="w-[25%] flex justify-center items-center">
+                                    <h1 className="text-center">#{usersRanking[0]!.ranking}</h1>
+                                </div>
                             </div>
-                            <div className="w-[60%] h-full pl-2 flex flex-col justify-center">
-                                <h1 className="font-bold text-[15px]">{usersRanking[0]!.username}</h1>
-                                <h2 className="font-gray-900 text-[12px] pl-4">{usersRanking[0]!.statusMessage !== '' ? usersRanking[0]!.statusMessage : "No message status"}</h2>
-                            </div>
-                            <div className="w-[25%] flex justify-center items-center">
-                                <h1 className="text-center">#{usersRanking[0]!.ranking}</h1>
-                            </div>
-                        </div>
-                        <div className="bg-gray-400 h-[33%] w-full flex shadow-md border-y border-black">
-                            <div className="relative w-[15%] h-full">
+                            <div className="bg-gray-400 h-[33%] w-full flex shadow-md border-y border-black">
+                                <div className="relative w-[15%] h-full">
 
-                                <Image
-                                    src={usersRanking[1]!.image}
-                                    layout="fill"
-                                    objectFit="contain"
-                                    alt="User Image"
-                                />
+                                    <Image
+                                        src={usersRanking[1]!.image}
+                                        layout="fill"
+                                        objectFit="contain"
+                                        alt="User Image"
+                                    />
+                                </div>
+                                <div className="w-[60%] h-full pl-2 flex flex-col justify-center">
+                                    <h1 className="font-bold text-[15px]">{usersRanking[1]!.username}</h1>
+                                    <h2 className="font-gray-900 text-[12px] pl-4">{usersRanking[1]!.statusMessage !== "" ? usersRanking[1]!.statusMessage : "No message status"}</h2>
+                                </div>
+                                <div className="w-[25%] flex justify-center items-center">
+                                    <h1 className="text-center">#{usersRanking[1]!.ranking}</h1>
+                                </div>
                             </div>
-                            <div className="w-[60%] h-full pl-2 flex flex-col justify-center">
-                                <h1 className="font-bold text-[15px]">{usersRanking[1]!.username}</h1>
-                                <h2 className="font-gray-900 text-[12px] pl-4">{usersRanking[1]!.statusMessage !== "" ? usersRanking[1]!.statusMessage : "No message status"}</h2>
-                            </div>
-                            <div className="w-[25%] flex justify-center items-center">
-                                <h1 className="text-center">#{usersRanking[1]!.ranking}</h1>
-                            </div>
-                        </div>
-                        <div className="bg-gray-400 h-[33%] w-full flex shadow-md border-y border-black">
-                            <div className="relative w-[15%] h-full">
-                                <Image
-                                    src={usersRanking[2]!.image}
-                                    layout="fill"
-                                    objectFit="contain"
-                                    alt="User Image"
-                                />
-                            </div>
-                            <div className="w-[60%] h-full pl-2 flex flex-col justify-center">
-                                <h1 className="font-bold text-[15px]">{usersRanking[2]!.username}</h1>
-                                <h2 className="font-gray-900 text-[12px] pl-4">{usersRanking[2]!.statusMessage !== '' ? usersRanking[2]!.statusMessage : "No message status"}</h2>
-                            </div>
-                            <div className="w-[25%] flex justify-center items-center">
-                                <h1 className="text-center">#{usersRanking[2]!.ranking}</h1>
+                            <div className="bg-gray-400 h-[33%] w-full flex shadow-md border-y border-black">
+                                <div className="relative w-[15%] h-full">
+                                    <Image
+                                        src={usersRanking[2]!.image}
+                                        layout="fill"
+                                        objectFit="contain"
+                                        alt="User Image"
+                                    />
+                                </div>
+                                <div className="w-[60%] h-full pl-2 flex flex-col justify-center">
+                                    <h1 className="font-bold text-[15px]">{usersRanking[2]!.username}</h1>
+                                    <h2 className="font-gray-900 text-[12px] pl-4">{usersRanking[2]!.statusMessage !== '' ? usersRanking[2]!.statusMessage : "No message status"}</h2>
+                                </div>
+                                <div className="w-[25%] flex justify-center items-center">
+                                    <h1 className="text-center">#{usersRanking[2]!.ranking}</h1>
+                                </div>
                             </div>
                         </div>
                     </div>
-                </div>
-            ) : null}
-        </div>
+                ) : null
+            }
+        </div >
     )
 }

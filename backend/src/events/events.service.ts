@@ -25,7 +25,6 @@ export class EventsService {
     }
 
     async addUserToEvent(eventId: string, user: string) {
-        console.log(eventId, user)
         const userExists = await this.prismaService.user.findUnique({ where: { name: user } })
         if (userExists == null) {
             return { success: false, error: "User not found" }
@@ -50,13 +49,11 @@ export class EventsService {
                 if (updatedEvent.limitedSeats == updatedEvent.participantsUsernames.length) {
                     await this.prismaService.event.update({ where: { id: eventId }, data: { isFull: true } })
                 }
-                console.log(updatedEvent)
                 return { success: true }
             }
         }
         else {
             const updatedEvent = await this.prismaService.event.update({ where: { id: eventId }, data: { participantsUsernames: { push: userExists.name } } })
-            console.log(updatedEvent)
             return { success: true }
         }
 
@@ -71,9 +68,7 @@ export class EventsService {
     }
 
     async getIncomingEvents() {
-        //findMany will return all events 
         const events = await this.prismaService.event.findMany();
-        // console.log(events)
         return events;
     }
 

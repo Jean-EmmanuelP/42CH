@@ -23,26 +23,29 @@ export class UserService {
         }
         return String(0);
     }
-
     async getFriends(username: string) {
-        const user = await this.prismaService.user.findUnique({ where: { name: username } })
+        const user = await this.prismaService.user.findUnique({ where: { name: username }, select: { friends: true } })
         if (user == null)
             return { success: false, error: 'User not found' }
         if (user.friends.length == 0)
             return { success: false, error: 'No friends' }
-        let friends = [];
-        for (let i = 0; i < user.friends.length; i++) {
-            const friend = await this.prismaService.user.findUnique({ where: { id: user.friends[i] } })
-            friends.push({
-                username: friend.name,
-                image: friend.image,
-                balance: friend.balance,
-                statusMessage: friend.statusMessage,
-                classment: await this.getClassment(friend.name),
-            })
-        }
-        return { success: true, friends: friends }
+
+        const friends = await this.prismaService.user.findMany({ where: { id: { in: user.friends } } })
+
+        const friendsDataPromises = friends.map(async (friend) => ({
+            username: friend.name,
+            image: friend.image,
+            balance: friend.balance,
+            statusMessage: friend.statusMessage,
+            classment: await this.getClassment(friend.name),
+        }))
+
+        const friendsData = await Promise.all(friendsDataPromises);
+
+        return { success: true, friends: friendsData }
     }
+
+
 
     async getFriendRequests(username: string) {
         const user = await this.prismaService.user.findUnique({ where: { name: username } })
@@ -237,7 +240,6 @@ export class UserService {
             ],
             take: 3
         })
-        console.log("in top 3", users)
         if (users.length == 0) {
             return { success: false, error: 'No users found' }
         }

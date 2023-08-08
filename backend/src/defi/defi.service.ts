@@ -9,7 +9,6 @@ export class DefiService {
     // function that search the username, that is an non exact match
     async searchUser(username: string) {
         const users = await this.prismaService.user.findMany({ where: { name: { contains: username } }, orderBy: { name: 'desc' } });
-        console.log(users)
         if (!users)
             return { success: false, error: 'No user found' };
         let usersInfos = [];
@@ -335,7 +334,6 @@ export class DefiService {
 
     async getInfos(username: string, accessToken?: string) {
         let ret = await this.authService.checkToken(username, accessToken);
-        console.log("getInfos", ret)
         if (ret.success == false)
             return { success: false, error: 'Token' };
         const user = await this.prismaService.user.findUnique({ where: { name: username } });

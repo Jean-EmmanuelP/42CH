@@ -45,7 +45,7 @@ export default function EventProfileModal({ userProfile }: UserProfileReceived) 
                         😋
                     </div>
                 </div>
-                <div className="w-[20%]"></div>
+                <div className="w-[20%] flex items-center justify-center h-full">{sessionStorage.getItem("username") !== userProfile.username && (<button className="text-[10px] bg-red-500 text-white p-2 rounded-md">Add in friend</button>)}</div>
             </div>
             <div className="h-[12%] w-full flex">
                 <div className="w-[10%]"></div>

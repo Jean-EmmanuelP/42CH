@@ -12,7 +12,7 @@ export default function Social() {
   const [userProfile, setUserProfile] = useState<{ image: string, username: string, balance: number, statusMessage: string, classment: string }>({ image: "", username: "", balance: 0, statusMessage: "", classment: "" })
   const [friends, setFriends] = useState<{ image: string, username: string, balance: number, statusMessage: string, classment: string }[]>([])
   const [onlineUsers, setOnlineUsers] = useState<{ image: string, username: string, balance: number, statusMessage: string, classment: string }[]>([])
-  const [showUserModal, setShowUserModal] = useState<boolean>(false);
+  const [showUserModal, setShowUserModal] = useState<boolean>(true);
   const [showAddFriendModal, setShowAddFriendModal] = useState<boolean>(false);
   const [eventToSend, setEventToSend] = useState<{ image: string, username: string, balance: number, statusMessage: string, classment: string }>({ image: "", username: "", balance: 0, statusMessage: "", classment: "" });
 
@@ -99,8 +99,8 @@ export default function Social() {
       </div>
       <div className="h-[30%] w-full">
         <div className="px-4 flex justify-between h-[15%]">
-        <p className="pt-1 font-bold border border-black">Amis</p>
-        <button className="pt-1 font-bold rounded-md shadow-md p-2 bg-gray-200/20 hover:text-white hover:bg-red-500 duration-300 " onClick={() => {setShowAddFriendModal(true)}}>Add friends</button>
+        <p className="pt-1 font-bold">Amis</p>
+        <button className="pt-1 font-medium rounded-md shadow-md p-2 bg-gray-200/20 hover:text-white hover:bg-red-500 duration-300" onClick={() => {setShowAddFriendModal(true)}}>Add a friend</button>
         </div>
         <div className="flex flex-col gap-4 h-[85%] overflow-y-auto no-scrollbar">
           {friends.map((friend: any) => (

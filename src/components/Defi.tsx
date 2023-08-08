@@ -268,7 +268,7 @@ const DefiRightBar: React.FC = () => {
       <div className="mb-2 w-full pb-2 flex justify-center">
         <button
           type="button"
-          className=" w-5/6 mx-2 rounded-md bg-red-600 px-2 py-3 text-sm font-semibold text-white shadow-md hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-red-500 focus:ring-offset-2"
+          className="hover:scale-110 duration-300 w-5/6 mx-2 rounded-md bg-red-600 px-2 py-3 text-sm font-semibold text-white shadow-md hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-red-500 focus:ring-offset-2"
           onClick={() => setShowModal(true)}
         >
           Defier un challenger

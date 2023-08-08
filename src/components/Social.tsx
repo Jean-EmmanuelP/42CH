@@ -99,8 +99,8 @@ export default function Social() {
       </div>
       <div className="h-[30%] w-full">
         <div className="px-4 flex justify-between h-[15%]">
-        <p className="pt-1 font-bold">Amis</p>
-        <button className="pt-1 font-medium rounded-md shadow-md p-2 bg-gray-200/20 hover:text-white hover:bg-red-500 duration-300" onClick={() => {setShowAddFriendModal(true)}}>Add a friend</button>
+          <p className="pt-1 font-bold">Amis</p>
+          <button className="pt-1 font-medium rounded-md shadow-md p-2 bg-gray-200/20 hover:text-white hover:bg-red-500 duration-300" onClick={() => { setShowAddFriendModal(true) }}>Add a friend</button>
         </div>
         <div className="flex flex-col gap-4 h-[85%] overflow-y-auto no-scrollbar">
           {friends.map((friend: any) => (
@@ -171,7 +171,7 @@ export default function Social() {
         </div>
       </div>
       <Modal isVisible={showUserModal} onClose={() => setShowUserModal(false)} width="w-[500px]">
-        <EventProfileModal userProfile={eventToSend} />
+        <EventProfileModal userProfile={eventToSend} showAddFriend={!friends.some(friend => friend.username === eventToSend.username)} />
       </Modal>
       <Modal isVisible={showDefiModal} onClose={() => setShowDefiModal(false)} width="w-[500px]">
         <DefiModal userProfile={eventToSend} onClose={() => setShowDefiModal(false)} />

@@ -11,10 +11,11 @@ interface UserProfileProps {
 }
 
 export interface UserProfileReceived {
-    userProfile: UserProfileProps
+    userProfile: UserProfileProps,
+    showAddFriend: boolean
 }
 
-export default function EventProfileModal({ userProfile }: UserProfileReceived) {
+export default function EventProfileModal({ userProfile, showAddFriend }: UserProfileReceived) {
     const [usersRanking, setUsersRanking] = useState<{ image: string, username: string, balance: number, statusMessage: string, ranking: string }[]>([])
 
     async function getUsersRanking() {
@@ -45,14 +46,14 @@ export default function EventProfileModal({ userProfile }: UserProfileReceived) 
                         😋
                     </div>
                 </div>
-                <div className="w-[20%] flex items-center justify-center h-full">{sessionStorage.getItem("username") !== userProfile.username && (<button className="text-[10px] bg-red-500 text-white p-2 rounded-md" onClick={async () => {
+                <div className="w-[20%] flex items-center justify-center h-full">{(sessionStorage.getItem("username") !== userProfile.username && showAddFriend === true) && (<button className="text-[10px] bg-red-500 text-white p-2 rounded-md" onClick={async () => {
                     const request = await axios.post(process.env.NEXT_PUBLIC_API_URL + "/user/add_friend/", JSON.stringify({ username: sessionStorage.getItem("username"), friendUsername: userProfile.username }), { headers: { 'Content-Type': 'application/json' } })
                     if (request.data.success == true)
                         alert("Request sent")
                     else
                         alert(request.data.error);
                 }}
-                >Add in friend</button>)}</div>
+                >Add friend</button>)}</div>
             </div>
             <div className="h-[12%] w-full flex">
                 <div className="w-[10%]"></div>

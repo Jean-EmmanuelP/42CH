@@ -111,13 +111,13 @@ export default function Navbar() {
           </button>
         </div>
       </div>
-      <button className="block sm:hidden pr-2"><Image src={burgerIcon} width={25} height={25} alt="burgerIcon"/></button>
+      <button className="block sm:hidden pr-2"><Image src={burgerIcon} width={25} height={25} alt="burgerIcon" /></button>
       <Modal
         isVisible={showUserModal}
         onClose={() => setShowUserModal(false)}
         width="w-[500px]"
       >
-        <EventProfileModal userProfile={eventToSend} />
+        <EventProfileModal userProfile={eventToSend} showAddFriend={false} />
       </Modal>
     </div>
   );

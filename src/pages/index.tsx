@@ -20,6 +20,7 @@ dayjs.extend(isSameOrBefore);
 import axios from "axios";
 import EventProfileModal from "~/components/EventProfileModal";
 import LiveChallengeModal from "~/components/LiveChallengeModal";
+import { set } from "lodash";
 
 interface publicChallenge {
   id: string;
@@ -61,6 +62,8 @@ export default function HomePage() {
   const [contratInformation, setContratInformation] =
     useState<publicChallenge>();
 
+  const [publicChallengesBool, setPublicChallengesBool] = useState<boolean>(false)
+
   async function setWeekly() {
     const today = dayjs().startOf("day");
     const tenDaysFromNow = dayjs().add(10, "day");
@@ -100,6 +103,7 @@ export default function HomePage() {
 
     if (request.data.success == true) {
       setPublicChallenges(request.data.publicChallenges);
+      setPublicChallengesBool(true)
     }
     else console.error(request.data.error);
   }
@@ -110,17 +114,27 @@ export default function HomePage() {
   }, []);
 
   async function setFix() {
-    let publicChallengesCpy = publicChallenges;
-    for (let i = 0; i < publicChallengesCpy.length; i++) {
-      publicChallengesCpy[i]!.bid = await asyncFix(publicChallengesCpy[i]!.id)
-    }
+    let publicChallengesCpy = [...publicChallenges];
+    const promises = publicChallengesCpy.map((challenge) =>
+      asyncFix(challenge.id)
+        .then((bid) => {
+          challenge.bid = bid;
+        })
+        .catch((error) => {
+          console.error(error);
+        })
+    );
+
+    await Promise.all(promises);
+
     setPublicChallenges(publicChallengesCpy);
-    console.log(publicChallengesCpy)
+    console.log(publicChallengesCpy);
   }
 
   useEffect(() => {
-    setFix()
-  }, [publicChallenges]);
+    setFix();
+  }, [publicChallengesBool]);
+
 
   function getColorFromLabel(label: any) {
     const parts = label.split("-");

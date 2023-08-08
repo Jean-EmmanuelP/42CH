@@ -192,7 +192,7 @@ export default function HomePage() {
                 setShowBigModal(true);
               }}
             />
-           </div>
+          </div>
           <div className="relative flex h-[35%] w-full flex-col bg-white shadow-md">
             <h1 className="pl-7 pt-4 text-[13px] font-bold">Live</h1>
             <button className="absolute right-2 top-3.5 rounded-full border border-black p-1">
@@ -346,9 +346,8 @@ export default function HomePage() {
                     width={80}
                     height={80}
                     alt="Player Image"
-                    className={`${
-                      index === 1 ? "shadow-xl" : "shadow-md"
-                    } rounded-md pt-2 duration-200 hover:scale-110`}
+                    className={`${index === 1 ? "shadow-xl" : "shadow-md"
+                      } rounded-md pt-2 duration-200 hover:scale-110`}
                     onClick={() => {
                       setShowUserModal(true), setPlayerOTW(player);
                     }}
@@ -406,7 +405,7 @@ export default function HomePage() {
             onClose={() => setShowUserModal(false)}
             width="w-[300px]"
           >
-            <EventProfileModal userProfile={playerOTW} />
+            <EventProfileModal userProfile={playerOTW} showAddFriend={true} />
           </Modal>
         ) : null}
         {contratInformation !== undefined ? (
@@ -543,9 +542,8 @@ export default function HomePage() {
                     width={100}
                     height={100}
                     alt="Player Image"
-                    className={`${
-                      index === 1 ? "shadow-xl" : "shadow-md"
-                    } rounded-md duration-200 hover:scale-110`}
+                    className={`${index === 1 ? "shadow-xl" : "shadow-md"
+                      } rounded-md duration-200 hover:scale-110`}
                     onClick={() => {
                       setShowUserModal(true), setPlayerOTW(player);
                     }}

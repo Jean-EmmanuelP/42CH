@@ -23,8 +23,8 @@ export default function DefiModal({
   userProfile,
   onClose,
 }: UserProfileReceived) {
-  const [message, setMessage] = useState(null);
-  const [error, setError] = useState(null);
+  const [message, setMessage] = useState<String>("");
+  const [error, setError] = useState<String>("");
 
   const sendRequest = async (e:any) => {
     e.preventDefault();
@@ -36,14 +36,14 @@ export default function DefiModal({
       }),
       { headers: { "Content-Type": "application/json" } }
     );
-    console.log(
-      "🚀 ~ file: DefiModalSocial.tsx:38 ~ sendRequest ~ request:",
-      request
-    );
+    // console.log(
+    //   "🚀 ~ file: DefiModalSocial.tsx:38 ~ sendRequest ~ request:",
+    //   request
+    // );
 
     if (request.data.success === true) {
       setMessage("Défi envoyé avec succès!");
-      setError(null);
+      setError("");
       setTimeout(() => {
         onClose();
       }, 1500);
@@ -51,9 +51,9 @@ export default function DefiModal({
     } else {
       const errorRequest = request.data.error;
       setError(`Le defi a deja ete envoye`);
-      setMessage(null);
+      setMessage("");
       setTimeout(() => {
-        setError(null);
+        setError("");
       }, 1500);
     }
   };
@@ -97,7 +97,7 @@ export default function DefiModal({
         </form>
       </div>
       <div
-        className={`${message === null && error === null ? 'bg-transparent h-0 w-0 hidden': `${error && 'text-red-600'} ${message && 'text-green-500'} bg-white w-full flex items-center justify-center border-b border-gray-500/10`} absolute top-0 flex items-center p-2`}
+        className={`${message === "" && error === "" ? 'bg-transparent h-0 w-0 hidden' : `${error && 'text-red-600'} ${message && 'text-green-500'} bg-white w-full flex items-center justify-center border-b border-gray-500/10`} absolute top-0 flex items-center p-2`}
       >
         {message && <p>{message}</p>}
         {error && <p>{error}</p>}

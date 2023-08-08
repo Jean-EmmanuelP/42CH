@@ -18,7 +18,7 @@ export default function EventProfileModal({ userProfile }: UserProfileReceived) 
     const [usersRanking, setUsersRanking] = useState<{ image: string, username: string, balance: number, statusMessage: string, ranking: string }[]>([])
 
     async function getUsersRanking() {
-        const request = await axios.post(process.env.NEXT_PUBLIC_API_URL + "/user/three_users_ranking/", JSON.stringify({ username: sessionStorage.getItem('username') }), { headers: { 'Content-Type': 'application/json' } })
+        const request = await axios.post(process.env.NEXT_PUBLIC_API_URL + "/user/three_users_ranking/", JSON.stringify({ username: userProfile.username }), { headers: { 'Content-Type': 'application/json' } })
         if (request.data.success == true)
             setUsersRanking(request.data.usersRanking);
         else
@@ -28,10 +28,6 @@ export default function EventProfileModal({ userProfile }: UserProfileReceived) 
     useEffect(() => {
         getUsersRanking();
     }, [])
-
-    useEffect(() => {
-        console.log(usersRanking)
-    }, [usersRanking])
 
     return (
         <div className="h-[65vh] text-white bg-[#272A30] p-2">

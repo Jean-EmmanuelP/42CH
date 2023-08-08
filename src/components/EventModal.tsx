@@ -56,7 +56,7 @@ export default function EventModal() {
       limitedSeats,
       isEventOfTheWeek
     };
-    const request = await axios.post(process.env.NEXT_PUBLIC_API_URL+'/events/create/', calendarEvent);
+    const request = await axios.post(process.env.NEXT_PUBLIC_API_URL + '/events/create/', calendarEvent);
     if (request.data.success == true) {
       // reload le state qui contient tous les events
       window.location.reload();
@@ -71,8 +71,7 @@ export default function EventModal() {
       dispatchCalEvent({ type: "push", payload: calendarEvent });
     }
 
-    const test = await axios.get(process.env.NEXT_PUBLIC_API_URL+'/events/incoming-events/');
-    console.log(test.data)
+    const test = await axios.get(process.env.NEXT_PUBLIC_API_URL + '/events/incoming-events/');
     setShowEventModal(false);
     setSelectedEvent(null);
     setTitle("");
@@ -92,7 +91,7 @@ export default function EventModal() {
               <span
                 className="text-gray-400 cursor-pointer"
                 onClick={async () => {
-                  const request = await axios.post(process.env.NEXT_PUBLIC_API_URL+'/events/delete/', selectedEvent);
+                  const request = await axios.post(process.env.NEXT_PUBLIC_API_URL + '/events/delete/', selectedEvent);
                   dispatchCalEvent({
                     type: "delete",
                     payload: selectedEvent,
@@ -141,7 +140,7 @@ export default function EventModal() {
             />
             <span>
               <BookMarkBorder />
-              <button className="rounded border border-black bg-white p-2" onClick={(e) => {e.preventDefault();setIsEventOfTheWeek(!isEventOfTheWeek)}}>{isEventOfTheWeek === false ? (<p className="bg-orange-500">Event normal</p>):(<p className="bg-red-900 text-white">Event de la semaine</p>)}</button>
+              <button className="rounded border border-black bg-white p-2" onClick={(e) => { e.preventDefault(); setIsEventOfTheWeek(!isEventOfTheWeek) }}>{isEventOfTheWeek === false ? (<p className="bg-orange-500">Event normal</p>) : (<p className="bg-red-900 text-white">Event de la semaine</p>)}</button>
               <label htmlFor="limitedseats">Nombre de place:</label>
               <input type="number" id="number" max={100} min={-1} name="limitedseats" value={limitedSeats} onChange={(e) => setLimitedSeats(parseInt(e.target.value))} className="rounded border border-black bg-white" />
             </span>

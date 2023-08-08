@@ -29,29 +29,29 @@ const data: DataItem[] = [
 
 export default function Classement() {
   return (
-      <div className="h-full w-full flex flex-col items-center justify-center bg-white-100 mt-4 font-mono">
-        <table className="table-auto w-full h-full border-collapse border-1 border-gray-300 shadow-md font-mono">
-          <thead>
-            <tr className="bg-gray-500/50 text-white font-mono">
-              <th className="px-4 py-2">Position</th>
-              <th className="px-4 py-2">Picture</th>
-              <th className="px-4 py-2">Login</th>
-              <th className="px-4 py-2">NFT</th>
-              <th className="px-4 py-2">Link Intra</th>
+    <div className="h-full w-full flex flex-col items-center justify-center bg-white-100 mt-4 font-mono">
+      <table className="table-auto w-full h-full border-collapse border-1 border-gray-300 shadow-md font-mono">
+        <thead>
+          <tr className="bg-gray-500/50 text-white font-mono">
+            <th className="px-4 py-2">Position</th>
+            <th className="px-4 py-2">Picture</th>
+            <th className="px-4 py-2">Login</th>
+            <th className="px-4 py-2">NFT</th>
+            <th className="px-4 py-2">Link Intra</th>
+          </tr>
+        </thead>
+        <tbody>
+          {data.map((item, index) => (
+            <tr key={index} className={index % 2 === 0 ? 'bg-white text-center font-mono' : 'bg-gray-200/25 text-center font-mono'}>
+              <td className="border px-4 py-2">{item.field1}</td>
+              <td className="border px-4 py-2">{item.field2}</td>
+              <td className="border px-4 py-2">{item.field3}</td>
+              <td className="border px-4 py-2">{item.field4}</td>
+              <td className="border px-4 py-2">{item.field5}</td>
             </tr>
-          </thead>
-          <tbody>
-            {data.map((item, index) => (
-              <tr key={index} className={index % 2 === 0 ? 'bg-white text-center font-mono' : 'bg-gray-200/25 text-center font-mono'}>
-                <td className="border px-4 py-2">{item.field1}</td>
-                <td className="border px-4 py-2">{item.field2}</td>
-                <td className="border px-4 py-2">{item.field3}</td>
-                <td className="border px-4 py-2">{item.field4}</td>
-                <td className="border px-4 py-2">{item.field5}</td>
-              </tr>
-            ))}
-          </tbody>
-        </table>
-      </div>
+          ))}
+        </tbody>
+      </table>
+    </div>
   );
 }

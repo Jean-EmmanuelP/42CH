@@ -6,6 +6,22 @@ import { PrismaService } from 'src/prisma/prisma.service';
 export class DefiService {
     constructor(private prismaService: PrismaService, private authService: AuthService) { }
 
+    // function that search the username, that is an non exact match
+    async searchUser(username: string) {
+        const users = await this.prismaService.user.findMany({ where: { name: { contains: username } }, orderBy: { name: 'desc' } });
+        if (!users)
+            return { success: false, error: 'No user found' };
+        let usersInfos = [];
+        for (let i = 0; i < users.length && i < 5; i++) {
+            usersInfos.push({
+                id: users[i].id,
+                name: users[i].name,
+                image: users[i].image,
+            });
+        }
+        return { success: true, users: usersInfos };
+    }
+
     async getRoomNumber(username: string) {
         const user = await this.prismaService.user.findUnique({ where: { name: username } });
         if (!user)
@@ -318,7 +334,6 @@ export class DefiService {
 
     async getInfos(username: string, accessToken?: string) {
         let ret = await this.authService.checkToken(username, accessToken);
-        console.log("getInfos", ret)
         if (ret.success == false)
             return { success: false, error: 'Token' };
         const user = await this.prismaService.user.findUnique({ where: { name: username } });

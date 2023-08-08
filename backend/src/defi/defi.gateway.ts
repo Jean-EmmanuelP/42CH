@@ -50,7 +50,6 @@ export class DefiGateway {
   async handleChangeAccept(@MessageBody() data: any, @ConnectedSocket() client: any): Promise<void> {
     if (data.username != null)
       await this.defiService.changeAccept(data.username, data.newAccept).then((res) => {
-        console.log('res', res)
         if (res.challengeAccepted == true) {
           client.emit('challengeAccepted');
           client.to(data.room).emit('challengeAccepted');
@@ -78,17 +77,14 @@ export class DefiGateway {
     if (data.username != null) {
       usernameMap.set(data.username, client.id);
     }
-    console.log(usernameMap)
   }
 
   @SubscribeMessage('leaveDefi')
   handleLeaveDefi(@MessageBody() data: any, @ConnectedSocket() client: any): void {
-    console.log("in leave defi")
     if (data.username != null) {
       // this.prismaService.user.update({ where: { name: data.username }, data: { status: "offline" } })
       usernameMap.delete(data.username);
     }
-    console.log(usernameMap)
   }
 
   @SubscribeMessage('sendDefi')
@@ -97,7 +93,6 @@ export class DefiGateway {
       const req = await this.defiService.createDefiRequest(data.senderUsername, data.receiverUsername);
       if (req.success == true) {
         const receiverId = usernameMap.get(data.receiverUsername);
-        console.log(receiverId)
         if (receiverId == null)
           return;
         client.to(receiverId).emit('receiveDefi');
@@ -110,9 +105,7 @@ export class DefiGateway {
     await this.prismaService.defiRequest.delete({ where: { id: data.toDelete } })
     if (data.senderUsername != null) {
       let senderId = usernameMap.get(data.senderUsername);
-      console.log('avant sent')
       client.to(senderId).emit('receiveDefiId', { defiId: data.defiId })
-      console.log('apres sent')
     }
   }
 }

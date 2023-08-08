@@ -31,9 +31,9 @@ export default function Navbar() {
     userInfo();
   }, []);
 
-  useEffect(() => {
-    console.log(`User is here`, UserisHere);
-  }, [UserisHere]);
+  // useEffect(() => {
+  //   console.log(`User is here`, UserisHere);
+  // }, [UserisHere]);
 
   async function userInfo() {
     const username = sessionStorage.getItem("username");
@@ -46,7 +46,6 @@ export default function Navbar() {
       { headers: { "Content-Type": "application/json" } }
     );
     if (request.data.success) {
-      console.log(request.data);
       setInfoUser(request.data.user);
     }
   }

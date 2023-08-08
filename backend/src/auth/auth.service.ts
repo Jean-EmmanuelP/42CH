@@ -43,7 +43,6 @@ export class AuthService {
             return { success: true, access_token: token, expires_in: tokenExpires };
         }
         catch (error) {
-            console.log(error);
             return { success: false };
         }
     }

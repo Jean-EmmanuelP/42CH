@@ -18,6 +18,7 @@ dayjs.extend(isSameOrBefore);
 
 import axios from "axios";
 import EventProfileModal from "~/components/EventProfileModal";
+import LiveChallengeModal from "~/components/LiveChallengeModal";
 
 interface publicChallenge {
   id: string;
@@ -54,6 +55,9 @@ export default function HomePage() {
   const [publicChallenges, setPublicChallenges] = useState<publicChallenge[]>(
     []
   );
+  const [showContratModal, setShowContratModal] = useState<boolean>(false);
+  const [contratInformation, setContratInformation] =
+    useState<publicChallenge>();
 
   async function setWeekly() {
     const today = dayjs().startOf("day");
@@ -176,7 +180,7 @@ export default function HomePage() {
         className="flex h-2/5 w-full items-center justify-center overflow-hidden rounded-[15px] shadow-md"
         onClick={() => {
           setEventToSend(eventOTW);
-          console.log(eventOTW)
+          console.log(eventOTW);
           setShowBigModal(true);
           console.log(`showBigModal`, showBigModal);
         }}
@@ -292,9 +296,12 @@ export default function HomePage() {
                     width={100}
                     height={100}
                     alt="Player Image"
-                    className={`${index === 1 ? "shadow-xl" : "shadow-md"
-                      } rounded-md`}
-                    onClick={() => { setShowUserModal(true), setPlayerOTW(player) }}
+                    className={`${
+                      index === 1 ? "shadow-xl" : "shadow-md"
+                    } rounded-md`}
+                    onClick={() => {
+                      setShowUserModal(true), setPlayerOTW(player);
+                    }}
                   />
                   <p className="flex w-full justify-center pt-1 text-[10px]">
                     {index + 1}
@@ -346,7 +353,12 @@ export default function HomePage() {
               <p className="absolute left-[45%] top-[44%] text-[12px] text-white">
                 {challenge.creatorBid} : {challenge.opponentBid}
               </p>
-              <button className="absolute left-[43%] top-[64%] rounded-md border border-white bg-[#DD0000] p-1 text-sm text-white">
+              <button
+                className="absolute left-[43%] top-[64%] rounded-md border border-white bg-[#DD0000] p-1 text-sm text-white"
+                onClick={() => {
+                  setShowContratModal(true), setContratInformation(challenge);
+                }}
+              >
                 Miser
               </button>
             </div>
@@ -382,12 +394,23 @@ export default function HomePage() {
         </Modal>
       ) : null}
       {playerOTW !== undefined ? (
-
-        <Modal isVisible={showUserModal} onClose={() => setShowUserModal(false)} width="w-[500px]">
+        <Modal
+          isVisible={showUserModal}
+          onClose={() => setShowUserModal(false)}
+          width="w-[500px]"
+        >
           <EventProfileModal userProfile={playerOTW} />
         </Modal>
-      ) : null
-      }
+      ) : null}
+      {contratInformation !== undefined ? (
+        <Modal
+          isVisible={showContratModal}
+          onClose={() => setShowContratModal(false)}
+          width="w-[500px]"
+        >
+          <LiveChallengeModal contractInformation={contratInformation} />
+        </Modal>
+      ) : null}
     </div>
   );
 }

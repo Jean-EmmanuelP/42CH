@@ -26,7 +26,7 @@ export default function DefiModal({
   const [message, setMessage] = useState(null);
   const [error, setError] = useState(null);
 
-  const sendRequest = async (e) => {
+  const sendRequest = async (e:any) => {
     e.preventDefault();
     const request = await axios.post(
       process.env.NEXT_PUBLIC_API_URL + "/defi/create_request/",

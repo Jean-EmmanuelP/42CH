@@ -298,7 +298,7 @@ export default function HomePage() {
                     alt="Player Image"
                     className={`${
                       index === 1 ? "shadow-xl" : "shadow-md"
-                    } rounded-md`}
+                    } rounded-md hover:scale-110 duration-300`}
                     onClick={() => {
                       setShowUserModal(true), setPlayerOTW(player);
                     }}

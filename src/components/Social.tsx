@@ -4,6 +4,7 @@ import Modal from "./Modal";
 import EventProfileModal from "./EventProfileModal";
 import getConfig from 'next/config';
 import DefiModal from "./DefiModalSocial";
+import AddFriendModal from "./AddFriendModal";
 const { publicRuntimeConfig } = getConfig();
 
 export default function Social() {
@@ -12,6 +13,7 @@ export default function Social() {
   const [friends, setFriends] = useState<{ image: string, username: string, balance: number, statusMessage: string, classment: string }[]>([])
   const [onlineUsers, setOnlineUsers] = useState<{ image: string, username: string, balance: number, statusMessage: string, classment: string }[]>([])
   const [showUserModal, setShowUserModal] = useState<boolean>(false);
+  const [showAddFriendModal, setShowAddFriendModal] = useState<boolean>(false);
   const [eventToSend, setEventToSend] = useState<{ image: string, username: string, balance: number, statusMessage: string, classment: string }>({ image: "", username: "", balance: 0, statusMessage: "", classment: "" });
 
   const [showDefiModal, setShowDefiModal] = useState<boolean>(false);
@@ -96,7 +98,10 @@ export default function Social() {
         </div>
       </div>
       <div className="h-[30%] w-full">
-        <p className="pl-4 pt-1 font-bold h-[15%]">Amis</p>
+        <div className="px-4 flex justify-between h-[15%]">
+        <p className="pt-1 font-bold border border-black">Amis</p>
+        <button className="pt-1 font-bold rounded-md shadow-md p-2 bg-gray-200/20 hover:text-white hover:bg-red-500 duration-300 " onClick={() => {setShowAddFriendModal(true)}}>Add friends</button>
+        </div>
         <div className="flex flex-col gap-4 h-[85%] overflow-y-auto no-scrollbar">
           {friends.map((friend: any) => (
             <div key={friend.username} className="flex w-full items-center border-y border-[#612727] shadow-sm">
@@ -170,6 +175,9 @@ export default function Social() {
       </Modal>
       <Modal isVisible={showDefiModal} onClose={() => setShowDefiModal(false)} width="w-[500px]">
         <DefiModal userProfile={eventToSend} onClose={() => setShowDefiModal(false)} />
+      </Modal>
+      <Modal isVisible={showAddFriendModal} onClose={() => setShowAddFriendModal(false)} width="w-[500px]">
+        <AddFriendModal onClose={() => setShowDefiModal(false)} />
       </Modal>
     </div>
   );

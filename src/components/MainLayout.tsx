@@ -55,8 +55,8 @@ export default function MainLayout({ children }: MainLayoutProps) {
         )}
         <div
           className={`mx-[2vw] h-full ${
-            isNotDefiPage ? "w-[53vw]" : "mx-0 w-[73vw]"
-          }`}
+            isNotDefiPage ? "sm:w-[53vw]" : "sm:mx-0 sm:w-[73vw]"
+          } w-full`}
         >
           {children}
         </div>

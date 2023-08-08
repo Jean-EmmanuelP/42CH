@@ -55,11 +55,11 @@ export default function Navbar() {
         <Link href="/" className="p-5 text-xl">
           42Ch
         </Link>
-        <p className="pl-12 text-xs">Become the best challenger of 42</p>
+        <p className="pl-12 text-[5px] sm:text-xs">Become the best challenger of 42</p>
       </div>
 
       <div className="flex h-full items-center gap-10">
-        <Link href="/classement" className="button mr-7 p-5">
+        <Link href="/classement" className="button text-[10px] sm:text-[20px] sm:mr-7 sm:p-5">
           Classement
         </Link>
         {/* <input

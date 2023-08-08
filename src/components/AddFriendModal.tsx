@@ -70,6 +70,7 @@ export default function AddFriendModal({onClose}: AddFriendModalProps) {
             className="absolute bottom-5 rounded-md border border-white bg-red-600 px-4 py-2 text-white shadow-md"
             onClick={() => {
                 // met la logique pour envoyer la demande dami
+                // met une logique : if success pour la demande dami alors on close else tu restes et des que t'as fais ca je mettrai les bons textes
                 onClose()
               }}
           >

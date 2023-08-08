@@ -177,7 +177,7 @@ export default function Social() {
         <DefiModal userProfile={eventToSend} onClose={() => setShowDefiModal(false)} />
       </Modal>
       <Modal isVisible={showAddFriendModal} onClose={() => setShowAddFriendModal(false)} width="w-[500px]">
-        <AddFriendModal onClose={() => setShowDefiModal(false)} />
+        <AddFriendModal onClose={() => setShowAddFriendModal(false)} />
       </Modal>
     </div>
   );

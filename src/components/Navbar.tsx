@@ -1,8 +1,7 @@
 "use client";
 
-import calendarIcon from "../utils/images/calendarIcon.svg";
+import burgerIcon from "../utils/images/BurgerIcon.svg";
 import Link from "next/link";
-import { api } from "~/utils/api";
 import axios from "axios";
 import { useEffect, useState } from "react";
 import getConfig from "next/config";
@@ -59,7 +58,14 @@ export default function Navbar() {
       </div>
 
       <div className="flex h-full items-center gap-10">
-        <Link href="/classement" className="button text-[10px] sm:text-[20px] sm:mr-7 sm:p-5">
+        <Image
+          src={infoUser.image}
+          width={50}
+          height={50}
+          alt="Image profile"
+          className="rounded-full sm:hidden shadow-md"
+        />
+        <Link href="/classement" className="hidden sm:block button text-[10px] sm:text-[20px] sm:mr-7 sm:p-5">
           Classement
         </Link>
         {/* <input
@@ -69,7 +75,7 @@ export default function Navbar() {
         /> */}
       </div>
 
-      <div>
+      <div className="hidden sm:block">
         <div className="flex">
           <button
             onClick={() => {
@@ -105,6 +111,7 @@ export default function Navbar() {
           </button>
         </div>
       </div>
+      <button className="block sm:hidden pr-2"><Image src={burgerIcon} width={25} height={25} alt="burgerIcon"/></button>
       <Modal
         isVisible={showUserModal}
         onClose={() => setShowUserModal(false)}

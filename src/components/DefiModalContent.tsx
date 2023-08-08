@@ -38,6 +38,8 @@ export default function DefiModalContent({
   useEffect(() => {
     if (username) {
       refetchUsers(username);
+    } else {
+      refetchUsers('');
     }
   }, [username]);
 

@@ -145,7 +145,7 @@ export default function Social() {
                 alt="User profile mage"
                 width={60}
                 height={60}
-                className="hover:cursor-pointer"
+                className="hover:cursor-pointer hover:translate-y-0.5 hover:scale-110"
                 onClick={() => { setShowUserModal(true), setEventToSend(user) }}
               />
               <div className="m-auto ml-[3px] mt-[3px] h-2.5 w-2.5 rounded-full bg-green-500">

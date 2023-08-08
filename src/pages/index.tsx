@@ -175,7 +175,7 @@ export default function HomePage() {
   }, []);
 
   // Render
-  const isMobile = useMediaQuery({ query: '(max-width: 640px)'})
+  const isMobile = useMediaQuery({ query: '(max-width: 640px)' })
   if (isMobile) {
     return (
       <div className="h-full w-full border border-black space-y-2">
@@ -187,7 +187,7 @@ export default function HomePage() {
             alt="Event of the Week"
             className="rounded-md shadow-md"
           />
-        </div>        
+        </div>
         <div className="relative flex w-full h-[25%] flex-col bg-white shadow-md">
           <h1 className="pl-7 pt-4 font-bold text-[13px]">Live</h1>
           <button className="absolute right-2 top-3.5 rounded-full border border-black p-1">
@@ -239,99 +239,99 @@ export default function HomePage() {
           ))}
         </div>
         <div className="h-[25%] w-full rounded-md bg-white">
-            <h2 className="mb-2 pl-7 pt-4 font-bold text-[13px]">Evenements</h2>
-            <div className="flex overflow-auto rounded-b-md bg-white px-2">
-              <div className="max-h-32 w-full">
-                <div className="h-full w-full">
-                  {weeklyEvents.map((event: Event, index: number) => (
-                    // Première chose, if event.isFull == true event marqué comme full + quand on click dessus on peut pas s'inscrire
-                    // Deuxième chose si sessionStorage.getItem('username') est dans event.participantsUsernames marqué event comme inscrit
-                    // et quand on click dessus on peut se désinscrire
-                    // Sinon juste afficher l'event et quand on click dessus on peut s'inscrire
+          <h2 className="mb-2 pl-7 pt-4 font-bold text-[13px]">Evenements</h2>
+          <div className="flex overflow-auto rounded-b-md bg-white px-2">
+            <div className="max-h-32 w-full">
+              <div className="h-full w-full">
+                {weeklyEvents.map((event: Event, index: number) => (
+                  // Première chose, if event.isFull == true event marqué comme full + quand on click dessus on peut pas s'inscrire
+                  // Deuxième chose si sessionStorage.getItem('username') est dans event.participantsUsernames marqué event comme inscrit
+                  // et quand on click dessus on peut se désinscrire
+                  // Sinon juste afficher l'event et quand on click dessus on peut s'inscrire
 
+                  <div
+                    key={index}
+                    className={`mb-2 flex h-12 w-full rounded-md border bg-white hover:cursor-pointer`}
+                    style={{ borderColor: getColorFromLabel(event.label) }}
+                    onClick={() => {
+                      setEventToSend(event);
+                      setShowModal(true);
+                    }}
+                  >
                     <div
-                      key={index}
-                      className={`mb-2 flex h-12 w-full rounded-md border bg-white hover:cursor-pointer`}
-                      style={{ borderColor: getColorFromLabel(event.label) }}
-                      onClick={() => {
-                        setEventToSend(event);
-                        setShowModal(true);
-                      }}
+                      className={`w-1/3 ${event.label} rounded-l-md text-center text-sm text-white`}
                     >
-                      <div
-                        className={`w-1/3 ${event.label} rounded-l-md text-center text-sm text-white`}
-                      >
-                        <p>{new Date(event.day).getDate()}</p>
-                        <p>
-                          {new Date(event.day).toLocaleString("default", {
-                            month: "long",
-                          })}
+                      <p>{new Date(event.day).getDate()}</p>
+                      <p>
+                        {new Date(event.day).toLocaleString("default", {
+                          month: "long",
+                        })}
+                      </p>
+                    </div>
+                    <div className="flex h-full w-2/3 flex-row pl-1">
+                      <div className="h-full w-2/3">
+                        <h3
+                          className="h-1/3 text-sm text-black"
+                          style={{ color: getColorFromLabel(event.label) }}
+                        >
+                          {event.title}
+                        </h3>
+                        <p className="flex h-1/3 items-center overflow-hidden pl-2 text-[9px] text-gray-500">
+                          {truncateWords(event.description, 6)}
                         </p>
-                      </div>
-                      <div className="flex h-full w-2/3 flex-row pl-1">
-                        <div className="h-full w-2/3">
-                          <h3
-                            className="h-1/3 text-sm text-black"
-                            style={{ color: getColorFromLabel(event.label) }}
-                          >
-                            {event.title}
-                          </h3>
-                          <p className="flex h-1/3 items-center overflow-hidden pl-2 text-[9px] text-gray-500">
-                            {truncateWords(event.description, 6)}
-                          </p>
-                          <div className="flex h-1/3 w-full flex-row items-center">
-                            <div className="flex w-1/2 justify-center">
-                              <Image
-                                src={ClockIcon}
-                                alt="clockicon"
-                                height={10}
-                                width={10}
-                              />
-                              <p className="pl-1 text-[8px]">16h</p>
-                            </div>
-                            <div className="flex w-1/2 justify-center">
-                              <Image
-                                src={Position}
-                                alt="position"
-                                height={10}
-                                width={10}
-                              />
-                              <p className="text-[8px]">Paul F5</p>
-                            </div>
+                        <div className="flex h-1/3 w-full flex-row items-center">
+                          <div className="flex w-1/2 justify-center">
+                            <Image
+                              src={ClockIcon}
+                              alt="clockicon"
+                              height={10}
+                              width={10}
+                            />
+                            <p className="pl-1 text-[8px]">16h</p>
+                          </div>
+                          <div className="flex w-1/2 justify-center">
+                            <Image
+                              src={Position}
+                              alt="position"
+                              height={10}
+                              width={10}
+                            />
+                            <p className="text-[8px]">Paul F5</p>
                           </div>
                         </div>
-                        <div className="h-full w-1/3">
-                          {!event.isFull ? (
-                            <div className="flex flex-col  pl-1 pt-1 text-center text-[10px] text-green-500">
-                              {event.participantsUsernames.includes(
-                                sessionStorage.getItem("username") as string
-                              ) ? (
-                                <p>Inscrit</p>
-                              ) : (
-                                <p>S'inscrire</p>
-                              )}
-                              {/* ici il faut relier le back pour mettre l'heure et l'endroit et il faut le mettre ici */}
-                              <div className="rounded-tl-md pt-2 text-black"></div>
-                            </div>
-                          ) : (
-                            <div className="flex px-1 pt-1 text-center text-xs text-green-500">
-                              Full
-                            </div>
-                          )}
-                        </div>
+                      </div>
+                      <div className="h-full w-1/3">
+                        {!event.isFull ? (
+                          <div className="flex flex-col  pl-1 pt-1 text-center text-[10px] text-green-500">
+                            {event.participantsUsernames.includes(
+                              sessionStorage.getItem("username") as string
+                            ) ? (
+                              <p>Inscrit</p>
+                            ) : (
+                              <p>S'inscrire</p>
+                            )}
+                            {/* ici il faut relier le back pour mettre l'heure et l'endroit et il faut le mettre ici */}
+                            <div className="rounded-tl-md pt-2 text-black"></div>
+                          </div>
+                        ) : (
+                          <div className="flex px-1 pt-1 text-center text-xs text-green-500">
+                            Full
+                          </div>
+                        )}
                       </div>
                     </div>
-                  ))}
-                </div>
+                  </div>
+                ))}
               </div>
             </div>
           </div>
+        </div>
         <div className="w-full h-[25%] border border-black">
 
         </div>
       </div>
     )
-  } 
+  }
   return (
     <div className="flex h-full w-full flex-col">
       <button
@@ -454,9 +454,8 @@ export default function HomePage() {
                     width={100}
                     height={100}
                     alt="Player Image"
-                    className={`${
-                      index === 1 ? "shadow-xl" : "shadow-md"
-                    } rounded-md hover:scale-110 duration-200`}
+                    className={`${index === 1 ? "shadow-xl" : "shadow-md"
+                      } rounded-md hover:scale-110 duration-200`}
                     onClick={() => {
                       setShowUserModal(true), setPlayerOTW(player);
                     }}
@@ -557,7 +556,7 @@ export default function HomePage() {
           onClose={() => setShowUserModal(false)}
           width="w-[500px]"
         >
-          <EventProfileModal userProfile={playerOTW} />
+          <EventProfileModal userProfile={playerOTW} showAddFriend={true} />
         </Modal>
       ) : null}
       {contratInformation !== undefined ? (

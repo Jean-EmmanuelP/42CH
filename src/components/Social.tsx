@@ -76,7 +76,7 @@ export default function Social() {
             alt="User profile image"
             width={60}
             height={60}
-            className="hover:cursor-pointer"
+            className="hover:cursor-pointer hover:scale-105 duration-300"
             onClick={() => { setShowUserModal(true), setEventToSend(userProfile) }}
           />
           <div className="m-auto ml-[3px] mt-[3px] h-2.5 w-2.5 rounded-full bg-green-500">

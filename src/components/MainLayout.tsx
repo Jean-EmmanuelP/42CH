@@ -49,7 +49,7 @@ export default function MainLayout({ children }: MainLayoutProps) {
       </div>
       <div className="mx-[1vw] mb-[2vh] flex h-[85vh] w-[98vw]">
         {isNotDefiPage && (
-          <div className="h-full w-[20vw]">
+          <div className="hidden sm:block h-full w-[20vw]">
             <Social />
           </div>
         )}
@@ -60,7 +60,7 @@ export default function MainLayout({ children }: MainLayoutProps) {
         >
           {children}
         </div>
-        <div className="h-full w-[27vw] rounded-md">
+        <div className="hidden sm:block h-full w-[27vw] rounded-md">
           <DefiRightBar />
         </div>
       </div>

@@ -175,73 +175,78 @@ export default function HomePage() {
   }, []);
 
   // Render
-  const isMobile = useMediaQuery({ query: '(max-width: 640px)'})
+  const isMobile = useMediaQuery({ query: "(max-width: 640px)" });
   if (isMobile) {
     return (
-      <div className="h-full w-full border border-black space-y-2">
-        <div className="w-full h-[25%] border border-black">
-          <Image
-            src={PokerImage}
-            width={400}
-            height={200}
-            alt="Event of the Week"
-            className="rounded-md shadow-md"
-          />
-        </div>        
-        <div className="relative flex w-full h-[25%] flex-col bg-white shadow-md">
-          <h1 className="pl-7 pt-4 font-bold text-[13px]">Live</h1>
-          <button className="absolute right-2 top-3.5 rounded-full border border-black p-1">
+      <div className="h-full w-full space-y-2">
+        <div className="h-[80%] w-full space-y-2 overflow-auto">
+          <div className="mb-4 h-[25%] w-full">
             <Image
-              src={QuestionMark}
-              alt="questionMark"
-              width={11}
-              height={11}
+              src={PokerImage}
+              width={400}
+              height={200}
+              alt="Event of the Week"
+              className="rounded-md shadow-md"
+              onClick={() => {
+                setEventToSend(eventOTW);
+                setShowBigModal(true);
+              }}
             />
-          </button>
-          {publicChallenges.map((challenge: any) => (
-            <div
-              key={challenge.id}
-              className="relative mx-6 mt-4 h-1/3 w-[88%] rounded-md border border-black bg-[#272A30]"
-            >
+           </div>
+          <div className="relative flex h-[35%] w-full flex-col bg-white shadow-md">
+            <h1 className="pl-7 pt-4 text-[13px] font-bold">Live</h1>
+            <button className="absolute right-2 top-3.5 rounded-full border border-black p-1">
               <Image
-                src={challenge.creatorImage}
-                alt="Challenge image"
-                width={60}
-                height={60}
-                className="absolute left-[15%] top-[10%] rounded-full border border-white shadow-md"
+                src={QuestionMark}
+                alt="questionMark"
+                width={11}
+                height={11}
               />
-              <Image
-                src={challenge.opponentImage}
-                alt="Opponent image"
-                width={60}
-                height={60}
-                className="absolute right-[15%] top-[10%] rounded-full border border-white shadow-md"
-              />
-              <Image
-                src={Versus}
-                alt="versus"
-                width={40}
-                height={40}
-                className="absolute left-[43%] top-[13%]"
-              />
-              <p className="absolute left-[45%] top-[44%] text-[12px] text-white">
-                {challenge.creatorBid} : {challenge.opponentBid}
-              </p>
-              <button
-                className="absolute left-[43%] top-[64%] rounded-md border border-white bg-[#DD0000] p-1 text-sm text-white"
-                onClick={() => {
-                  setShowContratModal(true), setContratInformation(challenge);
-                }}
+            </button>
+            {publicChallenges.map((challenge: any) => (
+              <div
+                key={challenge.id}
+                className="relative mx-6 mt-4 h-1/3 w-[88%] rounded-md border border-black bg-[#272A30]"
               >
-                Miser
-              </button>
-            </div>
-          ))}
-        </div>
-        <div className="h-[25%] w-full rounded-md bg-white">
-            <h2 className="mb-2 pl-7 pt-4 font-bold text-[13px]">Evenements</h2>
-            <div className="flex overflow-auto rounded-b-md bg-white px-2">
-              <div className="max-h-32 w-full">
+                <Image
+                  src={challenge.creatorImage}
+                  alt="Challenge image"
+                  width={60}
+                  height={60}
+                  className="absolute left-[15%] top-[10%] rounded-full border border-white shadow-md"
+                />
+                <Image
+                  src={challenge.opponentImage}
+                  alt="Opponent image"
+                  width={60}
+                  height={60}
+                  className="absolute right-[15%] top-[10%] rounded-full border border-white shadow-md"
+                />
+                <Image
+                  src={Versus}
+                  alt="versus"
+                  width={40}
+                  height={40}
+                  className="absolute left-[43%] top-[13%]"
+                />
+                <p className="absolute left-[45%] top-[44%] text-[12px] text-white">
+                  {challenge.creatorBid} : {challenge.opponentBid}
+                </p>
+                <button
+                  className="absolute left-[43%] top-[64%] rounded-md border border-white bg-[#DD0000] p-1 text-sm text-white"
+                  onClick={() => {
+                    setShowContratModal(true), setContratInformation(challenge);
+                  }}
+                >
+                  Miser
+                </button>
+              </div>
+            ))}
+          </div>
+          <div className="h-[36%] w-full overflow-hidden rounded-md bg-white shadow-md">
+            <h2 className="mb-2 pl-7 pt-4 text-[13px] font-bold">Evenements</h2>
+            <div className="flex items-center justify-center overflow-auto rounded-b-md bg-white px-2">
+              <div className="max-h-28 w-[90%]">
                 <div className="h-full w-full">
                   {weeklyEvents.map((event: Event, index: number) => (
                     // Première chose, if event.isFull == true event marqué comme full + quand on click dessus on peut pas s'inscrire
@@ -251,7 +256,7 @@ export default function HomePage() {
 
                     <div
                       key={index}
-                      className={`mb-2 flex h-12 w-full rounded-md border bg-white hover:cursor-pointer`}
+                      className={`mb-2 flex h-10 w-full rounded-md border bg-white hover:cursor-pointer`}
                       style={{ borderColor: getColorFromLabel(event.label) }}
                       onClick={() => {
                         setEventToSend(event);
@@ -259,7 +264,7 @@ export default function HomePage() {
                       }}
                     >
                       <div
-                        className={`w-1/3 ${event.label} rounded-l-md text-center text-sm text-white`}
+                        className={`w-1/3 ${event.label} flex flex-col items-center justify-center rounded-l-md text-center text-[10px] text-white`}
                       >
                         <p>{new Date(event.day).getDate()}</p>
                         <p>
@@ -271,12 +276,12 @@ export default function HomePage() {
                       <div className="flex h-full w-2/3 flex-row pl-1">
                         <div className="h-full w-2/3">
                           <h3
-                            className="h-1/3 text-sm text-black"
+                            className="h-1/3 text-[10px] text-black"
                             style={{ color: getColorFromLabel(event.label) }}
                           >
                             {event.title}
                           </h3>
-                          <p className="flex h-1/3 items-center overflow-hidden pl-2 text-[9px] text-gray-500">
+                          <p className="flex h-1/3 items-center overflow-hidden pl-2 text-[8px] text-gray-500">
                             {truncateWords(event.description, 6)}
                           </p>
                           <div className="flex h-1/3 w-full flex-row items-center">
@@ -326,12 +331,96 @@ export default function HomePage() {
               </div>
             </div>
           </div>
-        <div className="w-full h-[25%] border border-black">
-
+          <div className="h-[25%] w-full rounded-md bg-white">
+            <h1 className="flex h-[20%] items-center pl-7 pt-2 text-[12px] font-bold">
+              Joueurs de la semaine
+            </h1>
+            <div className="flex h-[80%] w-full">
+              {players?.map((player, index) => (
+                <div
+                  key={index}
+                  className={`mr-1 flex h-full w-full flex-grow flex-col items-center`}
+                >
+                  <Image
+                    src={player.image}
+                    width={80}
+                    height={80}
+                    alt="Player Image"
+                    className={`${
+                      index === 1 ? "shadow-xl" : "shadow-md"
+                    } rounded-md pt-2 duration-200 hover:scale-110`}
+                    onClick={() => {
+                      setShowUserModal(true), setPlayerOTW(player);
+                    }}
+                  />
+                  <p className="flex w-full justify-center pt-1 text-[10px]">
+                    {index + 1}
+                    {index + 1 === 1 && "st"}
+                    {index + 1 === 2 && "nd"}
+                    {index + 1 === 3 && "rd"}
+                  </p>
+                </div>
+              ))}
+            </div>
+          </div>
         </div>
+        <div className="flex h-[19%] w-full items-center justify-center bg-custom-color">
+          <button
+            type="button"
+            className="mx-2 h-[50%] w-[80%] rounded-md bg-red-600 px-2 py-3 text-sm font-semibold text-white shadow-md duration-300 focus:outline-none focus:ring-2 focus:ring-red-500 focus:ring-offset-2"
+          >
+            Defier un challenger
+          </button>
+        </div>
+        {eventToSend != undefined ? (
+          <Modal
+            isVisible={showModal}
+            onClose={() => setShowModal(false)}
+            width="w-[300px]"
+            verticalPosition="100px"
+          >
+            <EventSubscribeModal
+              eventToSend={eventToSend}
+              showModal={setShowModal}
+              setWeekly={setWeekly}
+            />
+          </Modal>
+        ) : null}
+        {eventOTW !== undefined ? (
+          <Modal
+            isVisible={showBigModal}
+            onClose={() => setShowBigModal(false)}
+            width="w-[300px]"
+            verticalPosition="200px"
+          >
+            <EventSubscribeModal
+              eventToSend={eventOTW}
+              showModal={setShowBigModal}
+              setWeekly={setWeekly}
+            />
+          </Modal>
+        ) : null}
+        {playerOTW !== undefined ? (
+          <Modal
+            isVisible={showUserModal}
+            onClose={() => setShowUserModal(false)}
+            width="w-[300px]"
+          >
+            <EventProfileModal userProfile={playerOTW} />
+          </Modal>
+        ) : null}
+        {contratInformation !== undefined ? (
+          <Modal
+            isVisible={showContratModal}
+            onClose={() => setShowContratModal(false)}
+            width="w-[300px]"
+          >
+            <LiveChallengeModal contractInformation={contratInformation} />
+          </Modal>
+        ) : null}
       </div>
-    )
-  } 
+    );
+  }
   return (
     <div className="flex h-full w-full flex-col">
       <button
@@ -351,7 +440,7 @@ export default function HomePage() {
       </button>
       <div className="mt-2 flex h-3/5 w-full rounded-md">
         <div className="flex w-[56%] flex-col rounded-md ">
-          <div className="mb-[2%] h-[56%] w-full rounded-md bg-white border border-red-500">
+          <div className="mb-[2%] h-[56%] w-full rounded-md bg-white">
             <h2 className="mb-2 pl-7 pt-4 font-bold">Evenements</h2>
             <div className="flex overflow-auto rounded-b-md bg-white px-2">
               <div className="max-h-32 w-full">
@@ -456,7 +545,7 @@ export default function HomePage() {
                     alt="Player Image"
                     className={`${
                       index === 1 ? "shadow-xl" : "shadow-md"
-                    } rounded-md hover:scale-110 duration-200`}
+                    } rounded-md duration-200 hover:scale-110`}
                     onClick={() => {
                       setShowUserModal(true), setPlayerOTW(player);
                     }}
@@ -473,7 +562,7 @@ export default function HomePage() {
           </div>
         </div>
         <div className=" relative ml-2 flex h-full w-[44%] flex-col bg-white shadow-md">
-          <h1 className="pl-7 pt-4 font-bold text-[13px]">Live</h1>
+          <h1 className="pl-7 pt-4 text-[13px] font-bold">Live</h1>
           <button className="absolute right-4 top-4 rounded-full border border-black p-1">
             <Image
               src={QuestionMark}

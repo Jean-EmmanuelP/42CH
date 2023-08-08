@@ -646,7 +646,7 @@ export default function HomePage() {
           onClose={() => setShowUserModal(false)}
           width="w-[500px]"
         >
-          <EventProfileModal userProfile={playerOTW} />
+          <EventProfileModal userProfile={playerOTW} showAddFriend={true} />
         </Modal>
       ) : null}
       {contratInformation !== undefined ? (

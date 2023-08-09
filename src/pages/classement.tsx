@@ -2,6 +2,9 @@
 import React, { useState, useEffect, use } from "react";
 import Navbar from "~/components/Navbar";
 import axios from 'axios'
+import rightArrow from "../utils/images/rightArrow.svg"
+import leftArrow from "../utils/images/leftArrow.svg"
+import Image from "next/image";
 
 interface DataItem {
   ranking: number;
@@ -41,16 +44,18 @@ export default function Classement() {
   }, [trigger]);
 
   return (
-    <div className="h-full w-full flex flex-col items-center justify-center bg-white-100 font-mono">
-      <button className="inline text-3xl" onClick={() => {
+    <div className="absolute inset-0 top-[10%] flex flex-col border border-black  items-center justify-center bg-white-100 font-mono">
+      <div className="flex space-x-4 pb-2">
+      <button onClick={() => {
         if (pageCount > 1)
           setPageCount(pageCount - 1)
-      }}>⬅</button>
-      <button className="inline text-5xl" onClick={() => {
+      }}><Image src={leftArrow} width={40} height={40} alt="left arrow" /></button>
+      <button onClick={() => {
         // if any data.ranking is 0, it means that we are at the end of the ranking
         if (data != undefined && data!.some((item) => item.ranking == 0) == false)
           setPageCount(pageCount + 1)
-      }}>&#10145;</button>
+      }}><Image src={rightArrow} width={40} height={40} alt="left arrow" /></button>
+      </div>
       <table className="table-auto w-full h-full border-collapse border-1 border-gray-300 shadow-md font-mono">
         <thead>
           <tr className="bg-gray-500/50 text-white font-mono">

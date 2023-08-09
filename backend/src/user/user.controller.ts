@@ -1,9 +1,14 @@
-import { Body, Controller, Get, Post } from '@nestjs/common';
+import { Body, Controller, Get, Param, Post } from '@nestjs/common';
 import { UserService } from './user.service';
 
 @Controller('user')
 export class UserController {
     constructor(private userService: UserService) { }
+
+    @Get('classement/:id')
+    async getRanking(@Param('id') id: string) {
+        return await this.userService.getRanking(id);
+    }
 
     @Post('three_users_ranking')
     async threeUsersRanking(@Body() data: { username: string }) {

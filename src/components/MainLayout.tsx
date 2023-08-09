@@ -15,30 +15,37 @@ interface MainLayoutProps {
 export default function MainLayout({ children }: MainLayoutProps) {
   const router = usePathname();
   let isNotDefiPage;
-  
+  let isAdminPage;
+
   function checkIfNotDefi(pathname: string) {
     return !pathname.includes("/defi");
   }
+
+  function checkIfAdmin(pathname: string) {
+    return pathname.includes("/admin");
+  }
+
   if (router !== null) {
     isNotDefiPage = checkIfNotDefi(router);
+    isAdminPage = checkIfAdmin(router);
   }
 
   const [isSession, setIsSession] = useState(false);
-  
+
   useEffect(() => {
     setIsSession(sessionStorage.getItem("accessToken") !== null);
   }, []);
 
   if (!isSession) {
     return (
-    <div className="h-screen w-screen bg-[#EEF0F3]">
-      <div className="mb-[3vh] h-[10vh] w-full">
-        <Navbar />
+      <div className="h-screen w-screen bg-[#EEF0F3]">
+        <div className="mb-[3vh] h-[10vh] w-full">
+          <Navbar />
+        </div>
+        <div className="h-[90vh] w-full">
+          <SignIn />
+        </div>
       </div>
-      <div className="h-[90vh] w-full">
-        <SignIn />
-      </div>
-    </div>
     );
   }
 
@@ -54,9 +61,8 @@ export default function MainLayout({ children }: MainLayoutProps) {
           </div>
         )}
         <div
-          className={`mx-[2vw] h-full ${
-            isNotDefiPage ? "sm:w-[53vw]" : "sm:mx-0 sm:w-[73vw]"
-          } w-full`}
+          className={`mx-[2vw] h-full ${isNotDefiPage ? "sm:w-[53vw]" : "sm:mx-0 sm:w-[73vw]"
+            } w-full`}
         >
           {children}
         </div>

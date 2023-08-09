@@ -107,7 +107,6 @@ export default function LiveChallengeModal({
           return;
         }
         const request = await axios.post(process.env.NEXT_PUBLIC_API_URL + "/defi/bet_public_challenge/", JSON.stringify({ username: sessionStorage.getItem("username"), challengeId: contractInformation.id, amount: Number(userBet), winner: selectedUser }), { headers: { "Content-Type": "application/json" } });
-
         if (request.data.success == true) {
           alert("Mise validée !") // peut-être renvoyé le nouveau montant si bet déjà eu lieu
         }

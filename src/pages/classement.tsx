@@ -44,17 +44,17 @@ export default function Classement() {
   }, [trigger]);
 
   return (
-    <div className="absolute inset-0 top-[10%] flex flex-col border border-black  items-center justify-center bg-white-100 font-mono">
+    <div className="inset-0 top-[10%] flex flex-col border border-black items-center justify-center bg-white-100 font-mono">
       <div className="flex space-x-4 pb-2">
-      <button onClick={() => {
-        if (pageCount > 1)
-          setPageCount(pageCount - 1)
-      }}><Image src={leftArrow} width={40} height={40} alt="left arrow" /></button>
-      <button onClick={() => {
-        // if any data.ranking is 0, it means that we are at the end of the ranking
-        if (data != undefined && data!.some((item) => item.ranking == 0) == false)
-          setPageCount(pageCount + 1)
-      }}><Image src={rightArrow} width={40} height={40} alt="left arrow" /></button>
+        <button onClick={() => {
+          if (pageCount > 1)
+            setPageCount(pageCount - 1)
+        }}><Image src={leftArrow} width={40} height={40} alt="left arrow" /></button>
+        <button onClick={() => {
+          // if any data.ranking is 0, it means that we are at the end of the ranking
+          if (data != undefined && data!.some((item) => item.ranking == 0) == false)
+            setPageCount(pageCount + 1)
+        }}><Image src={rightArrow} width={40} height={40} alt="left arrow" /></button>
       </div>
       <table className="table-auto w-full h-full border-collapse border-1 border-gray-300 shadow-md font-mono">
         <thead>
@@ -67,7 +67,7 @@ export default function Classement() {
         </thead>
         <tbody>
           {data != undefined ? (data!.map((item, index) => (
-            <tr key={index} className={index % 2 === 0 ? 'bg-white text-center font-mono' : 'bg-gray-200/25 text-center font-mono'}>
+            <tr key={index} className={index % 2 === 0 ? 'bg-white text-center font-mono h-[9%]' : 'bg-gray-200/25 text-center font-mono'}>
               <td className="border px-4 py-2">{item.ranking}</td>
               <td className="border px-4 py-2"><img className="w-10 h-10 rounded-full mx-auto" src={item.image} /></td>
               <td className="border px-4 py-2">{item.login}</td>

@@ -182,13 +182,13 @@ export default function Social({onClose}: SocialProps) {
           ))}
         </div>
       </div>
-      <Modal isVisible={showUserModal} onClose={() => setShowUserModal(false)} width="w-[500px]">
+      <Modal isVisible={showUserModal} onClose={() => setShowUserModal(false)} width="w-[350px]">
         <EventProfileModal userProfile={eventToSend} showAddFriend={!friends.some(friend => friend.username === eventToSend.username)} />
       </Modal>
-      <Modal isVisible={showDefiModal} onClose={() => setShowDefiModal(false)} width="w-[500px]">
+      <Modal isVisible={showDefiModal} onClose={() => setShowDefiModal(false)} width="w-[350px]">
         <DefiModal userProfile={eventToSend} onClose={() => setShowDefiModal(false)} />
       </Modal>
-      <Modal isVisible={showAddFriendModal} onClose={() => setShowAddFriendModal(false)} width="w-[500px]">
+      <Modal isVisible={showAddFriendModal} onClose={() => setShowAddFriendModal(false)} width="w-[350px]">
         <AddFriendModal onClose={() => setShowAddFriendModal(false)} />
       </Modal>
     </div>

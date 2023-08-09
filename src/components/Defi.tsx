@@ -372,7 +372,7 @@ export default function DefiRightBar({ onClose }: DefiRightBarProps) {
         <Modal
           isVisible={showModal}
           onClose={() => setShowModal(false)}
-          width="w-[600px]"
+          width="w-[350px]"
         >
           <DefiModalContent
             socket={socket}
@@ -382,7 +382,7 @@ export default function DefiRightBar({ onClose }: DefiRightBarProps) {
         <Modal
           isVisible={showModalFin}
           onClose={() => setShowModalFin(false)}
-          width="w-[600px]"
+          width="w-[350px]"
         >
           <div className="items-center gap-2">
             <p className="block items-center text-xl font-bold">

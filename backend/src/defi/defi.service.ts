@@ -83,6 +83,8 @@ export class DefiService {
         const userBets = await this.prismaService.usersBet.findMany({ where: { challengeId: challenge.id } });
         for (let i = 0; i < userBets.length; i++) { // If the user has already bet on this challenge, we increment his bet
             if (userBets[i].userId == user.id) {
+                if (userBets[i].winnerId != userWinner.id)
+                    return { success: false, error: 'User has already bet on this challenge with another winner' };
                 await this.prismaService.usersBet.update({
                     where: { id: userBets[i].id },
                     data: { amount: { increment: amount } },
@@ -173,7 +175,7 @@ export class DefiService {
             return { success: true, userBet: 0 }
         for (let i = 0; i < usersBet.length; i++) {
             if (usersBet[i].userId == user.id)
-                return { success: true, userBet: usersBet[i].amount }
+                return { success: true, userBet: usersBet[i].amount, winner: (await this.prismaService.user.findUnique({ where: { id: usersBet[i].winnerId } })).name }
         }
         return { success: false, error: 'User has not bet on this challenge' }
     }

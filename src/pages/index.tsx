@@ -34,6 +34,7 @@ interface publicChallenge {
   contractTerms: string;
   bid: number;
   timerPublic: number;
+  winner: string
 }
 
 interface Event {
@@ -118,7 +119,8 @@ export default function HomePage() {
     const promises = publicChallengesCpy.map((challenge) =>
       asyncFix(challenge.id)
         .then((bid) => {
-          challenge.bid = bid;
+          challenge.bid = bid.bid;
+          challenge.winner = bid.winner;
         })
         .catch((error) => {
           console.error(error);
@@ -149,12 +151,12 @@ export default function HomePage() {
     const request = await axios.post(process.env.NEXT_PUBLIC_API_URL + "/defi/user_bet_on_public_challenge/", JSON.stringify({ username: sessionStorage.getItem("username"), challengeId: id })
       , { headers: { "Content-Type": "application/json" } })
     if (request.data.success == true) {
-      console.log("returned", request.data.userBet, "ici")
-      return request.data.userBet
+      console.log("returned", request.data, "ici")
+      return { bid: request.data.userBet, winner: request.data.winner }
     }
     else {
       console.log(request.data.error)
-      return 0
+      return { 0: 0 }
     }
   }
 
@@ -257,7 +259,7 @@ export default function HomePage() {
                 >
                   Miser
                 </button>
-                <p className="text-white text-xs block mt-28">Ta mise: {challenge.bid}</p>
+                <p className="text-white text-xs block mt-28">Tu as misé {challenge.bid} sur la victoire de {challenge.winner}</p>
               </div>
             ))}
           </div>
@@ -624,7 +626,9 @@ export default function HomePage() {
               >
                 Miser
               </button>
-              <p className="text-white text-xs block mt-28">Ta mise: {challenge.bid}</p>
+              {challenge.bid != 0 ? (
+                <p className="text-white text-xs block mt-32">Tu as misé {challenge.bid} sur la victoire de {challenge.winner}</p>
+              ) : <p className="text-white text-xs block mt-32">Tu n'as pas encore misé sur ce challenge !</p>}
             </div>
           ))}
         </div>

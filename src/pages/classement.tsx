@@ -44,8 +44,8 @@ export default function Classement() {
   }, [trigger]);
 
   return (
-    <div className="inset-0 top-[10%] flex flex-col border border-black items-center justify-center bg-white-100 font-mono">
-      <div className="flex space-x-4 pb-2">
+    <div className="inset-0 top-[10%] h-full flex flex-col items-center justify-center bg-white-100 font-mono">
+      <div className="h-[10%] flex space-x-2 pb-2 w-full justify-center">
         <button onClick={() => {
           if (pageCount > 1)
             setPageCount(pageCount - 1)
@@ -55,16 +55,14 @@ export default function Classement() {
             setPageCount(pageCount + 1)
         }}><Image src={rightArrow} width={40} height={40} alt="left arrow" /></button>
       </div>
-      <div style={{ maxHeight: '70vh', overflow: 'auto' }}>
+      <div className="flex items-center justify-between bg-gray-500/50 text-white font-mono h-[10%] w-full">
+          <p className="px-4 py-2 text-xl">🏆</p>
+          <p className="px-4 py-2 text-xl">👶</p>
+          <p className="px-4 py-2 text-xl">🗣️</p>
+          <p className="px-4 py-2 text-xl">💰</p>
+      </div>
+      <div className="w-full h-[80%] shadow-md overflow-auto">
         <table className="table-auto w-full h-full border-collapse border-1 border-gray-300 shadow-md font-mono">
-          <thead>
-            <tr className="bg-gray-500/50 text-white font-mono">
-              <th className="px-4 py-2 h-[10%] text-xl">🏆</th>
-              <th className="px-4 py-2 text-xl">👶</th>
-              <th className="px-4 py-2 text-xl">🗣️</th>
-              <th className="px-4 py-2 text-xl">💰</th>
-            </tr>
-          </thead>
           <tbody>
             {data != undefined ? (data!.map((item, index) => (
               <tr key={index} className={index % 2 === 0 ? 'bg-white text-center font-mono h-[9%]' : 'bg-gray-200/25 text-center font-mono'}>

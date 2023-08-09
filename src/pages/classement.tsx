@@ -1,55 +1,74 @@
 'use client'
-import React from "react";
+import React, { useState, useEffect, use } from "react";
 import Navbar from "~/components/Navbar";
+import axios from 'axios'
 
 interface DataItem {
-  field1: string;
-  field2: string;
-  field3: string;
-  field4: string;
-  field5: string;
+  ranking: number;
+  image: string;
+  login: string;
+  balance: number;
 }
 
-const data: DataItem[] = [
-  {
-    field1: "value1",
-    field2: "value2",
-    field3: "value3",
-    field4: "value4",
-    field5: "value5",
-  },
-  {
-    field1: "value5",
-    field2: "value6",
-    field3: "value7",
-    field4: "value8",
-    field5: "value9",
-  },
-];
-
 export default function Classement() {
+  const [data, setData] = useState<DataItem[]>();
+  const [pageCount, setPageCount] = useState<number>(1);
+  const [trigger, setTrigger] = useState<boolean>(false);
+
+  async function getDataAsync() {
+    const request = await axios.get(process.env.NEXT_PUBLIC_API_URL + '/user/classement/' + String(pageCount) + '/');
+    if (request.data.success == true) {
+      setData(request.data.usersRanking);
+      setTrigger(!trigger);
+    }
+  }
+
+  useEffect(() => {
+    getDataAsync();
+  }, []);
+
+  useEffect(() => {
+    getDataAsync();
+  }, [pageCount]);
+
+  useEffect(() => {
+    if (data != undefined && data!.length != 10) {
+      // set the remaining users to 0
+      for (let i = data!.length; i < 10; i++) {
+        data!.push({ ranking: 0, image: '', login: '', balance: 0 });
+      }
+    }
+  }, [trigger]);
+
   return (
-    <div className="h-full w-full flex flex-col items-center justify-center bg-white-100 mt-4 font-mono">
+    <div className="h-full w-full flex flex-col items-center justify-center bg-white-100 font-mono">
+      <button className="inline text-3xl" onClick={() => {
+        if (pageCount > 1)
+          setPageCount(pageCount - 1)
+      }}>⬅</button>
+      <button className="inline text-5xl" onClick={() => {
+        // if any data.ranking is 0, it means that we are at the end of the ranking
+        if (data != undefined && data!.some((item) => item.ranking == 0) == false)
+          setPageCount(pageCount + 1)
+      }}>&#10145;</button>
       <table className="table-auto w-full h-full border-collapse border-1 border-gray-300 shadow-md font-mono">
         <thead>
           <tr className="bg-gray-500/50 text-white font-mono">
-            <th className="px-4 py-2">Position</th>
-            <th className="px-4 py-2">Picture</th>
-            <th className="px-4 py-2">Login</th>
-            <th className="px-4 py-2">NFT</th>
-            <th className="px-4 py-2">Link Intra</th>
+            <th className="px-4 py-2 h-[10%] text-xl">🏆</th>
+            <th className="px-4 py-2 text-xl">👶</th>
+            <th className="px-4 py-2 text-xl">🗣️</th>
+            <th className="px-4 py-2 text-xl">💰</th>
           </tr>
         </thead>
         <tbody>
-          {data.map((item, index) => (
+          {data != undefined ? (data!.map((item, index) => (
             <tr key={index} className={index % 2 === 0 ? 'bg-white text-center font-mono' : 'bg-gray-200/25 text-center font-mono'}>
-              <td className="border px-4 py-2">{item.field1}</td>
-              <td className="border px-4 py-2">{item.field2}</td>
-              <td className="border px-4 py-2">{item.field3}</td>
-              <td className="border px-4 py-2">{item.field4}</td>
-              <td className="border px-4 py-2">{item.field5}</td>
+              <td className="border px-4 py-2">{item.ranking}</td>
+              <td className="border px-4 py-2"><img className="w-10 h-10 rounded-full mx-auto" src={item.image} /></td>
+              <td className="border px-4 py-2">{item.login}</td>
+              <td className="border px-4 py-2">{item.balance}</td>
             </tr>
-          ))}
+          ))) : <p>Il n'y a pas d'utilisateurs sur cette page</p>}
         </tbody>
       </table>
     </div>

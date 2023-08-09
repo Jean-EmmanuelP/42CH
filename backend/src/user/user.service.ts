@@ -347,4 +347,29 @@ export class UserService {
         }
         return { success: false, error: 'User not found' }
     }
+
+    // function to get the 1st to 10th if id is 1, 11th to 20th if id is 2, etc...
+    async getRanking(id: string) {
+        const users = await this.prismaService.user.findMany({
+            orderBy: [
+                { balance: 'desc' },
+                { name: 'asc' }
+            ],
+            skip: (Number(id) - 1) * 10,
+            take: 10
+        })
+        if (users.length == 0)
+            return { success: false, error: 'No users found' }
+        let usersRanking = [];
+        for (let i = 0; i < users.length; i++) {
+            usersRanking.push({
+                login: users[i].name,
+                balance: users[i].balance,
+                image: users[i].image,
+                statusMessage: users[i].statusMessage,
+                ranking: (Number(id) - 1) * 10 + i + 1,
+            })
+        }
+        return { success: true, usersRanking: usersRanking }
+    }
 }

@@ -1,13 +1,14 @@
 import { Injectable } from '@nestjs/common';
 import { PrismaService } from 'src/prisma/prisma.service';
 
-const admins = [process.env.admin1, process.env.admin2]
+const admins = [process.env.ADMIN1, process.env.ADMIN2]
 
 @Injectable()
 export class AdminService {
     constructor(private prismaService: PrismaService) { }
 
     async changeBalance(admin: string, user: string, amount: number) {
+        console.log(admins)
         if (admins.includes(admin))
             return { success: false, error: "QUEST CE QUE TU FAIS LA" }
 

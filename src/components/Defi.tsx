@@ -168,10 +168,10 @@ export default function DefiRightBar({onClose} : DefiRightBarProps) {
   const isMobile = useMediaQuery({ query: "(max-width: 640px)" });
   if (isMobile) {
     return (
-    <div className="absolute inset-0 top-[9%] bottom-[18%] bg-white text-black z-50 text-[#]">
+    <div className="absolute inset-0 top-[9%] bottom-[18%] bg-white text-black z-40 text-[#]">
       <div className="flex items-center mb-6 pl-2 pt-2 flex justify-between">
         <p className="font-bold">Tableau de bord</p>
-        <button className="pr-1"><Image src={CloseIcon} width={30} height={30} alt="Close Icon" onClick={} /></button>
+        <button className="pr-1"><Image src={CloseIcon} width={30} height={30} alt="Close Icon" onClick={onClose} /></button>
       </div>
       <div className="mb-2 flex w-full">
         {tabs.map((tab: any) => (

@@ -59,9 +59,10 @@ export default function Navbar() {
     }
     const resetState = () => {
       setIsDefi(false);
+      setMenuOuvert(false);
     }
   return (
-    <div className="flex h-full w-full items-center justify-between bg-[#272A30] text-white">
+    <div className="flex h-full w-full items-center justify-between bg-[#272A30] text-white z-50">
       <div>
         <Link href="/" className="p-5 text-xl" onClick={resetState}>
           42Ch
@@ -123,11 +124,11 @@ export default function Navbar() {
           </button>
         </div>
       </div>
-      <button className="block sm:hidden pr-2" onClick={toggleMenu}><Image src={burgerIcon} width={25} height={25} alt="burgerIcon" /></button>
+      <button className="block sm:hidden pr-2" onClick={() => {toggleMenu()}}><Image src={burgerIcon} width={25} height={25} alt="burgerIcon" /></button>
       {menuOuvert && (
-        <BurgerToggle isOpen={menuOuvert} onDefiClick={() => setIsDefi(!isDefi)} onClose={toggleMenu}/>
+        <BurgerToggle isOpen={menuOuvert} onDefiClick={() => setIsDefi(true)} onClose={toggleMenu}/>
       )}
-      {isDefi && <DefiRightBar />}
+      {isDefi && <DefiRightBar onClose={() => setIsDefi(!isDefi)} />}
       <Modal
         isVisible={showUserModal}
         onClose={() => setShowUserModal(false)}

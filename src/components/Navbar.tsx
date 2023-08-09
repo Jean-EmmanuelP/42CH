@@ -8,6 +8,7 @@ import getConfig from "next/config";
 import Image from "next/image";
 import Modal from "./Modal";
 import EventProfileModal from "./EventProfileModal";
+import BurgerToggle from "./BurgerToggle";
 const { publicRuntimeConfig } = getConfig();
 
 function extractUsername(email: string) {
@@ -48,6 +49,12 @@ export default function Navbar() {
       setInfoUser(request.data.user);
     }
   }
+
+    const [menuOuvert, setMenuOuvert] = useState(false);
+
+    const toggleMenu = () => {
+      setMenuOuvert(!menuOuvert);
+    }
   return (
     <div className="flex h-full w-full items-center justify-between bg-[#272A30] text-white">
       <div>
@@ -111,7 +118,10 @@ export default function Navbar() {
           </button>
         </div>
       </div>
-      <button className="block sm:hidden pr-2"><Image src={burgerIcon} width={25} height={25} alt="burgerIcon" /></button>
+      <button className="block sm:hidden pr-2" onClick={toggleMenu}><Image src={burgerIcon} width={25} height={25} alt="burgerIcon" /></button>
+      {menuOuvert && (
+        <BurgerToggle />
+      )}
       <Modal
         isVisible={showUserModal}
         onClose={() => setShowUserModal(false)}

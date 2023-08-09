@@ -9,6 +9,7 @@ import Image from "next/image";
 import Modal from "./Modal";
 import EventProfileModal from "./EventProfileModal";
 import BurgerToggle from "./BurgerToggle";
+import DefiRightBar from "./Defi";
 const { publicRuntimeConfig } = getConfig();
 
 function extractUsername(email: string) {
@@ -19,6 +20,7 @@ export default function Navbar() {
   const [infoUser, setInfoUser] = useState<any>({});
   const [UserisHere, setUserIsHere] = useState(0);
   const [showUserModal, setShowUserModal] = useState<boolean>(false);
+  const [isDefi, setIsDefi] = useState(false);
   const [eventToSend, setEventToSend] = useState<{
     image: string;
     username: string;
@@ -120,8 +122,9 @@ export default function Navbar() {
       </div>
       <button className="block sm:hidden pr-2" onClick={toggleMenu}><Image src={burgerIcon} width={25} height={25} alt="burgerIcon" /></button>
       {menuOuvert && (
-        <BurgerToggle />
+        <BurgerToggle isOpen={menuOuvert} onDefiClick={() => setIsDefi(!isDefi)} onClose={toggleMenu}/>
       )}
+      {isDefi && <DefiRightBar />}
       <Modal
         isVisible={showUserModal}
         onClose={() => setShowUserModal(false)}

@@ -22,7 +22,7 @@ export default function Classement() {
     const request = await axios.get(process.env.NEXT_PUBLIC_API_URL + '/user/classement/' + String(pageCount) + '/');
     if (request.data.success == true) {
       setData(request.data.usersRanking);
-      setTrigger(!trigger);
+      // setTrigger(!trigger);
     }
   }
 
@@ -35,13 +35,17 @@ export default function Classement() {
   }, [pageCount]);
 
   useEffect(() => {
+    console.log('boucle?')
     if (data != undefined && data!.length != 10) {
-      // set the remaining users to 0
+      let newData = [...data]; //Copy the array to a new variable. 
       for (let i = data!.length; i < 10; i++) {
-        data!.push({ ranking: 0, image: '', login: '', balance: 0 });
+        newData.push({ ranking: 0, image: '', login: '', balance: -1 });
       }
+      setData(newData); //Set newData to state.
     }
-  }, [trigger]);
+    console.log(data)
+  }, [data]);
+
 
   return (
     <div className="inset-0 top-[10%] h-full flex flex-col items-center justify-center bg-white-100 font-mono">
@@ -56,26 +60,41 @@ export default function Classement() {
         }}><Image src={rightArrow} width={40} height={40} alt="left arrow" /></button>
       </div>
       <div className="flex items-center justify-between bg-gray-500/50 text-white font-mono h-[10%] w-full">
-          <p className="px-4 py-2 text-xl">🏆</p>
-          <p className="px-4 py-2 text-xl">👶</p>
-          <p className="px-4 py-2 text-xl">🗣️</p>
-          <p className="px-4 py-2 text-xl">💰</p>
+        <p className="px-4 py-2 text-xl">🏆</p>
+        <p className="px-4 py-2 text-xl">👶</p>
+        <p className="px-4 py-2 text-xl">🗣️</p>
+        <p className="px-4 py-2 text-xl">💰</p>
       </div>
       <div className="w-full h-[80%] shadow-md overflow-auto">
         <table className="table-auto w-full h-full border-collapse border-1 border-gray-300 shadow-md font-mono">
           <tbody>
-            {data != undefined ? (data!.map((item, index) => (
-              <tr key={index} className={index % 2 === 0 ? 'bg-white text-center font-mono h-[9%]' : 'bg-gray-200/25 text-center font-mono'}>
-                <td className="border px-4 py-2">{item.ranking}</td>
-                <td className="border px-4 py-2"><img className="w-10 h-10 rounded-full mx-auto" src={item.image} /></td>
-                <td className="border px-4 py-2">{item.login}</td>
-                <td className="border px-4 py-2">{item.balance}</td>
-              </tr>
-            ))) : <p>Il n'y a pas d'utilisateurs sur cette page</p>}
+            {data !== undefined ? (
+              data!.map((item, index) => {
+                if (item.ranking !== 0) { // Add this condition
+                  return (
+                    <tr key={index} className={index % 2 === 0 ? 'bg-white text-center font-mono h-[9%]' : 'bg-gray-200/25 text-center font-mono'}>
+                      <td className="border px-4 py-2">{item.ranking}</td>
+                      <td className="border px-4 py-2"><img className="w-10 h-10 rounded-full mx-auto" src={item.image} /></td>
+                      <td className="border px-4 py-2">{item.login}</td>
+                      <td className="border px-4 py-2">{item.balance}</td>
+                    </tr>
+                  );
+                } else {
+                  return (
+                    <tr key={index} className={index % 2 === 0 ? 'bg-white text-center font-mono h-[9%]' : 'bg-gray-200/25 text-center font-mono'}>
+                      <td className="border px-4 py-2"></td>
+                      <td className="border px-4 py-2"></td>
+                      <td className="border px-4 py-2"></td>
+                      <td className="border px-4 py-2"></td>
+                    </tr>)
+                }
+              })
+            ) : (
+              <p>Il n'y a pas d'utilisateurs sur cette page.</p>
+            )}
           </tbody>
         </table>
       </div>
     </div>
   );
-
 }

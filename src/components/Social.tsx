@@ -75,7 +75,7 @@ export default function Social({onClose}: SocialProps) {
   const isMobile = useMediaQuery({ query: "(max-width: 640px)" });
   if (isMobile) {
     return (
-      <div className="absolute inset-0 top-[9%] bottom-[18%] bg-white text-black z-40 text-[#]">
+      <div className="absolute inset-0 top-[9%] bg-white text-black z-40 text-[#]">
         <div className="flex h-full w-full flex-col  rounded-r-md bg-white shadow-md">
       <div className="h-[15%]">
         <div className="flex justify-between items-center">

@@ -75,7 +75,7 @@ export default function Social({onClose}: SocialProps) {
   const isMobile = useMediaQuery({ query: "(max-width: 640px)" });
   if (isMobile) {
     return (
-      <div className="absolute inset-0 top-[9%] bottom-[18%] bg-white text-black z-40 text-[#]">
+      <div className="absolute inset-0 top-[9%] bg-white text-black z-40 text-[#]">
         <div className="flex h-full w-full flex-col  rounded-r-md bg-white shadow-md">
       <div className="h-[15%]">
         <div className="flex justify-between items-center">
@@ -182,13 +182,13 @@ export default function Social({onClose}: SocialProps) {
           ))}
         </div>
       </div>
-      <Modal isVisible={showUserModal} onClose={() => setShowUserModal(false)} width="w-[500px]">
+      <Modal isVisible={showUserModal} onClose={() => setShowUserModal(false)} width="w-[350px]">
         <EventProfileModal userProfile={eventToSend} showAddFriend={!friends.some(friend => friend.username === eventToSend.username)} />
       </Modal>
-      <Modal isVisible={showDefiModal} onClose={() => setShowDefiModal(false)} width="w-[500px]">
+      <Modal isVisible={showDefiModal} onClose={() => setShowDefiModal(false)} width="w-[350px]">
         <DefiModal userProfile={eventToSend} onClose={() => setShowDefiModal(false)} />
       </Modal>
-      <Modal isVisible={showAddFriendModal} onClose={() => setShowAddFriendModal(false)} width="w-[500px]">
+      <Modal isVisible={showAddFriendModal} onClose={() => setShowAddFriendModal(false)} width="w-[350px]">
         <AddFriendModal onClose={() => setShowAddFriendModal(false)} />
       </Modal>
     </div>

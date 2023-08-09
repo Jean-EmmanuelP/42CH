@@ -51,31 +51,33 @@ export default function Classement() {
             setPageCount(pageCount - 1)
         }}><Image src={leftArrow} width={40} height={40} alt="left arrow" /></button>
         <button onClick={() => {
-          // if any data.ranking is 0, it means that we are at the end of the ranking
           if (data != undefined && data!.some((item) => item.ranking == 0) == false)
             setPageCount(pageCount + 1)
         }}><Image src={rightArrow} width={40} height={40} alt="left arrow" /></button>
       </div>
-      <table className="table-auto w-full h-full border-collapse border-1 border-gray-300 shadow-md font-mono">
-        <thead>
-          <tr className="bg-gray-500/50 text-white font-mono">
-            <th className="px-4 py-2 h-[10%] text-xl">🏆</th>
-            <th className="px-4 py-2 text-xl">👶</th>
-            <th className="px-4 py-2 text-xl">🗣️</th>
-            <th className="px-4 py-2 text-xl">💰</th>
-          </tr>
-        </thead>
-        <tbody>
-          {data != undefined ? (data!.map((item, index) => (
-            <tr key={index} className={index % 2 === 0 ? 'bg-white text-center font-mono h-[9%]' : 'bg-gray-200/25 text-center font-mono'}>
-              <td className="border px-4 py-2">{item.ranking}</td>
-              <td className="border px-4 py-2"><img className="w-10 h-10 rounded-full mx-auto" src={item.image} /></td>
-              <td className="border px-4 py-2">{item.login}</td>
-              <td className="border px-4 py-2">{item.balance}</td>
+      <div style={{ maxHeight: '70vh', overflow: 'auto' }}>
+        <table className="table-auto w-full h-full border-collapse border-1 border-gray-300 shadow-md font-mono">
+          <thead>
+            <tr className="bg-gray-500/50 text-white font-mono">
+              <th className="px-4 py-2 h-[10%] text-xl">🏆</th>
+              <th className="px-4 py-2 text-xl">👶</th>
+              <th className="px-4 py-2 text-xl">🗣️</th>
+              <th className="px-4 py-2 text-xl">💰</th>
             </tr>
-          ))) : <p>Il n'y a pas d'utilisateurs sur cette page</p>}
-        </tbody>
-      </table>
+          </thead>
+          <tbody>
+            {data != undefined ? (data!.map((item, index) => (
+              <tr key={index} className={index % 2 === 0 ? 'bg-white text-center font-mono h-[9%]' : 'bg-gray-200/25 text-center font-mono'}>
+                <td className="border px-4 py-2">{item.ranking}</td>
+                <td className="border px-4 py-2"><img className="w-10 h-10 rounded-full mx-auto" src={item.image} /></td>
+                <td className="border px-4 py-2">{item.login}</td>
+                <td className="border px-4 py-2">{item.balance}</td>
+              </tr>
+            ))) : <p>Il n'y a pas d'utilisateurs sur cette page</p>}
+          </tbody>
+        </table>
+      </div>
     </div>
   );
+
 }

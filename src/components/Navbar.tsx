@@ -10,6 +10,7 @@ import Modal from "./Modal";
 import EventProfileModal from "./EventProfileModal";
 import BurgerToggle from "./BurgerToggle";
 import DefiRightBar from "./Defi";
+import Social from "./Social";
 const { publicRuntimeConfig } = getConfig();
 
 function extractUsername(email: string) {
@@ -21,6 +22,7 @@ export default function Navbar() {
   const [UserisHere, setUserIsHere] = useState(0);
   const [showUserModal, setShowUserModal] = useState<boolean>(false);
   const [isDefi, setIsDefi] = useState(false);
+  const [isSocial, setIsSocial] = useState(false);
   const [eventToSend, setEventToSend] = useState<{
     image: string;
     username: string;
@@ -59,6 +61,7 @@ export default function Navbar() {
     }
     const resetState = () => {
       setIsDefi(false);
+      setIsSocial(false);
       setMenuOuvert(false);
     }
   return (
@@ -126,9 +129,10 @@ export default function Navbar() {
       </div>
       <button className="block sm:hidden pr-2" onClick={() => {toggleMenu()}}><Image src={burgerIcon} width={25} height={25} alt="burgerIcon" /></button>
       {menuOuvert && (
-        <BurgerToggle isOpen={menuOuvert} onDefiClick={() => setIsDefi(true)} onClose={toggleMenu}/>
+        <BurgerToggle resetState={resetState} isOpen={menuOuvert} onDefiClick={() => setIsDefi(true)} onSocialClick={() => setIsSocial(true)} onClose={toggleMenu}/>
       )}
-      {isDefi && <DefiRightBar onClose={() => setIsDefi(!isDefi)} />}
+      {isDefi && <DefiRightBar onClose={() => setIsDefi(false)} />}
+      {isSocial && <Social onClose={() => setIsSocial(false)}/>}
       <Modal
         isVisible={showUserModal}
         onClose={() => setShowUserModal(false)}

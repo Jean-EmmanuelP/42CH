@@ -10,9 +10,11 @@ const { publicRuntimeConfig } = getConfig();
 import CloseIcon from "../utils/images/CloseImage.svg";
 import Image from "next/image";
 
-interface 
+interface DefiRightBarProps {
+  onClose?: () => void;
+}
 
-export default function DefiRightBar() {
+export default function DefiRightBar({onClose} : DefiRightBarProps) {
   const [showModal, setShowModal] = useState<boolean>(false);
   const router = useRouter();
 

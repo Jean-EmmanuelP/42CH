@@ -74,13 +74,13 @@ export default function Navbar() {
       </div>
 
       <div className="flex h-full items-center gap-10">
-        <Image
+        {UserisHere !== 0 && (<Image
           src={infoUser.image}
           width={50}
           height={50}
           alt="Image profile"
           className="rounded-full sm:hidden shadow-md"
-        />
+        />)}
         <Link href="/classement" className="hidden sm:block button text-[10px] sm:text-[20px] sm:mr-7 sm:p-5">
           Classement
         </Link>

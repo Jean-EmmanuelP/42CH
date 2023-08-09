@@ -16,13 +16,11 @@ interface DataItem {
 export default function Classement() {
   const [data, setData] = useState<DataItem[]>();
   const [pageCount, setPageCount] = useState<number>(1);
-  const [trigger, setTrigger] = useState<boolean>(false);
 
   async function getDataAsync() {
     const request = await axios.get(process.env.NEXT_PUBLIC_API_URL + '/user/classement/' + String(pageCount) + '/');
     if (request.data.success == true) {
       setData(request.data.usersRanking);
-      // setTrigger(!trigger);
     }
   }
 
@@ -35,7 +33,6 @@ export default function Classement() {
   }, [pageCount]);
 
   useEffect(() => {
-    console.log('boucle?')
     if (data != undefined && data!.length != 10) {
       let newData = [...data]; //Copy the array to a new variable. 
       for (let i = data!.length; i < 10; i++) {

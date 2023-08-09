@@ -259,7 +259,9 @@ export default function HomePage() {
                 >
                   Miser
                 </button>
-                <p className="text-white text-xs block mt-28">Tu as misé {challenge.bid} sur la victoire de {challenge.winner}</p>
+                {challenge.bid != 0 ? (
+                  <p className="text-white text-xs block mt-32">Tu as misé {challenge.bid} sur la victoire de {challenge.winner}</p>
+                ) : <p className="text-white text-xs block mt-32">Tu n'as pas encore misé sur ce challenge !</p>}
               </div>
             ))}
           </div>

@@ -8,7 +8,6 @@ export class AdminService {
     constructor(private prismaService: PrismaService) { }
 
     async changeBalance(admin: string, user: string, amount: number) {
-        console.log(admins)
         if (admins.includes(admin))
             return { success: false, error: "QUEST CE QUE TU FAIS LA" }
 

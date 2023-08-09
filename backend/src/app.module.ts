@@ -13,10 +13,13 @@ import { UserModule } from './user/user.module';
 import { AuthController } from './auth/auth.controller';
 import { AuthModule } from './auth/auth.module';
 import { AuthService } from './auth/auth.service';
+import { AdminController } from './admin/admin.controller';
+import { AdminService } from './admin/admin.service';
+import { AdminModule } from './admin/admin.module';
 
 @Module({
-  imports: [PrismaModule, DefiModule, EventsModule, UserModule, AuthModule],
-  controllers: [AppController, DefiController, AuthController],
-  providers: [AppService, DefiGateway, DefiService, PrismaService, UserService, AuthService],
+  imports: [PrismaModule, DefiModule, EventsModule, UserModule, AuthModule, AdminModule],
+  controllers: [AppController, DefiController, AuthController, AdminController],
+  providers: [AppService, DefiGateway, DefiService, PrismaService, UserService, AuthService, AdminService],
 })
 export class AppModule { }

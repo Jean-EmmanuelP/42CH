@@ -57,10 +57,13 @@ export default function Navbar() {
     const toggleMenu = () => {
       setMenuOuvert(!menuOuvert);
     }
+    const resetState = () => {
+      setIsDefi(false);
+    }
   return (
     <div className="flex h-full w-full items-center justify-between bg-[#272A30] text-white">
       <div>
-        <Link href="/" className="p-5 text-xl">
+        <Link href="/" className="p-5 text-xl" onClick={resetState}>
           42Ch
         </Link>
         <p className="pl-12 text-[5px] sm:text-xs">Become the best challenger of 42</p>

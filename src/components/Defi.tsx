@@ -7,7 +7,10 @@ import io from "socket.io-client";
 import getConfig from 'next/config';
 import { useMediaQuery } from "react-responsive";
 const { publicRuntimeConfig } = getConfig();
+import CloseIcon from "../utils/images/CloseImage.svg";
+import Image from "next/image";
 
+interface 
 
 export default function DefiRightBar() {
   const [showModal, setShowModal] = useState<boolean>(false);
@@ -164,11 +167,9 @@ export default function DefiRightBar() {
   if (isMobile) {
     return (
     <div className="absolute inset-0 top-[9%] bottom-[18%] bg-white text-black z-50 text-[#]">
-      <div className="mb-6 pl-2 pt-2">
-        <select className="text-l font-bold">
-          <option value="Mes Defis">Mes Defis</option>
-          <option value="Mes Paris">Mes Paris</option>
-        </select>
+      <div className="flex items-center mb-6 pl-2 pt-2 flex justify-between">
+        <p className="font-bold">Tableau de bord</p>
+        <button className="pr-1"><Image src={CloseIcon} width={30} height={30} alt="Close Icon" onClick={} /></button>
       </div>
       <div className="mb-2 flex w-full">
         {tabs.map((tab: any) => (

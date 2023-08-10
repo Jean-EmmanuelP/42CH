@@ -252,43 +252,43 @@ export default function HomePage() {
             {publicChallenges.map((challenge: any) => (
               <div
                 key={challenge.id}
-                className="relative mx-6 mt-4 h-1/3 w-[88%] rounded-md border border-black bg-[#272A30]"
+                className="relative mx-6 mt-4 h-1/2 w-[88%] rounded-md border border-black bg-[#272A30]"
               >
                 <Image
                   src={challenge.creatorImage}
                   alt="Challenge image"
-                  width={60}
-                  height={60}
-                  className="absolute left-[15%] top-[10%] rounded-full border border-white shadow-md"
+                  width={40}
+                  height={40}
+                  className="absolute left-[15%] top-[8%] rounded-full border border-white shadow-md"
                 />
                 <Image
                   src={challenge.opponentImage}
                   alt="Opponent image"
-                  width={60}
-                  height={60}
-                  className="absolute right-[15%] top-[10%] rounded-full border border-white shadow-md"
+                  width={40}
+                  height={40}
+                  className="absolute right-[15%] top-[8%] rounded-full border border-white shadow-md"
                 />
                 <Image
                   src={Versus}
                   alt="versus"
-                  width={40}
-                  height={40}
-                  className="absolute left-[43%] top-[13%]"
+                  width={25}
+                  height={25}
+                  className="absolute left-[46%] top-[7%]"
                 />
-                <p className="absolute left-[45%] top-[44%] text-[12px] text-white">
+                <p className="absolute left-[47%] top-[32%] text-[9px] text-white">
                   {challenge.creatorBid} : {challenge.opponentBid}
                 </p>
                 <button
-                  className="absolute left-[43%] top-[64%] rounded-md border border-white bg-[#DD0000] p-1 text-sm text-white"
+                  className="absolute left-[44%] top-[50%] rounded-md border border-white bg-[#DD0000] p-1 text-[10px] text-white"
                   onClick={() => {
                     setShowContratModal(true), setContratInformation(challenge);
                   }}
                 >
                   Miser
                 </button>
-                {challenge.bid != 0 ? (
-                  <p className="text-white text-xs block mt-32">Tu as misé {challenge.bid} sur la victoire de {challenge.winner}</p>
-                ) : <p className="text-white text-xs block mt-32">Tu n'as pas encore misé sur ce challenge !</p>}
+                {challenge.bid != 0 && challenge.creatorName != sessionStorage.getItem('username') && challenge.opponentName != sessionStorage.getItem('username') ? (
+                  <p className="text-white text-center w-full text-xs block mt-[74px]">Tu as misé {challenge.bid} sur la victoire de {challenge.winner}</p>
+                ) : <p className="text-white text-center w-full text-xs block mt-[74px]">Tu n'as pas encore misé sur ce challenge !</p>}
               </div>
             ))}
           </div>

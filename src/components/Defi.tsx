@@ -522,15 +522,6 @@ export default function DefiRightBar({ onClose }: DefiRightBarProps) {
         {activeTab === "Invitations" && (
           <div className="relative flex h-full w-full">
             {defiRequestArray ? <>
-<<<<<<< HEAD
-                <div className="absolute left-1/2 top-1/2 mx-2 w-3/4 -translate-x-1/2 -translate-y-1/2 transform text-center">
-                  <h1 className="mb-4 font-bold">Tu n'as pas d'invitation en cours.</h1>
-                  <p className="">
-                    Si personne ne t'invite, il est temps pour toi de defier des challengers !
-                  </p>
-                </div>
-              </> : <></>}
-=======
               <div className="absolute left-1/2 top-1/2 mx-2 w-3/4 -translate-x-1/2 -translate-y-1/2 transform text-center">
                 <h1 className="mb-4 font-bold">Ajoute un defi !</h1>
                 <p className="">
@@ -539,7 +530,6 @@ export default function DefiRightBar({ onClose }: DefiRightBarProps) {
                 </p>
               </div>
             </> : <></>}
->>>>>>> 48853e8e4969ba736b228d3909a3c97a8ca7ee63
             {defiRequestArray?.map((defiRequest, index) => {
               return (
                 <div

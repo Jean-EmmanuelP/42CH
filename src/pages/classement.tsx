@@ -63,43 +63,47 @@ export default function Classement() {
             setPageCount(pageCount + 1)
         }}><Image src={rightArrow} width={40} height={40} alt="left arrow" /></button>
       </div>
-      <div className="flex items-center justify-between px-2 bg-gray-500/50 text-white font-mono h-[5%] w-full">
-        <p className="px-4 py-2 text-xl">🏆</p>
-        <p className="px-4 py-2 text-xl">👶</p>
-        <p className="px-4 py-2 text-xl">🗣️</p>
-        <p className="px-4 py-2 text-xl">💰</p>
-      </div>
+      {/* <div className="flex items-center justify-between px-2 bg-gray-500/50 text-white font-mono h-[5%] w-full">
+        {['🏆', '👶', '🗣️', '💰'].map((icon) => (
+          <p className="px-4 py-2 text-xl">{icon}</p>
+        ))}
+      </div> */}
       <div className="w-full h-[90%] shadow-md overflow-auto">
-        <table className="table-auto w-full h-full border-collapse border-1 overflow-auto border-gray-300 shadow-md font-mono">
-          <tbody>
-            {data !== undefined ? (
-              data!.map((item, index) => {
-                if (item.classment != '0') { // Add this condition
-                  return (
-                    <tr key={index} className={index % 2 === 0 ? 'bg-white text-center font-mono h-[9%]' : 'bg-gray-200/25 text-center font-mono'}>
-                      <td className="border px-4 py-2">{item.classment}</td>
-                      <td className="border px-4 py-2"><img className="w-10 h-10 rounded-full mx-auto" src={item.image} onClick={() => {
-                        setEventToSend(item);
-                        setShowModal(true)
-                      }} /></td>
-                      <td className="border px-4 py-2">{item.username}</td>
-                      <td className="border px-4 py-2">{item.balance}</td>
-                    </tr>
-                  );
-                } else {
-                  return (
-                    <tr key={index} className={index % 2 === 0 ? 'bg-white text-center font-mono h-[9%]' : 'bg-gray-200/25 text-center font-mono'}>
-                      <td className="border px-4 py-2"></td>
-                      <td className="border px-4 py-2"></td>
-                      <td className="border px-4 py-2"></td>
-                      <td className="border px-4 py-2"></td>
-                    </tr>)
-                }
-              })
-            ) : (
-              <p>Il n'y a pas d'utilisateurs sur cette page.</p>
-            )}
-          </tbody>
+      <table className="table-auto w-full h-full border-collapse border-1 overflow-auto border-gray-300 shadow-md font-mono">
+    <thead className="bg-gray-500/50 text-white font-mono sticky top-0">
+      <tr>
+        {['🏆', '👶', '🗣️', '💰'].map((icon, index) => (
+          <th className="px-4 py-2 text-xl" key={index}>{icon}</th>
+        ))}
+      </tr>
+    </thead>
+    <tbody>
+      {data !== undefined ? (
+        data!.map((item, index) => {
+          if (item.classment != '0') {
+            return (
+              <tr key={index} className={index % 2 === 0 ? 'bg-white text-center font-mono h-[9%]' : 'bg-gray-200/25 text-center font-mono'}>
+                <td className="border px-4 py-2">{item.classment}</td>
+                <td className="border px-4 py-2"><img className="w-10 h-10 rounded-full mx-auto" src={item.image} onClick={() => {setEventToSend(item); setShowModal(true)}} /></td>
+                <td className="border px-4 py-2">{item.username}</td>
+                <td className="border px-4 py-2">{item.balance}</td>
+              </tr>
+            );
+          } else {
+            return (
+              <tr key={index} className={index % 2 === 0 ? 'bg-white text-center font-mono h-[9%]' : 'bg-gray-200/25 text-center font-mono'}>
+                <td className="border px-4 py-2"></td>
+                <td className="border px-4 py-2"></td>
+                <td className="border px-4 py-2"></td>
+                <td className="border px-4 py-2"></td>
+              </tr>
+            )
+          }
+        })
+      ) : (
+        <p>Il n'y a pas d'utilisateurs sur cette page.</p>
+      )}
+    </tbody>
         </table>
         {data != undefined && data!.length == 10 && eventToSend != undefined ? (
           <Modal isVisible={showModal} onClose={() => setShowModal(false)} width="w-[350px]">

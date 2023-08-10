@@ -51,7 +51,7 @@ const Modal = ({ isVisible, onClose, children, width, verticalPosition = '100px'
   if (!show) return null;
   return (
     <div
-      className="fixed inset-0 z-50 flex bg-black bg-opacity-25 justify-center backdrop-blur-sm transition-opacity duration-500 ease-in-out"
+      className="fixed inset-0 z-20 flex bg-black bg-opacity-25 justify-center backdrop-blur-sm transition-opacity duration-500 ease-in-out"
       id="wrapper"
       onClick={handleClose}
       style={{ opacity: isVisible ? 1 : 0, paddingTop: verticalPosition }}

@@ -168,9 +168,10 @@ export default function DefiRightBar({ onClose }: DefiRightBarProps) {
   const isMobile = useMediaQuery({ query: "(max-width: 640px)" });
   if (isMobile) {
     return (
-      <div className="absolute inset-0 top-[9%] z-40 bg-white text-[#] text-black">
+      <div className="absolute inset-0 top-[9%] z-10 bg-white text-[#] text-black">
         <div className="mb-6 flex flex items-center justify-between pl-2 pt-2">
           <p className="font-bold">Tableau de bord</p>
+
           <button className="pr-1">
             <Image
               src={CloseIcon}
@@ -204,6 +205,19 @@ export default function DefiRightBar({ onClose }: DefiRightBarProps) {
             className={`absolute h-0.5 w-1/3 bg-[#272A30] transition-transform duration-500 ease-in-out`}
           />
         </div>
+        {
+          friendRequests && friendRequests.length > 0 ? (
+            <p className="absolute left-[95%] top-[7%] text-sm text-red-500">+{friendRequests.length}</p>
+          ) :
+            null
+        }
+
+        {
+          defiRequestArray && defiRequestArray.length > 0 ? (
+            <p className="absolute left-[60%] top-[7%] text-sm text-red-500">+{defiRequestArray.length}</p>
+          ) :
+            null
+        }
         <div className="relative mb-3 h-full w-full overflow-y-auto">
           {activeTab === "En cours" && (
             <div className="relative flex h-full flex-col">
@@ -264,6 +278,7 @@ export default function DefiRightBar({ onClose }: DefiRightBarProps) {
               })}
             </div>
           )}
+
           {activeTab === "Invitations" && (
             <div>
               {defiRequestArray ? (
@@ -437,6 +452,7 @@ export default function DefiRightBar({ onClose }: DefiRightBarProps) {
       <div className="mb-6 pl-2 pt-2">
         <p className="font-bold">Tableau de bord</p>
       </div>
+
       <div className="mb-2 flex w-full">
         {tabs.map((tab: any) => (
           <button
@@ -515,6 +531,12 @@ export default function DefiRightBar({ onClose }: DefiRightBarProps) {
         {
           defiRequestArray && defiRequestArray.length > 0 ? (
             <p className="absolute left-[88%] top-[20%] text-sm text-red-500">+{defiRequestArray.length}</p>
+          ) :
+            null
+        }
+        {
+          friendRequests && friendRequests.length > 0 ? (
+            <p className="absolute left-[97%] top-[18%] text-sm text-red-500">+{friendRequests.length}</p>
           ) :
             null
         }

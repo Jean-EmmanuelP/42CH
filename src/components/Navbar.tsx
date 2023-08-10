@@ -50,18 +50,18 @@ export default function Navbar() {
     }
   }
 
-    const [menuOuvert, setMenuOuvert] = useState(false);
+  const [menuOuvert, setMenuOuvert] = useState(false);
 
-    const toggleMenu = () => {
-      setMenuOuvert(!menuOuvert);
-    }
-    const resetState = () => {
-      setIsDefi(false);
-      setIsSocial(false);
-      setMenuOuvert(false);
-    }
-    return (
-    <div className="flex h-full w-full items-center justify-between bg-[#272A30] text-white z-50">
+  const toggleMenu = () => {
+    setMenuOuvert(!menuOuvert);
+  }
+  const resetState = () => {
+    setIsDefi(false);
+    setIsSocial(false);
+    setMenuOuvert(false);
+  }
+  return (
+    <div className="flex h-full w-full items-center justify-between bg-[#272A30] text-white z-20">
       <div>
         <Link href="/" className="p-5 text-xl" onClick={resetState}>
           42Ch
@@ -123,12 +123,12 @@ export default function Navbar() {
           </button>
         </div>
       </div>
-      <button className="block sm:hidden pr-2" onClick={() => {toggleMenu()}}><Image src={burgerIcon} width={25} height={25} alt="burgerIcon" /></button>
+      <button className="block sm:hidden pr-2" onClick={() => { toggleMenu() }}><Image src={burgerIcon} width={25} height={25} alt="burgerIcon" /></button>
       {menuOuvert && (
-        <BurgerToggle resetState={resetState} isOpen={menuOuvert} onDefiClick={() => setIsDefi(true)} onSocialClick={() => setIsSocial(true)} onClose={toggleMenu}/>
+        <BurgerToggle resetState={resetState} isOpen={menuOuvert} onDefiClick={() => setIsDefi(true)} onSocialClick={() => setIsSocial(true)} onClose={toggleMenu} />
       )}
       {isDefi && <DefiRightBar onClose={() => setIsDefi(false)} />}
-      {isSocial && <Social onClose={() => setIsSocial(false)}/>}
+      {isSocial && <Social onClose={() => setIsSocial(false)} />}
       <Modal
         isVisible={showUserModal}
         onClose={() => setShowUserModal(false)}

@@ -42,7 +42,7 @@ export default function EventProfileModal({ userProfile, showAddFriend }: UserPr
                         alt="Profile image"
                         className="rounded-md"
                     />
-                    <div className="absolute bottom-[-8px] right-[-25px] rounded-full border border-white/10 shadow-md bg-[#272A30] z-50 h-9 w-9 flex items-center justify-center">
+                    <div className="absolute bottom-[-8px] right-[-25px] rounded-full border border-white/10 shadow-md bg-[#272A30] z-20 h-9 w-9 flex items-center justify-center">
                         😋
                     </div>
                 </div>

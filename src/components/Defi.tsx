@@ -80,6 +80,7 @@ export default function DefiRightBar({ onClose }: DefiRightBarProps) {
       transports: ["websocket"],
     });
     setSocket(socket);
+    console.log("COUCOU", socket)
   }, [username]);
 
   useEffect(() => {
@@ -185,9 +186,8 @@ export default function DefiRightBar({ onClose }: DefiRightBarProps) {
           {tabs.map((tab: any) => (
             <button
               key={tab.value}
-              className={`flex-grow ${
-                tab.value === activeTab ? "w-1/3 p-1 font-bold" : "w-1/3 p-1"
-              }`}
+              className={`flex-grow ${tab.value === activeTab ? "w-1/3 p-1 font-bold" : "w-1/3 p-1"
+                }`}
               onClick={() => {
                 setActiveTab(tab.value);
                 setSelectedTab(tab.position);
@@ -245,9 +245,9 @@ export default function DefiRightBar({ onClose }: DefiRightBarProps) {
                     {(challenge.creatorName ==
                       sessionStorage.getItem("username") &&
                       challenge.creatorAnswer == false) ||
-                    (challenge.opponentName ==
-                      sessionStorage.getItem("username") &&
-                      challenge.opponentAnswer == false) ? (
+                      (challenge.opponentName ==
+                        sessionStorage.getItem("username") &&
+                        challenge.opponentAnswer == false) ? (
                       <button
                         onClick={() => {
                           setShowModalFin(true);
@@ -305,64 +305,64 @@ export default function DefiRightBar({ onClose }: DefiRightBarProps) {
               {" "}
               {friendRequests != null
                 ? friendRequests.map((friendRequest, index) => {
-                    return (
-                      <div className="border-1 bg-gray-450 flex h-16 w-full rounded border-black p-2 text-black shadow-md">
-                        <img
-                          className="left-0 top-0 mr-4 inline h-[100%] w-[14%] rounded-full"
-                          src={friendRequest.image}
-                        ></img>
-                        <p className="text-l inline h-full w-[40%]">
-                          {friendRequest.username}
-                        </p>
-                        <button
-                          className="mr-[2%] inline w-[24%] rounded border-2 border-green-500 bg-green-500 text-sm text-white shadow-md"
-                          onClick={async () => {
-                            const request = await axios.post(
-                              process.env.NEXT_PUBLIC_API_URL +
-                                "/user/accept_friend/",
-                              JSON.stringify({
-                                username: sessionStorage.getItem("username"),
-                                toAcceptUsername: friendRequest.username,
-                              }),
-                              {
-                                headers: { "Content-Type": "application/json" },
-                              }
-                            );
-                            if (request.data.success === true) {
-                              window.location.reload();
-                            } else {
-                              console.error(request.data.error);
+                  return (
+                    <div className="border-1 bg-gray-450 flex h-16 w-full rounded border-black p-2 text-black shadow-md">
+                      <img
+                        className="left-0 top-0 mr-4 inline h-[100%] w-[14%] rounded-full"
+                        src={friendRequest.image}
+                      ></img>
+                      <p className="text-l inline h-full w-[40%]">
+                        {friendRequest.username}
+                      </p>
+                      <button
+                        className="mr-[2%] inline w-[24%] rounded border-2 border-green-500 bg-green-500 text-sm text-white shadow-md"
+                        onClick={async () => {
+                          const request = await axios.post(
+                            process.env.NEXT_PUBLIC_API_URL +
+                            "/user/accept_friend/",
+                            JSON.stringify({
+                              username: sessionStorage.getItem("username"),
+                              toAcceptUsername: friendRequest.username,
+                            }),
+                            {
+                              headers: { "Content-Type": "application/json" },
                             }
-                          }}
-                        >
-                          Accepter
-                        </button>
-                        <button
-                          className="inline w-[24%] rounded border-2 border-red-500 bg-red-500 p-2 text-sm text-white shadow-md"
-                          onClick={async () => {
-                            const request = await axios.post(
-                              process.env.NEXT_PUBLIC_API_URL +
-                                "/user/decline_friend/",
-                              JSON.stringify({
-                                username: sessionStorage.getItem("username"),
-                                toDeclineUsername: friendRequest.username,
-                              }),
-                              {
-                                headers: { "Content-Type": "application/json" },
-                              }
-                            );
-                            if (request.data.success === true) {
-                              window.location.reload();
-                            } else {
-                              console.error(request.data.error);
+                          );
+                          if (request.data.success === true) {
+                            window.location.reload();
+                          } else {
+                            console.error(request.data.error);
+                          }
+                        }}
+                      >
+                        Accepter
+                      </button>
+                      <button
+                        className="inline w-[24%] rounded border-2 border-red-500 bg-red-500 p-2 text-sm text-white shadow-md"
+                        onClick={async () => {
+                          const request = await axios.post(
+                            process.env.NEXT_PUBLIC_API_URL +
+                            "/user/decline_friend/",
+                            JSON.stringify({
+                              username: sessionStorage.getItem("username"),
+                              toDeclineUsername: friendRequest.username,
+                            }),
+                            {
+                              headers: { "Content-Type": "application/json" },
                             }
-                          }}
-                        >
-                          Refuser
-                        </button>
-                      </div>
-                    );
-                  })
+                          );
+                          if (request.data.success === true) {
+                            window.location.reload();
+                          } else {
+                            console.error(request.data.error);
+                          }
+                        }}
+                      >
+                        Refuser
+                      </button>
+                    </div>
+                  );
+                })
                 : null}
             </div>
           )}
@@ -445,9 +445,8 @@ export default function DefiRightBar({ onClose }: DefiRightBarProps) {
         {tabs.map((tab: any) => (
           <button
             key={tab.value}
-            className={`flex-grow ${
-              tab.value === activeTab ? "w-1/3 p-1 font-bold" : "w-1/3 p-1"
-            }`}
+            className={`flex-grow ${tab.value === activeTab ? "w-1/3 p-1 font-bold" : "w-1/3 p-1"
+              }`}
             onClick={() => {
               setActiveTab(tab.value);
               setSelectedTab(tab.position);
@@ -497,9 +496,9 @@ export default function DefiRightBar({ onClose }: DefiRightBarProps) {
                   {(challenge.creatorName ==
                     sessionStorage.getItem("username") &&
                     challenge.creatorAnswer == false) ||
-                  (challenge.opponentName ==
-                    sessionStorage.getItem("username") &&
-                    challenge.opponentAnswer == false) ? (
+                    (challenge.opponentName ==
+                      sessionStorage.getItem("username") &&
+                      challenge.opponentAnswer == false) ? (
                     <button
                       onClick={() => {
                         setShowModalFin(true);
@@ -553,60 +552,60 @@ export default function DefiRightBar({ onClose }: DefiRightBarProps) {
             {" "}
             {friendRequests != null
               ? friendRequests.map((friendRequest, index) => {
-                  return (
-                    <div className="border-1 bg-gray-450 flex h-16 w-full rounded border-black p-2 text-black shadow-md">
-                      <img
-                        className="left-0 top-0 mr-4 inline h-[100%] w-[14%] rounded-full"
-                        src={friendRequest.image}
-                      ></img>
-                      <p className="text-l inline h-full w-[40%]">
-                        {friendRequest.username}
-                      </p>
-                      <button
-                        className="mr-[2%] inline w-[24%] rounded border-2 border-green-500 bg-green-500 text-sm text-white shadow-md"
-                        onClick={async () => {
-                          const request = await axios.post(
-                            process.env.NEXT_PUBLIC_API_URL +
-                              "/user/accept_friend/",
-                            JSON.stringify({
-                              username: sessionStorage.getItem("username"),
-                              toAcceptUsername: friendRequest.username,
-                            }),
-                            { headers: { "Content-Type": "application/json" } }
-                          );
-                          if (request.data.success === true) {
-                            window.location.reload();
-                          } else {
-                            console.error(request.data.error);
-                          }
-                        }}
-                      >
-                        Accepter
-                      </button>
-                      <button
-                        className="inline w-[24%] rounded border-2 border-red-500 bg-red-500 p-2 text-sm text-white shadow-md"
-                        onClick={async () => {
-                          const request = await axios.post(
-                            process.env.NEXT_PUBLIC_API_URL +
-                              "/user/decline_friend/",
-                            JSON.stringify({
-                              username: sessionStorage.getItem("username"),
-                              toDeclineUsername: friendRequest.username,
-                            }),
-                            { headers: { "Content-Type": "application/json" } }
-                          );
-                          if (request.data.success === true) {
-                            window.location.reload();
-                          } else {
-                            console.error(request.data.error);
-                          }
-                        }}
-                      >
-                        Refuser
-                      </button>
-                    </div>
-                  );
-                })
+                return (
+                  <div className="border-1 bg-gray-450 flex h-16 w-full rounded border-black p-2 text-black shadow-md">
+                    <img
+                      className="left-0 top-0 mr-4 inline h-[100%] w-[14%] rounded-full"
+                      src={friendRequest.image}
+                    ></img>
+                    <p className="text-l inline h-full w-[40%]">
+                      {friendRequest.username}
+                    </p>
+                    <button
+                      className="mr-[2%] inline w-[24%] rounded border-2 border-green-500 bg-green-500 text-sm text-white shadow-md"
+                      onClick={async () => {
+                        const request = await axios.post(
+                          process.env.NEXT_PUBLIC_API_URL +
+                          "/user/accept_friend/",
+                          JSON.stringify({
+                            username: sessionStorage.getItem("username"),
+                            toAcceptUsername: friendRequest.username,
+                          }),
+                          { headers: { "Content-Type": "application/json" } }
+                        );
+                        if (request.data.success === true) {
+                          window.location.reload();
+                        } else {
+                          console.error(request.data.error);
+                        }
+                      }}
+                    >
+                      Accepter
+                    </button>
+                    <button
+                      className="inline w-[24%] rounded border-2 border-red-500 bg-red-500 p-2 text-sm text-white shadow-md"
+                      onClick={async () => {
+                        const request = await axios.post(
+                          process.env.NEXT_PUBLIC_API_URL +
+                          "/user/decline_friend/",
+                          JSON.stringify({
+                            username: sessionStorage.getItem("username"),
+                            toDeclineUsername: friendRequest.username,
+                          }),
+                          { headers: { "Content-Type": "application/json" } }
+                        );
+                        if (request.data.success === true) {
+                          window.location.reload();
+                        } else {
+                          console.error(request.data.error);
+                        }
+                      }}
+                    >
+                      Refuser
+                    </button>
+                  </div>
+                );
+              })
               : null}
           </div>
         )}

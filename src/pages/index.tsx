@@ -13,6 +13,7 @@ import ClockIcon from "../utils/images/clockicon.svg";
 import QuestionMark from "../utils/images/questionmark.svg";
 import Versus from "../utils/images/versus.png";
 import { useMediaQuery } from "react-responsive";
+import io from "socket.io-client";
 
 dayjs.extend(isSameOrAfter);
 dayjs.extend(isSameOrBefore);
@@ -21,6 +22,7 @@ import axios from "axios";
 import EventProfileModal from "~/components/EventProfileModal";
 import LiveChallengeModal from "~/components/LiveChallengeModal";
 import { set } from "lodash";
+import DefiModalContent from "~/components/DefiModalContent";
 
 interface publicChallenge {
   id: string;
@@ -64,6 +66,9 @@ export default function HomePage() {
     useState<publicChallenge>();
 
   const [publicChallengesBool, setPublicChallengesBool] = useState<boolean>(false)
+
+
+  const [socket, setSocket] = useState<any>(null);
 
   async function setWeekly() {
     const today = dayjs().startOf("day");
@@ -112,7 +117,29 @@ export default function HomePage() {
   useEffect(() => {
     setWeekly();
     getPublicChallenges();
+
+    const socket = io(process.env.NEXT_PUBLIC_API_URL!, {
+      transports: ["websocket"],
+    });
+    setSocket(socket);
   }, []);
+
+
+  useEffect(() => {
+    if (socket == null) return;
+    socket.emit("joinDefi", { username: sessionStorage.getItem('username') });
+
+    socket.on("receiveDefiId", (data: { defiId: string }) => {
+      window.location.href = "/defi/" + data.defiId;
+      sessionStorage.setItem("defiId", data.defiId);
+    });
+
+    return () => {
+      socket.emit("leaveDefi", { username: sessionStorage.getItem('username') });
+      socket.disconnect();
+      socket.off();
+    };
+  }, [socket]);
 
   async function setFix() {
     let publicChallengesCpy = [...publicChallenges];
@@ -389,10 +416,20 @@ export default function HomePage() {
           <button
             type="button"
             className="mx-2 h-[50%] w-[80%] rounded-md bg-red-600 px-2 py-3 text-sm font-semibold text-white shadow-md duration-300 focus:outline-none focus:ring-2 focus:ring-red-500 focus:ring-offset-2"
+            onClick={() => {
+              setShowModal(true)
+            }}
           >
             Defier un challenger
           </button>
         </div>
+        <Modal
+          isVisible={showModal}
+          onClose={() => setShowModal(false)}
+          width="w-[350px]"
+        >
+          <DefiModalContent socket={socket} onClose={() => setShowModal(false)} />
+        </Modal>
         {eventToSend != undefined ? (
           <Modal
             isVisible={showModal}

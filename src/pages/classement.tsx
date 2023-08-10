@@ -52,8 +52,8 @@ export default function Classement() {
 
 
   return (
-    <div className="inset-0 top-[10%] h-full flex flex-col items-center justify-center bg-white-100 font-mono">
-      <div className="h-[10%] flex space-x-2 pb-2 w-full justify-center">
+    <div className=" h-full w-full flex flex-col bg-white-100 font-mono">
+      <div className="h-[5%] flex space-x-2 w-full justify-center ">
         <button onClick={() => {
           if (pageCount > 1)
             setPageCount(pageCount - 1)
@@ -63,14 +63,14 @@ export default function Classement() {
             setPageCount(pageCount + 1)
         }}><Image src={rightArrow} width={40} height={40} alt="left arrow" /></button>
       </div>
-      <div className="flex items-center justify-between bg-gray-500/50 text-white font-mono h-[10%] w-full">
+      <div className="flex items-center justify-between px-2 bg-gray-500/50 text-white font-mono h-[5%] w-full">
         <p className="px-4 py-2 text-xl">🏆</p>
         <p className="px-4 py-2 text-xl">👶</p>
         <p className="px-4 py-2 text-xl">🗣️</p>
         <p className="px-4 py-2 text-xl">💰</p>
       </div>
-      <div className="w-full h-[80%] shadow-md overflow-y">
-        <table className="table-auto w-full h-full border-collapse border-1 border-gray-300 shadow-md font-mono">
+      <div className="w-full h-[90%] shadow-md overflow-auto">
+        <table className="table-auto w-full h-full border-collapse border-1 overflow-auto border-gray-300 shadow-md font-mono">
           <tbody>
             {data !== undefined ? (
               data!.map((item, index) => {

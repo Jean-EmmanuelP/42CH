@@ -5,17 +5,24 @@ import axios from 'axios'
 import rightArrow from "../utils/images/rightArrow.svg"
 import leftArrow from "../utils/images/leftArrow.svg"
 import Image from "next/image";
+import EventProfileModal from "~/components/EventProfileModal";
+import Modal from "~/components/Modal";
 
-interface DataItem {
-  ranking: number;
-  image: string;
-  login: string;
-  balance: number;
+interface UserProfileProps {
+  username: string
+  image: string
+  statusMessage: string
+  balance: number
+  classment: string
 }
 
 export default function Classement() {
-  const [data, setData] = useState<DataItem[]>();
+  const [data, setData] = useState<UserProfileProps[]>();
   const [pageCount, setPageCount] = useState<number>(1);
+
+  const [showModal, setShowModal] = useState<boolean>(false);
+  const [eventToSend, setEventToSend] = useState<UserProfileProps>(null!);
+
 
   async function getDataAsync() {
     const request = await axios.get(process.env.NEXT_PUBLIC_API_URL + '/user/classement/' + String(pageCount) + '/');
@@ -36,7 +43,7 @@ export default function Classement() {
     if (data != undefined && data!.length != 10) {
       let newData = [...data]; //Copy the array to a new variable. 
       for (let i = data!.length; i < 10; i++) {
-        newData.push({ ranking: 0, image: '', login: '', balance: -1 });
+        newData.push({ classment: '0', image: '', username: 'e', balance: -1, statusMessage: '' });
       }
       setData(newData); //Set newData to state.
     }
@@ -52,7 +59,7 @@ export default function Classement() {
             setPageCount(pageCount - 1)
         }}><Image src={leftArrow} width={40} height={40} alt="left arrow" /></button>
         <button onClick={() => {
-          if (data != undefined && data!.some((item) => item.ranking == 0) == false)
+          if (data != undefined && data!.some((item) => item.classment == '0') == false)
             setPageCount(pageCount + 1)
         }}><Image src={rightArrow} width={40} height={40} alt="left arrow" /></button>
       </div>
@@ -67,12 +74,15 @@ export default function Classement() {
           <tbody>
             {data !== undefined ? (
               data!.map((item, index) => {
-                if (item.ranking !== 0) { // Add this condition
+                if (item.classment != '0') { // Add this condition
                   return (
                     <tr key={index} className={index % 2 === 0 ? 'bg-white text-center font-mono h-[9%]' : 'bg-gray-200/25 text-center font-mono'}>
-                      <td className="border px-4 py-2">{item.ranking}</td>
-                      <td className="border px-4 py-2"><img className="w-10 h-10 rounded-full mx-auto" src={item.image} /></td>
-                      <td className="border px-4 py-2">{item.login}</td>
+                      <td className="border px-4 py-2">{item.classment}</td>
+                      <td className="border px-4 py-2"><img className="w-10 h-10 rounded-full mx-auto" src={item.image} onClick={() => {
+                        setEventToSend(item);
+                        setShowModal(true)
+                      }} /></td>
+                      <td className="border px-4 py-2">{item.username}</td>
                       <td className="border px-4 py-2">{item.balance}</td>
                     </tr>
                   );
@@ -91,6 +101,11 @@ export default function Classement() {
             )}
           </tbody>
         </table>
+        {data != undefined && data!.length == 10 && eventToSend != undefined ? (
+          <Modal isVisible={showModal} onClose={() => setShowModal(false)} width="w-[350px]">
+            <EventProfileModal userProfile={eventToSend} showAddFriend={!data!.some(friend => friend.username === eventToSend.username)} />
+          </Modal>) : null
+        }
       </div>
     </div>
   );

@@ -363,11 +363,11 @@ export class UserService {
         let usersRanking = [];
         for (let i = 0; i < users.length; i++) {
             usersRanking.push({
-                login: users[i].name,
+                username: users[i].name,
                 balance: users[i].balance,
                 image: users[i].image,
                 statusMessage: users[i].statusMessage,
-                ranking: (Number(id) - 1) * 10 + i + 1,
+                classment: (Number(id) - 1) * 10 + i + 1,
             })
         }
         return { success: true, usersRanking: usersRanking }

@@ -89,7 +89,7 @@ export default function Navbar() {
 
       <div className="hidden sm:block">
         <div className="flex">
-          <button
+          {UserisHere !== 0 && (<button
             onClick={() => {
               if (
                 confirm(
@@ -104,7 +104,7 @@ export default function Navbar() {
             }}
           >
             Logout
-          </button>
+          </button>)}
           <button
             className="mr-10 flex items-center space-x-3 p-4 hover:text-blue-700"
             onClick={() => {

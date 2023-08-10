@@ -62,7 +62,7 @@ export default function Classement() {
         <p className="px-4 py-2 text-xl">🗣️</p>
         <p className="px-4 py-2 text-xl">💰</p>
       </div>
-      <div className="w-full h-[80%] shadow-md overflow-auto">
+      <div className="w-full h-[80%] shadow-md overflow-y">
         <table className="table-auto w-full h-full border-collapse border-1 border-gray-300 shadow-md font-mono">
           <tbody>
             {data !== undefined ? (

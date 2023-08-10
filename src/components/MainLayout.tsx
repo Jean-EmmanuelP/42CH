@@ -5,7 +5,6 @@ import Navbar from "~/components/Navbar";
 import DefiRightBar from "~/components/Defi";
 import Social from "~/components/Social";
 import { ReactNode, useEffect, useState } from "react";
-import { divide } from "lodash";
 import SignIn from "./SignIn";
 
 interface MainLayoutProps {

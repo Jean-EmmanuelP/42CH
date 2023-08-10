@@ -436,10 +436,7 @@ export default function DefiRightBar({ onClose }: DefiRightBarProps) {
   return (
     <div className="flex h-full flex-col rounded-l-md bg-white shadow-md">
       <div className="mb-6 pl-2 pt-2">
-        <select className="text-l font-bold">
-          <option value="Mes Defis">Mes Defis</option>
-          <option value="Mes Paris">Mes Paris</option>
-        </select>
+        <p className="font-bold">Tableau de bord</p>
       </div>
       <div className="mb-2 flex w-full">
         {tabs.map((tab: any) => (
@@ -517,8 +514,16 @@ export default function DefiRightBar({ onClose }: DefiRightBarProps) {
           </div>
         )}
         {activeTab === "Invitations" && (
-          <div>
-            {defiRequestArray ? <p className="mb-2">Demande de defi</p> : <></>}
+          <div className="relative flex h-full w-full">
+            {defiRequestArray ? <>
+                <div className="absolute left-1/2 top-1/2 mx-2 w-3/4 -translate-x-1/2 -translate-y-1/2 transform text-center">
+                  <h1 className="mb-4 font-bold">Ajoute un defi !</h1>
+                  <p className="">
+                    Rempli ton wallet de coin en vidant celui des autres, et
+                    devient le meilleur joueur de 42
+                  </p>
+                </div>
+              </> : <></>}
             {defiRequestArray?.map((defiRequest, index) => {
               return (
                 <div

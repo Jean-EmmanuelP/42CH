@@ -13,10 +13,6 @@ import DefiRightBar from "./Defi";
 import Social from "./Social";
 const { publicRuntimeConfig } = getConfig();
 
-function extractUsername(email: string) {
-  return email.split(" ")[0];
-}
-
 export default function Navbar() {
   const [infoUser, setInfoUser] = useState<any>({});
   const [UserisHere, setUserIsHere] = useState(0);
@@ -64,7 +60,7 @@ export default function Navbar() {
       setIsSocial(false);
       setMenuOuvert(false);
     }
-  return (
+    return (
     <div className="flex h-full w-full items-center justify-between bg-[#272A30] text-white z-50">
       <div>
         <Link href="/" className="p-5 text-xl" onClick={resetState}>

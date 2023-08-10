@@ -1,7 +1,6 @@
 import axios from "axios";
-import { usePathname, useSearchParams } from "next/navigation";
-import { useEffect } from "react";
-import { redirect } from "next/navigation";
+import { useSearchParams } from "next/navigation";
+import { useEffect, useState } from "react";
 import getConfig from "next/config";
 import Marquee from "react-fast-marquee";
 import { useMediaQuery } from "react-responsive";
@@ -37,7 +36,8 @@ export default function SignIn() {
   useEffect(() => {
     fetchData();
   }, [code]);
-  if (isMobile) {
+ 
+  if (isMobile && sessionStorage.getItem("username") === "undefined") {
     return (
       <div className="flex h-full w-full flex-col items-center justify-center">
       <div className="h-[50%] w-[50%] rounded-md bg-white p-2 shadow-md">

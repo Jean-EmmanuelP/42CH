@@ -80,7 +80,6 @@ export default function DefiRightBar({ onClose }: DefiRightBarProps) {
       transports: ["websocket"],
     });
     setSocket(socket);
-    console.log("COUCOU", socket)
   }, [username]);
 
   useEffect(() => {
@@ -279,7 +278,7 @@ export default function DefiRightBar({ onClose }: DefiRightBarProps) {
                     className="m-5 flex flex-col items-center gap-4 rounded bg-white p-5 shadow-md"
                   >
                     <p className="text-l mb-2 font-semibold">
-                      {defiRequest.receiverUsername}
+                      {defiRequest.senderUsername}
                     </p>
                     <div>
                       <button
@@ -515,22 +514,13 @@ export default function DefiRightBar({ onClose }: DefiRightBarProps) {
         )}
         {
           defiRequestArray && defiRequestArray.length > 0 ? (
-            <p className="absolute left-[88%] top-[20%] text-sm color-red-500">+{defiRequestArray.length}</p>
+            <p className="absolute left-[88%] top-[20%] text-sm text-red-500">+{defiRequestArray.length}</p>
           ) :
             null
         }
         {activeTab === "Invitations" && (
           <div className="relative flex h-full w-full">
             {defiRequestArray ? <>
-<<<<<<< HEAD
-                <div className="absolute left-1/2 top-1/2 mx-2 w-3/4 -translate-x-1/2 -translate-y-1/2 transform text-center">
-                  <h1 className="mb-4 font-bold">Tu n'as pas d'invitation en cours.</h1>
-                  <p className="">
-                    Si personne ne t'invite, il est temps pour toi de defier des challengers !
-                  </p>
-                </div>
-              </> : <></>}
-=======
               <div className="absolute left-1/2 top-1/2 mx-2 w-3/4 -translate-x-1/2 -translate-y-1/2 transform text-center">
                 <h1 className="mb-4 font-bold">Ajoute un defi !</h1>
                 <p className="">
@@ -539,98 +529,101 @@ export default function DefiRightBar({ onClose }: DefiRightBarProps) {
                 </p>
               </div>
             </> : <></>}
->>>>>>> 48853e8e4969ba736b228d3909a3c97a8ca7ee63
-            {defiRequestArray?.map((defiRequest, index) => {
-              return (
-                <div
-                  key={index}
-                  className="m-5 flex flex-col items-center gap-4 rounded bg-white p-5 shadow-md"
-                >
-                  <p className="text-l mb-2 font-semibold">
-                    {defiRequest.receiverUsername}
-                  </p>
-                  <div>
-                    <button
-                      className="mr-2 rounded border-2 border-green-500 bg-green-500 p-2 text-white shadow-md"
-                      onClick={() => handleAcceptChallenge(index)}
-                    >
-                      Accepter
-                    </button>
-                    <button
-                      className="rounded border-2 border-red-500 bg-red-500 p-2 text-white shadow-md"
-                      onClick={() => handleRejectChallenge(index)}
-                    >
-                      Refuser
-                    </button>
-                  </div>
-                </div>
-              );
-            })}
-          </div>
-        )}
-        {activeTab === "Amis" && (
-          <div className="h-full w-full overflow-y-auto">
-            {" "}
-            {friendRequests != null
-              ? friendRequests.map((friendRequest, index) => {
+            {
+              defiRequestArray?.map((defiRequest, index) => {
                 return (
-                  <div className="border-1 bg-gray-450 flex h-16 w-full rounded border-black p-2 text-black shadow-md">
-                    <img
-                      className="left-0 top-0 mr-4 inline h-[100%] w-[14%] rounded-full"
-                      src={friendRequest.image}
-                    ></img>
-                    <p className="text-l inline h-full w-[40%]">
-                      {friendRequest.username}
+                  <div
+                    key={index}
+                    className="m-5 flex flex-col items-center gap-4 rounded bg-white p-5 shadow-md"
+                  >
+                    <p className="text-l mb-2 font-semibold">
+                      {defiRequest.senderUsername}
                     </p>
-                    <button
-                      className="mr-[2%] inline w-[24%] rounded border-2 border-green-500 bg-green-500 text-sm text-white shadow-md"
-                      onClick={async () => {
-                        const request = await axios.post(
-                          process.env.NEXT_PUBLIC_API_URL +
-                          "/user/accept_friend/",
-                          JSON.stringify({
-                            username: sessionStorage.getItem("username"),
-                            toAcceptUsername: friendRequest.username,
-                          }),
-                          { headers: { "Content-Type": "application/json" } }
-                        );
-                        if (request.data.success === true) {
-                          window.location.reload();
-                        } else {
-                          console.error(request.data.error);
-                        }
-                      }}
-                    >
-                      Accepter
-                    </button>
-                    <button
-                      className="inline w-[24%] rounded border-2 border-red-500 bg-red-500 p-2 text-sm text-white shadow-md"
-                      onClick={async () => {
-                        const request = await axios.post(
-                          process.env.NEXT_PUBLIC_API_URL +
-                          "/user/decline_friend/",
-                          JSON.stringify({
-                            username: sessionStorage.getItem("username"),
-                            toDeclineUsername: friendRequest.username,
-                          }),
-                          { headers: { "Content-Type": "application/json" } }
-                        );
-                        if (request.data.success === true) {
-                          window.location.reload();
-                        } else {
-                          console.error(request.data.error);
-                        }
-                      }}
-                    >
-                      Refuser
-                    </button>
+                    <div>
+                      <button
+                        className="mr-2 rounded border-2 border-green-500 bg-green-500 p-2 text-white shadow-md"
+                        onClick={() => handleAcceptChallenge(index)}
+                      >
+                        Accepter
+                      </button>
+                      <button
+                        className="rounded border-2 border-red-500 bg-red-500 p-2 text-white shadow-md"
+                        onClick={() => handleRejectChallenge(index)}
+                      >
+                        Refuser
+                      </button>
+                    </div>
                   </div>
                 );
               })
-              : null}
-          </div>
+            }
+          </div >
         )}
-      </div>
+        {
+          activeTab === "Amis" && (
+            <div className="h-full w-full overflow-y-auto">
+              {" "}
+              {friendRequests != null
+                ? friendRequests.map((friendRequest, index) => {
+                  return (
+                    <div className="border-1 bg-gray-450 flex h-16 w-full rounded border-black p-2 text-black shadow-md">
+                      <img
+                        className="left-0 top-0 mr-4 inline h-[100%] w-[14%] rounded-full"
+                        src={friendRequest.image}
+                      ></img>
+                      <p className="text-l inline h-full w-[40%]">
+                        {friendRequest.username}
+                      </p>
+                      <button
+                        className="mr-[2%] inline w-[24%] rounded border-2 border-green-500 bg-green-500 text-sm text-white shadow-md"
+                        onClick={async () => {
+                          const request = await axios.post(
+                            process.env.NEXT_PUBLIC_API_URL +
+                            "/user/accept_friend/",
+                            JSON.stringify({
+                              username: sessionStorage.getItem("username"),
+                              toAcceptUsername: friendRequest.username,
+                            }),
+                            { headers: { "Content-Type": "application/json" } }
+                          );
+                          if (request.data.success === true) {
+                            window.location.reload();
+                          } else {
+                            console.error(request.data.error);
+                          }
+                        }}
+                      >
+                        Accepter
+                      </button>
+                      <button
+                        className="inline w-[24%] rounded border-2 border-red-500 bg-red-500 p-2 text-sm text-white shadow-md"
+                        onClick={async () => {
+                          const request = await axios.post(
+                            process.env.NEXT_PUBLIC_API_URL +
+                            "/user/decline_friend/",
+                            JSON.stringify({
+                              username: sessionStorage.getItem("username"),
+                              toDeclineUsername: friendRequest.username,
+                            }),
+                            { headers: { "Content-Type": "application/json" } }
+                          );
+                          if (request.data.success === true) {
+                            window.location.reload();
+                          } else {
+                            console.error(request.data.error);
+                          }
+                        }}
+                      >
+                        Refuser
+                      </button>
+                    </div>
+                  );
+                })
+                : null}
+            </div>
+          )
+        }
+      </div >
       <div className="mb-2 flex w-full justify-center pb-2">
         <button
           type="button"
@@ -698,6 +691,6 @@ export default function DefiRightBar({ onClose }: DefiRightBarProps) {
           )}
         </div>
       </Modal>
-    </div>
+    </div >
   );
 }

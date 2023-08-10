@@ -329,16 +329,16 @@ export class DefiService {
                 timerPublic: timer,
             }
         })
-        setTimeout(async () => {
-            await this.prismaService.challenge.update({ where: { id: defi.id }, data: { isPublic: false } })
-        }, defi.timerPublic * 1000)
+        // setTimeout(async () => {
+        //     await this.prismaService.challenge.update({ where: { id: defi.id }, data: { isPublic: false } })
+        // }, defi.timerPublic * 1000)
         await this.prismaService.defi.delete({ where: { id: defi.id } });
     }
 
     async getInfos(username: string, accessToken?: string) {
-        let ret = await this.authService.checkToken(username, accessToken);
-        if (ret.success == false)
-            return { success: false, error: 'Token' };
+        // let ret = await this.authService.checkToken(username, accessToken);
+        // if (ret.success == false)
+        //     return { success: false, error: 'Token' };
         const user = await this.prismaService.user.findUnique({ where: { name: username } });
         if (!user) {
             return { success: false, error: 'User not found' };

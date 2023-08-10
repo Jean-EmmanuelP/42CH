@@ -513,17 +513,23 @@ export default function DefiRightBar({ onClose }: DefiRightBarProps) {
             })}
           </div>
         )}
+        {
+          defiRequestArray && defiRequestArray.length > 0 ? (
+            <p className="absolute left-[88%] top-[20%] text-sm color-red-500">+{defiRequestArray.length}</p>
+          ) :
+            null
+        }
         {activeTab === "Invitations" && (
           <div className="relative flex h-full w-full">
             {defiRequestArray ? <>
-                <div className="absolute left-1/2 top-1/2 mx-2 w-3/4 -translate-x-1/2 -translate-y-1/2 transform text-center">
-                  <h1 className="mb-4 font-bold">Ajoute un defi !</h1>
-                  <p className="">
-                    Rempli ton wallet de coin en vidant celui des autres, et
-                    devient le meilleur joueur de 42
-                  </p>
-                </div>
-              </> : <></>}
+              <div className="absolute left-1/2 top-1/2 mx-2 w-3/4 -translate-x-1/2 -translate-y-1/2 transform text-center">
+                <h1 className="mb-4 font-bold">Ajoute un defi !</h1>
+                <p className="">
+                  Rempli ton wallet de coin en vidant celui des autres, et
+                  devient le meilleur joueur de 42
+                </p>
+              </div>
+            </> : <></>}
             {defiRequestArray?.map((defiRequest, index) => {
               return (
                 <div

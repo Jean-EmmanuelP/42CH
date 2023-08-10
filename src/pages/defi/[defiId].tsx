@@ -83,6 +83,7 @@ function DefiPage() {
     );
     request.then((request) => {
       if (request.data.success == true) {
+        console.log("??", request.data)
         setUserBet(request.data.userBet);
         setOpponentBet(request.data.opponentBet);
         setHonorBet(request.data.honorBet);
@@ -109,7 +110,7 @@ function DefiPage() {
           }
         });
       } else {
-        console.error(request.data.message);
+        console.error("??", request.data.error);
       }
     });
     const img = axios.post(

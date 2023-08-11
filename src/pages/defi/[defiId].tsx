@@ -11,6 +11,7 @@ import io from "socket.io-client";
 import axios from "axios";
 import { set } from "lodash";
 import getConfig from 'next/config';
+import { useMediaQuery } from "react-responsive";
 const { publicRuntimeConfig } = getConfig();
 
 function DefiPage() {
@@ -223,6 +224,254 @@ function DefiPage() {
       username: sessionStorage.getItem("username"),
     });
   }
+  const isMobile = useMediaQuery({ query: "(max-width: 640px)" });
+  if (isMobile)
+   {
+    return (
+      <div className="h-full w-full ">
+      {isClient ? (
+        <div className="h-full w-full">
+          <div className="transparent flex h-full w-full gap-2">
+            <div className="flex h-full w-[30%] flex-col items-center justify-center bg-[#D9D9D9]">
+              <div className="flex h-[45%] w-full flex-col items-center justify-center ">
+                <img
+                  className="mt-10 rounded-full border border-black shadow-md"
+                  width={70}
+                  height={70}
+                  src={userImage}
+                  alt="pic_me"
+                />
+                <p className="p-4 text-[22px] font-bold text-center">
+                  Wallet : {userBalance}
+                </p>
+              </div>
+              <div className="h-[55%] w-full ">
+                <form
+                  action=""
+                  className="flex flex-col items-center justify-center "
+                >
+                  <label htmlFor="mise" className="mb-2 text-[15px] text-center font-bold">
+                    Combien vas-tu miser ?
+                  </label>
+                  <input
+                    type="number"
+                    id="mise"
+                    name="mise"
+                    min="1"
+                    placeholder="1"
+                    className="w-[60%] rounded text-center text-[18px] font-bold"
+                    onChange={handleUserBetChange}
+                    value={userBet}
+                  />
+                  <textarea
+                    name="chat"
+                    id="chat"
+                    cols={30}
+                    rows={6}
+                    className="my-4 w-[90%] resize-none rounded-sm border border-black p-2 text-[12px] placeholder:text-[9px]"
+                    placeholder="Chat avec ton adversaire..."
+                    onChange={(e) => {
+                      setUserComment(e.target.value)
+                      socket.emit("changeComment", {
+                        newComment: e.target.value,
+                        room: roomNumber,
+                        username: sessionStorage.getItem("username"),
+                      });
+                    }}
+                    value={userComment}
+                  ></textarea>
+                  <div className="flex gap-4 flex-col">
+                    <button
+                      type="button"
+                      className="rounded-md  bg-red-500 p-2 text-white text-[10px]"
+                      onClick={() => {
+                        if (checkEveryInputs() == 0) {
+                          socket.emit("changeAccept", {
+                            newAccept: true,
+                            room: roomNumber,
+                            username: sessionStorage.getItem("username"),
+                          });
+                          setUserAccepted(true);
+                        }
+                      }}
+                    >
+                      {userAccepted ? "En attente de l'adversaire" : "Refuser"}
+                    </button>
+                    <button
+                      type="button"
+                      className="rounded-md  bg-green-500 p-2 text-black text-[10px]"
+                      onClick={() => {
+                        if (checkEveryInputs() == 0) {
+                          socket.emit("changeAccept", {
+                            newAccept: true,
+                            room: roomNumber,
+                            username: sessionStorage.getItem("username"),
+                          });
+                          setUserAccepted(true);
+                        }
+                      }}
+                    >
+                      {userAccepted ? "En attente de l'adversaire" : "Accepter"}
+                    </button>
+                  </div>
+                </form>
+              </div>
+            </div>
+            <div className="flex h-full w-[40%] flex-col">
+              <div className="flex h-[35%] w-full flex-col items-center justify-center">
+                <Image
+                  src={vsImage}
+                  alt="versus_symbol"
+                  style={{ width: "40%", height: "auto" }}
+                  className=" w-full"
+                />
+              </div>
+              <div className="h-[65%] w-[98%] rounded-[15px] bg-[#D9D9D9] px-2">
+                <div className="relative flex h-[10%] w-full items-center justify-center">
+                  <div className="h-full w-[100%] text-[22px] font-bold">
+                    <div className="mt-2 h-[58%] w-full rounded-md bg-white flex text-[8px] p-[2px]">
+                      <button onClick={handleClick} className={`w-1/2 transition-colors duration-200 ${isPublic ? 'bg-red-600 text-white' : ''} rounded-md`}>Public</button>
+                      <button onClick={handleClick} className={`w-1/2 transition-colors duration-200 rounded-md ${!isPublic ? 'bg-red-600 text-white' : ''}`}>Private</button>
+                    </div>
+                  </div>
+                  {/* <div className="w-[33%]">
+                    <p className="absolute border border-black right-2 top-2 h-4 w-4 rounded-full text-center text-[10px] font-medium">
+                      ?
+                    </p>
+                  </div> */}
+                </div>
+                <div className="border border-black flex h-[30%] w-full flex-col justify-center items-center rounded">
+                <h1 className="w-full pt-2 text-center text-[14px] font-bold">
+                    Gain total
+                  </h1>
+                  <p className="w-[20%] rounded-md bg-white p-1 text-center">
+                    {gainTotal}
+                  </p>
+                  <label htmlFor="game" className="text-center mt-2 text-[14px] w-full font-bold">
+                    Jeu
+                  </label>
+                  <select
+                    className="mt-2 rounded text-[10px]"
+                    id="game"
+                    name="game"
+                    required
+                    onChange={handleGameChange}
+                    value={selectedGame}
+                  >
+                    <option value="">Selectionnez un jeu</option>
+                    <option value="Jeu de carte">Jeu de carte</option>
+                    <option value="Jeu de flechette">Jeu de flechette</option>
+                    <option value="Echec">Echec</option>
+                  </select>
+                </div>
+                <div className=" flex h-[60%] w-full flex-col items-center">
+                  <p className="h-[10%] text-center font-mono text-[14px]">Termes du defi</p>
+                  <textarea
+                    className="h-[90%] w-full resize-none rounded-md border border-gray-400 p-2 placeholder:text-[12px] text-left placeholder:text-left"
+                    placeholder={`Ecrivez les termes de votre defi, faites preuve de creativite car vous pouvez parier tout et n'importe quoi !
+
+ex: pierre feuille ciseau, le premier en 5 points gagne la mise du defi.
+
+ex: le premier qui finit minishell gagne la mise du defi.
+
+ex: on va faire 3 parties d'echecs, celui qui gagne 2 parties remporte la mise du defi`}
+                    value={mutualContract}
+                    onChange={handleContractChange}
+                  />
+                </div>
+                <div className="h-[0%]">
+                  <button className="hidden rounded bg-red-500 p-2 font-mono font-bold">
+                    HideAcceptedButton
+                  </button>
+                </div>
+              </div>
+            </div>
+            <div className="flex h-full w-[30%] flex-col items-center justify-center bg-[#D9D9D9]">
+              <div className="flex h-[45%] w-full flex-col items-center justify-center ">
+                <img
+                  className="mt-10 rounded-full border border-black shadow-md"
+                  width={70}
+                  height={70}
+                  src={opponentImage}
+                  alt="pic_me"
+                />
+                <p className="text-center p-4 text-[22px] font-bold">
+                  Wallet : {opponentBalance}
+                </p>
+              </div>
+              <div className="h-[55%] w-full ">
+                <form
+                  action=""
+                  className="flex flex-col items-center justify-center "
+                >
+                  <label htmlFor="mise" className="mb-2 text-[14px] text-center font-bold">
+                    Combien vas-tu miser ?
+                  </label>
+                  <input
+                    type="number"
+                    id="mise"
+                    name="mise"
+                    min="1"
+                    placeholder="1"
+                    readOnly
+                    className="w-[60%] rounded text-center text-[18px] font-bold"
+                    value={opponentBet}
+                  />
+                  <textarea
+                    name="chat"
+                    id="chat"
+                    cols={30}
+                    rows={6}
+                    readOnly
+                    className="my-4 w-[80%] resize-none rounded-sm border border-black p-2 text-[12px] placeholder:text-[10px]"
+                    placeholder="Chat avec ton adversaire..."
+                    value={opponentComment}
+                  ></textarea>
+                  <div className="flex gap-4 flex-col">
+                    <button
+                      type="button"
+                      className="rounded-md bg-red-500 p-2 text-white text-[10px]"
+                      onClick={() => {
+                        if (checkEveryInputs() == 0) {
+                          socket.emit("changeAccept", {
+                            newAccept: true,
+                            room: roomNumber,
+                            username: sessionStorage.getItem("username"),
+                          });
+                          setUserAccepted(true);
+                        }
+                      }}
+                    >
+                      {userAccepted ? "En attente de l'adversaire" : "Refuser"}
+                    </button>
+                    <button
+                      type="button"
+                      className="rounded-md  bg-green-500 p-2 text-black text-[10px]"
+                      onClick={() => {
+                        if (checkEveryInputs() == 0) {
+                          socket.emit("changeAccept", {
+                            newAccept: true,
+                            room: roomNumber,
+                            username: sessionStorage.getItem("username"),
+                          });
+                          setUserAccepted(true);
+                        }
+                      }}
+                    >
+                      {userAccepted ? "En attente de l'adversaire" : "Accepter"}
+                    </button>
+                  </div>
+                </form>
+              </div>
+            </div>
+          </div>
+        </div>
+      ) : (
+        <div>{placeholder}</div>
+      )}
+    </div>
+  );
+   }
   return (
     <div className="h-full w-full ">
       {isClient ? (

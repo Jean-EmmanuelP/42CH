@@ -358,10 +358,11 @@ function DefiPage() {
                     onChange={handleGameChange}
                     value={selectedGame}
                   >
-                    <option value="">Selectionnez un jeu</option>
+                    <option value="Autres">Selectionnez un jeu</option>
                     <option value="Jeu de carte">Jeu de carte</option>
                     <option value="Jeu de flechette">Jeu de flechette</option>
                     <option value="Echec">Echec</option>
+                    <option value="Autres">Autres</option>
                   </select>
                 </div>
                 <div className=" flex h-[60%] w-full flex-col items-center">

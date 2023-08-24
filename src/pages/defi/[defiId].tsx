@@ -257,7 +257,7 @@ function DefiPage() {
                     type="number"
                     id="mise"
                     name="mise"
-                    min="1"
+                    min="0"
                     placeholder="1"
                     className="w-[60%] rounded text-center text-[18px] font-bold"
                     onChange={handleUserBetChange}
@@ -412,7 +412,7 @@ ex: on va faire 3 parties d'echecs, celui qui gagne 2 parties remporte la mise d
                     type="number"
                     id="mise"
                     name="mise"
-                    min="1"
+                    min="0"
                     placeholder="1"
                     readOnly
                     className="w-[60%] rounded text-center text-[18px] font-bold"
@@ -503,7 +503,7 @@ ex: on va faire 3 parties d'echecs, celui qui gagne 2 parties remporte la mise d
                     type="number"
                     id="mise"
                     name="mise"
-                    min="1"
+                    min="0"
                     placeholder="1"
                     className="w-[60%] rounded text-center text-[22px] font-bold"
                     onChange={handleUserBetChange}
@@ -663,7 +663,7 @@ ex: on va faire 3 parties d'echecs, celui qui gagne 2 parties remporte la mise d
                     type="number"
                     id="mise"
                     name="mise"
-                    min="1"
+                    min="0"
                     placeholder="1"
                     readOnly
                     className="w-[60%] rounded text-center text-[22px] font-bold"

@@ -117,12 +117,14 @@ export default function Social({ onClose }: SocialProps) {
             <div className="flex flex-col gap-4 h-[85%] overflow-y-auto no-scrollbar">
               {friends.map((friend: any) => (
                 <div key={friend.username} className="flex w-full items-center border-y border-[#612727] shadow-sm">
+                  <div className="w-[2%]"></div>
+                  <div className="w-[96%] border border-black flex h-full rounded-md">
                   <img
                     src={friend.image}
                     alt="Friend profile image"
                     width={60}
                     height={60}
-                    className="hover:cursor-pointer"
+                    className="hover:cursor-pointer rounded-md"
                     onClick={() => { setShowUserModal(true), setEventToSend(friend) }}
                   />
                   <div className="m-auto ml-[3px] mt-[3px] h-2.5 w-2.5 rounded-full bg-green-500">
@@ -143,6 +145,8 @@ export default function Social({ onClose }: SocialProps) {
                   #{friend.rank}
                 </p> */}
                   </div>
+                  </div>
+                  <div className="w-[2%]"></div>
                 </div>
               ))}
             </div>
@@ -199,13 +203,15 @@ export default function Social({ onClose }: SocialProps) {
     <div className="flex h-full w-full flex-col  rounded-r-md bg-white shadow-md">
       <div className="h-[15%]">
         <p className="w-full pt-2 pl-4 font-bold">Social</p>
-        <div className="flex w-full items-center border-y border-[#612727] shadow-sm">
+        <div className="flex w-full items-center shadow-sm">
+          <div className="w-[2%]"></div>
+          <div className="w-[96%] h-full flex border border-black rounded-md">
           <img
             src={userProfile.image}
             alt="User profile image"
             width={60}
             height={60}
-            className="hover:cursor-pointer hover:scale-105 duration-300"
+            className="hover:cursor-pointer rounded-md hover:scale-105 duration-300"
             onClick={() => { setShowUserModal(true), setEventToSend(userProfile) }}
           />
           <div className="m-auto ml-[3px] mt-[3px] h-2.5 w-2.5 rounded-full bg-green-500">
@@ -222,7 +228,10 @@ export default function Social({ onClose }: SocialProps) {
             <div className="flex justify-between px-[2px]">
               <p className="text-[11px] font-bold">Wallet : ${userProfile.balance}</p>
               {/* <p className="text-[11px] font-bold">#25</p> */}
-            </div>
+            </div>  
+          </div>
+          <div className="w-[2%]"></div>
+          
           </div>
         </div>
       </div>
@@ -268,13 +277,15 @@ export default function Social({ onClose }: SocialProps) {
         <p className="pl-4 pt-1 font-bold h-[10%]">En ligne</p>
         <div className="font-bold h-[90%] overflow-y-auto flex flex-col gap-4 no-scrollbar">
           {onlineUsers.map((user: any) => (
-            <div key={user.username} className="flex w-full items-center border-y border-[#612727] shadow-sm">
+            <div key={user.username} className="flex w-full items-center shadow-sm">
+              <div className="w-[2%]"></div>
+              <div className="w-[96%] flex h-full border border-black rounded-md">
               <img
                 src={user.image}
                 alt="User profile mage"
                 width={60}
                 height={60}
-                className="hover:cursor-pointer hover:scale-110 duration-300"
+                className="hover:cursor-pointer hover:scale-110 duration-300 rounded-md"
                 onClick={() => { setShowUserModal(true), setEventToSend(user) }}
               />
               <div className="m-auto ml-[3px] mt-[3px] h-2.5 w-2.5 rounded-full bg-green-500">
@@ -295,6 +306,9 @@ export default function Social({ onClose }: SocialProps) {
                   #{user.rank}
                 </p> */}
               </div>
+              </div>
+              <div className="w-[2%]"></div>
+              
             </div>
           ))}
         </div>

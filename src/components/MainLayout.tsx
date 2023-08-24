@@ -30,7 +30,6 @@ export default function MainLayout({ children }: MainLayoutProps) {
   }
 
   const [isSession, setIsSession] = useState(false);
-
   useEffect(() => {
     setIsSession(sessionStorage.getItem("accessToken") !== null);
   }, []);

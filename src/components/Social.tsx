@@ -103,7 +103,7 @@ export default function Social({ onClose }: SocialProps) {
                   placeholder="clique pour changer ta bio"
                 ></input>
                 <div className="flex justify-between px-[2px]">
-                  <p className="text-[11px] font-bold">Wallet : ${userProfile.balance}</p>
+                  <p className="text-[11px] font-bold">💰${userProfile.balance}</p>
                   {/* <p className="text-[11px] font-bold">#25</p> */}
                 </div>
               </div>
@@ -111,8 +111,8 @@ export default function Social({ onClose }: SocialProps) {
           </div>
           <div className="h-[30%] w-full">
             <div className="px-4 flex justify-between h-[15%]">
-              <p className="pt-1 font-bold">Amis</p>
-              <button className="pt-1 font-medium rounded-md shadow-md p-2 bg-gray-200/20 hover:text-white hover:bg-red-500 duration-300" onClick={() => { setShowAddFriendModal(true) }}>Add a friend</button>
+              <p className="font-bold">Amis</p>
+              <button className="font-medium rounded-md shadow-md p-2 bg-gray-200/20 hover:text-white hover:bg-red-500 duration-300" onClick={() => { setShowAddFriendModal(true) }}>Add a friend</button>
             </div>
             <div className="flex flex-col gap-4 h-[85%] overflow-y-auto no-scrollbar">
               {friends.map((friend: any) => (
@@ -136,7 +136,7 @@ export default function Social({ onClose }: SocialProps) {
                     </p>
                     <p className="h-4 text-[10px] text-black font-bold">{friend.statusMessage}</p>
                     <div className="flex items-center justify-between px-[2px]">
-                      <p className="text-[11px] font-bold">Wallet : ${friend.balance}</p>
+                      <p className="text-[11px] font-bold">💰${friend.balance}</p>
                       <button className="mb-[1px] rounded-md bg-red-600 px-3.5 py-[2px] text-[11px] text-white" onClick={() => { setEventToSend(friend), setShowDefiModal(true) }}>
                         Defier
                       </button>
@@ -173,7 +173,7 @@ export default function Social({ onClose }: SocialProps) {
                     </p>
                     <p className="h-4 text-[10px] text-black font-bold">{user.statusMessage}</p>
                     <div className="flex items-center justify-between px-[2px]">
-                      <p className="text-[11px] font-bold">Wallet : ${user.balance}</p>
+                      <p className="text-[11px] font-bold">💰${user.balance}</p>
                       <button className="mb-[1px] rounded-md bg-red-600 px-3.5 py-[2px] text-[11px] text-white" onClick={() => { setEventToSend(user), setShowDefiModal(true) }}>
                         Defier
                       </button>
@@ -201,11 +201,11 @@ export default function Social({ onClose }: SocialProps) {
   }
   return (
     <div className="flex h-full w-full flex-col  rounded-r-md bg-white shadow-md">
-      <div className="h-[15%]">
+      <div className="h-[13%] border-b border-black/5">
         <p className="w-full pt-2 pl-4 font-bold">Social</p>
         <div className="flex w-full items-center shadow-sm">
           <div className="w-[2%]"></div>
-          <div className="w-[96%] h-full flex border border-black rounded-md">
+          <div className="w-[96%] h-full flex border border-black/25 rounded-md shadow-md">
           <img
             src={userProfile.image}
             alt="User profile image"
@@ -218,7 +218,10 @@ export default function Social({ onClose }: SocialProps) {
             {""}
           </div>
           <div className="flex h-full w-full flex-col pl-2">
-            <p className="flex pt-2 text-[12px] font-bold">{userProfile.username}</p>
+            <div className="flex pt-2 text-[12px] font-bold justify-between">
+              <p>{userProfile.username}</p>
+              <p>TOP {userProfile.classment}</p>
+            </div>
             <input
               value={userProfile.statusMessage}
               className="h-4 resize-none text-[10px] caret-red-500 focus:outline-none"
@@ -226,23 +229,24 @@ export default function Social({ onClose }: SocialProps) {
               placeholder="clique pour changer ta bio"
             ></input>
             <div className="flex justify-between px-[2px]">
-              <p className="text-[11px] font-bold">Wallet : ${userProfile.balance}</p>
+              <p className="text-[11px] font-bold">💰${userProfile.balance}</p>
               {/* <p className="text-[11px] font-bold">#25</p> */}
             </div>  
           </div>
           <div className="w-[2%]"></div>
-          
           </div>
         </div>
       </div>
-      <div className="h-[30%] w-full">
-        <div className="px-4 flex justify-between h-[15%]">
-          <p className="pt-1 font-bold">Amis</p>
-          <button className="pt-1 font-medium rounded-md shadow-md p-2 bg-gray-200/20 hover:text-white hover:bg-red-500 duration-300" onClick={() => { setShowAddFriendModal(true) }}>Add a friend</button>
+      <div className="h-[32%] w-full">
+        <div className="px-4 pt-2 flex justify-between h-[15%]">
+          <p className="font-bold">Amis</p>
+          <button className="font-medium rounded-md shadow-md p-2 bg-gray-200/20 hover:text-white hover:bg-red-500 duration-300 items-center justify-center flex" onClick={() => { setShowAddFriendModal(true) }}>Add a friend</button>
         </div>
         <div className="flex flex-col gap-4 h-[85%] overflow-y-auto no-scrollbar">
           {friends.map((friend: any) => (
             <div key={friend.username} className="flex w-full items-center border-y border-[#612727] shadow-sm">
+              <div className="w-[2%]"></div>
+              <div className="w-[96%] h-full flex border border-black/25 rounded-md shadow-md">
               <img
                 src={friend.image}
                 alt="Friend profile image"
@@ -255,12 +259,13 @@ export default function Social({ onClose }: SocialProps) {
                 {""}
               </div>
               <div className="relative flex h-full w-full flex-col pl-2">
-                <p className="flex pt-2 text-[12px] font-bold">
-                  {friend.username}
-                </p>
+                <div className="flex pt-2 text-[12px] font-bold justify-between">
+                  <p>{friend.username}</p>
+                  <p>TOP {friend.classment}</p>
+                </div>
                 <p className="h-4 text-[10px] text-black font-bold">{friend.statusMessage}</p>
                 <div className="flex items-center justify-between px-[2px]">
-                  <p className="text-[11px] font-bold">Wallet : ${friend.balance}</p>
+                  <p className="text-[11px] font-bold">💰${friend.balance}</p>
                   <button className="mb-[1px] rounded-md bg-red-600 px-3.5 py-[2px] text-[11px] text-white" onClick={() => { setEventToSend(friend), setShowDefiModal(true) }}>
                     Defier
                   </button>
@@ -269,17 +274,19 @@ export default function Social({ onClose }: SocialProps) {
                   #{friend.rank}
                 </p> */}
               </div>
+              </div>
+              <div className="w-[2%]"></div>
             </div>
           ))}
         </div>
       </div>
-      <div className="h-[55%] w-full border-t border-black">
+      <div className="h-[55%] w-full border-t border-black/5">
         <p className="pl-4 pt-1 font-bold h-[10%]">En ligne</p>
         <div className="font-bold h-[90%] overflow-y-auto flex flex-col gap-4 no-scrollbar">
           {onlineUsers.map((user: any) => (
             <div key={user.username} className="flex w-full items-center shadow-sm">
               <div className="w-[2%]"></div>
-              <div className="w-[96%] flex h-full border border-black rounded-md">
+              <div className="w-[96%] flex h-full border border-black/25 rounded-md shadow-md">
               <img
                 src={user.image}
                 alt="User profile mage"
@@ -292,12 +299,13 @@ export default function Social({ onClose }: SocialProps) {
                 {""}
               </div>
               <div className="relative flex h-full w-full flex-col pl-2">
-                <p className="flex pt-2 text-[12px] font-bold">
-                  {user.username}
-                </p>
+                <div className="flex pt-2 text-[12px] font-bold justify-between pr-2">
+                  <p>{userProfile.username}</p>
+                  <p>TOP {userProfile.classment}</p>
+                </div>
                 <p className="h-4 text-[10px] text-black font-bold">{user.statusMessage}</p>
                 <div className="flex items-center justify-between px-[2px]">
-                  <p className="text-[11px] font-bold">Wallet : ${user.balance}</p>
+                  <p className="text-[11px] font-bold">💰${user.balance}</p>
                   <button className="mb-[1px] rounded-md bg-red-600 px-3.5 py-[2px] text-[11px] text-white" onClick={() => { setEventToSend(user), setShowDefiModal(true) }}>
                     Defier
                   </button>

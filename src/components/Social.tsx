@@ -246,7 +246,7 @@ export default function Social({ onClose }: SocialProps) {
           {friends.map((friend: any) => (
             <div key={friend.username} className="flex w-full items-center">
               <div className="w-[2%]"></div>
-              <div className="w-[96%] h-full flex border border-black/25 rounded-md shadow-md">
+              <div className="w-[96%] h-full flex border border-black/25 rounded-md shadow-md pr-2">
               <img
                 src={friend.image}
                 alt="Friend profile image"

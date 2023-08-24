@@ -244,7 +244,7 @@ export default function Social({ onClose }: SocialProps) {
         </div>
         <div className="flex flex-col gap-4 h-[85%] overflow-y-auto no-scrollbar">
           {friends.map((friend: any) => (
-            <div key={friend.username} className="flex w-full items-center border-y border-[#612727] shadow-sm">
+            <div key={friend.username} className="flex w-full items-center">
               <div className="w-[2%]"></div>
               <div className="w-[96%] h-full flex border border-black/25 rounded-md shadow-md">
               <img

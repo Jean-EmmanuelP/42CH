@@ -1,0 +1,21 @@
+Prod:
+    Pour ajouter une nouvelle clée, se connecter au serveur et ajouter la clé au fichier .ssh/authorized_keys
+
+    Pour se connecter et deployer:
+        - ssh ubuntu@web.42ch.fr
+        - cd 42B_RoadTOMILLION/
+        - ../deploy.sh
+        - attendre :)
+
+Dev:
+
+    - lancer le docker avec: docker-compose -f docker-compose.env.yml up -d
+    - npm install dans le front (deux fois)
+    - npm install --legacy-peer-deps dans le back
+    - quand le docker est prêt:
+        - décommenter la ligne output =  du schema.prisma, et npx prisma generate dans le back
+        - recommenter la ligne, et npx prisma generate dans le front
+        - npx prisma db push dans le front
+    - set -a; source .env; set +a; dans le front
+    - npm start dans le back
+    - npm run dev dans le front

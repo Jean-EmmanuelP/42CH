@@ -300,8 +300,8 @@ export default function Social({ onClose }: SocialProps) {
               </div>
               <div className="relative flex h-full w-full flex-col pl-2">
                 <div className="flex pt-2 text-[12px] font-bold justify-between pr-2">
-                  <p>{userProfile.username}</p>
-                  <p>TOP {userProfile.classment}</p>
+                  <p>{user.username}</p>
+                  <p>TOP {user.classment}</p>
                 </div>
                 <p className="h-4 text-[10px] text-black font-bold">{user.statusMessage}</p>
                 <div className="flex items-center justify-between px-[2px]">

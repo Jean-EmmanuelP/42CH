@@ -23,6 +23,7 @@ import EventProfileModal from "~/components/EventProfileModal";
 import LiveChallengeModal from "~/components/LiveChallengeModal";
 import { set } from "lodash";
 import DefiModalContent from "~/components/DefiModalContent";
+import ModalEventOfTheWeek from "~/components/ModalEventOfTheWeek";
 
 interface publicChallenge {
   id: string;
@@ -445,19 +446,19 @@ export default function HomePage() {
           </Modal>
         ) : null}
         {eventOTW !== undefined ? (
-          <Modal
-            isVisible={showBigModal}
-            onClose={() => setShowBigModal(false)}
-            width="w-[300px]"
-            verticalPosition="200px"
-          >
-            <EventSubscribeModal
-              eventToSend={eventOTW}
-              showModal={setShowBigModal}
-              setWeekly={setWeekly}
-            />
-          </Modal>
-        ) : null}
+        <Modal
+          isVisible={showBigModal}
+          onClose={() => setShowBigModal(false)}
+          width="w-[300px]"
+          verticalPosition="100px"
+        >
+          <ModalEventOfTheWeek
+            eventToSend={eventOTW}
+            showModal={setShowBigModal}
+            setWeekly={setWeekly}
+          />
+        </Modal>
+      ) : null}
         {playerOTW !== undefined ? (
           <Modal
             isVisible={showUserModal}
@@ -686,7 +687,7 @@ export default function HomePage() {
           />
         </Modal>
       ) : null}
-      {eventOTW !== undefined ? (
+      {/* {eventOTW !== undefined ? (
         <Modal
           isVisible={showBigModal}
           onClose={() => setShowBigModal(false)}
@@ -694,6 +695,20 @@ export default function HomePage() {
           verticalPosition="300px"
         >
           <EventSubscribeModal
+            eventToSend={eventOTW}
+            showModal={setShowBigModal}
+            setWeekly={setWeekly}
+          />
+        </Modal>
+      ) : null} */}
+      {eventOTW !== undefined ? (
+        <Modal
+          isVisible={showBigModal}
+          onClose={() => setShowBigModal(false)}
+          width="w-[600px]"
+          verticalPosition="300px"
+        >
+          <ModalEventOfTheWeek
             eventToSend={eventOTW}
             showModal={setShowBigModal}
             setWeekly={setWeekly}

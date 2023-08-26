@@ -19,4 +19,15 @@ export class TourneyController {
     async startTourney(@Body() data: { adminUsername: string, tourneyTitle: string }) {
         return this.tourneyService.startTourney(data.adminUsername, data.tourneyTitle);
     }
+
+    @Post('get_tourney')
+    async getTourney(@Body() data: { tourneyTitle: string }) {
+        return this.tourneyService.getTourney(data.tourneyTitle);
+    }
+
+    @Post('winner')
+    // firstTeam and secondTeam are formated like that 'firstMember & secondMember'
+    async winner(@Body() data: { tourneyTitle: string, firstTeam: string, secondTeam: string, winner: string }) {
+        return this.tourneyService.setWinner(data.tourneyTitle, data.firstTeam, data.secondTeam, data.winner);
+    }
 }

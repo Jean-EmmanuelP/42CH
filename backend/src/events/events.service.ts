@@ -30,14 +30,14 @@ export class EventsService {
             return { success: false, error: "User not found" }
         }
         const selectedEvent = await this.prismaService.event.findUnique({ where: { id: eventId } })
+        if (selectedEvent == null) {
+            return { success: false, error: "Event not found" }
+        }
         if (selectedEvent.isFull == true) {
             return { success: false, error: "Event is full" }
         }
         if (selectedEvent.participantsUsernames.includes(userExists.name)) {
             return { success: false, error: "User already in event" }
-        }
-        if (selectedEvent == null) {
-            return { success: false, error: "Event not found" }
         }
         if (selectedEvent.limitedSeats != -1) {
             if (selectedEvent.limitedSeats == selectedEvent.participantsUsernames.length) {
@@ -76,7 +76,7 @@ export class EventsService {
         const { title, description, label, day, id, isEventOfTheWeek } = event;
         const stringDay = day.toString();
         const intLimited = parseInt(event.limitedSeats.toString())
-        const createdEvent = await this.prismaService.event.create({ data: { title: title, description: description, label: label, day: stringDay, limitedSeats: intLimited, isEventOfTheWeek:isEventOfTheWeek } })
+        const createdEvent = await this.prismaService.event.create({ data: { title: title, description: description, label: label, day: stringDay, limitedSeats: intLimited, isEventOfTheWeek: isEventOfTheWeek } })
         if (createdEvent == null) {
             return { success: false, error: "Event not created" }
         }

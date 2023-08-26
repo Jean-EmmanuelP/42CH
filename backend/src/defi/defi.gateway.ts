@@ -1,6 +1,7 @@
 import { WebSocketGateway, SubscribeMessage, MessageBody, ConnectedSocket } from '@nestjs/websockets';
 import { DefiService } from './defi.service';
 import { PrismaService } from 'src/prisma/prisma.service';
+import { Injectable } from '@nestjs/common';
 
 let usernameMap = new Map();
 
@@ -82,7 +83,6 @@ export class DefiGateway {
   @SubscribeMessage('leaveDefi')
   handleLeaveDefi(@MessageBody() data: any, @ConnectedSocket() client: any): void {
     if (data.username != null) {
-      // this.prismaService.user.update({ where: { name: data.username }, data: { status: "offline" } })
       usernameMap.delete(data.username);
     }
   }

@@ -210,8 +210,7 @@ export default function ModalEventOfTheWeek({
       </div>
       <div className="flex h-[35%] w-full rounded-b-md">
         <div className="flex h-full w-[60%] flex flex-col gap-1 items-center justify-center">
-            <p>Avec qui participes-tu au tournoi ?</p>
-            <input type="text" ref={partnerRef} className={'border rounded-md px-5 text-center placeholder:text-[12px]'} placeholder="entre le login 42 | ex: jperrama" style={{borderColor: attemptedSubmit && !partnerRef.current?.value ?'red':'black', borderWidth: attemptedSubmit && !partnerRef.current?.value ? '4px' : '2px'}}  value={partnerInput} onChange={e => setPartnerInput(e.target.value)} required />
+            {eventToSend.title === 'Baby-Foot Tornament' && (<><p>Avec qui participes-tu au tournoi ?</p><input type="text" ref={partnerRef} className={'border rounded-md px-5 text-center placeholder:text-[12px]'} placeholder="entre le login 42 | ex: jperrama" style={{borderColor: attemptedSubmit && !partnerRef.current?.value ?'red':'black', borderWidth: attemptedSubmit && !partnerRef.current?.value ? '4px' : '2px'}}  value={partnerInput} onChange={e => setPartnerInput(e.target.value)} required /></>)}
         </div>
         <div className="flex h-full w-[40%] gap-2 p-2 justify-end">
           {eventToSend.participantsUsernames.includes(sessionStorage.getItem("username") as string) ?

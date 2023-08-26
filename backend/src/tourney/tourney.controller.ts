@@ -1,4 +1,4 @@
-import { Body, Controller, Post } from '@nestjs/common';
+import { Body, Controller, Get, Post } from '@nestjs/common';
 import { TourneyService } from './tourney.service';
 
 @Controller('tourney')
@@ -29,5 +29,10 @@ export class TourneyController {
     // firstTeam and secondTeam are formated like that 'firstMember & secondMember'
     async winner(@Body() data: { tourneyTitle: string, firstTeam: string, secondTeam: string, winner: string }) {
         return this.tourneyService.setWinner(data.tourneyTitle, data.firstTeam, data.secondTeam, data.winner);
+    }
+
+    @Get('get_ongoing')
+    async getOngoingTourneys() {
+        return this.tourneyService.getOngoingTourneys();
     }
 }

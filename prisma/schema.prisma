@@ -172,3 +172,35 @@ model Event {
     isFull                Boolean  @default(false)
     isEventOfTheWeek      Boolean  @default(false)
 }
+
+model Matches {
+    id String @id @default(cuid())
+
+    firstTeam  String @default("")
+    secondTeam String @default("")
+
+    winner String?
+
+    rowPosition Int
+    column      Int
+
+    isFinal Boolean @default(false)
+
+    Tourney   Tourney? @relation(fields: [tourneyId], references: [id])
+    tourneyId String?
+}
+
+model Tourney {
+    id          String @id @default(cuid())
+    title       String @unique
+    description String @default("")
+
+    participantsUsernames String[]
+    isFull                Boolean  @default(false)
+
+    winner  String?
+    matches Matches[]
+
+    column  Int     @default(0)
+    started Boolean @default(false)
+}

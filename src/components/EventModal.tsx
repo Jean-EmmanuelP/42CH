@@ -57,6 +57,7 @@ export default function EventModal() {
       isEventOfTheWeek
     };
     const request = await axios.post(process.env.NEXT_PUBLIC_API_URL + '/events/create/', calendarEvent);
+    if (isEventOfTheWeek) {await axios.post(process.env.NEXT_PUBLIC_API_URL + '/tourney/create/', {title: calendarEvent.title, description: calendarEvent.description});}
     if (request.data.success == true) {
       // reload le state qui contient tous les events
       window.location.reload();

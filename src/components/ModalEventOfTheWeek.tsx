@@ -129,11 +129,29 @@ export default function ModalEventOfTheWeek({
                   JSON.stringify({
                     eventId: eventToSend.id,
                     user: sessionStorage.getItem("username"),
-                    partner: partner
+                    // partner: partner
                   }),
                   { headers: { "Content-Type": "application/json" } }
                 );
-                if (request.data.success == true) {
+                const request_2 = await axios.post(
+                    process.env.NEXT_PUBLIC_API_URL + "/events/add-user-to-event/",
+                    JSON.stringify({
+                      eventId: eventToSend.id,
+                      user: partner,
+                      // partner: partner
+                    }),
+                    { headers: { "Content-Type": "application/json" } }
+                  );
+                const request_3 = await axios.post(
+                    process.env.NEXT_PUBLIC_API_URL + "/tourney/add_team/",
+                    JSON.stringify({
+                      tourneyTitle: eventToSend.title,
+                      firstMember: sessionStorage.getItem("username"),
+                      secondMember: partner
+                    }),
+                    { headers: { "Content-Type": "application/json" } }
+                  );
+                if (request.data.success == true && request_2.data.success && request_3.data.success) {
                   // console.log("success");
                   ;
                 } else {

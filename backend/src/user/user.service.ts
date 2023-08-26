@@ -6,7 +6,6 @@ export class UserService {
     constructor(private prismaService: PrismaService) { }
 
     // Friends related functions
-
     async getClassment(username: string) {
         const user = await this.prismaService.user.findMany({
             select: { name: true },

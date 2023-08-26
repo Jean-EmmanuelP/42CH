@@ -16,10 +16,11 @@ import { AuthService } from './auth/auth.service';
 import { AdminController } from './admin/admin.controller';
 import { AdminService } from './admin/admin.service';
 import { AdminModule } from './admin/admin.module';
+import { TourneyModule } from './tourney/tourney.module';
 
 @Module({
-  imports: [PrismaModule, DefiModule, EventsModule, UserModule, AuthModule, AdminModule],
+  imports: [PrismaModule, DefiModule, EventsModule, UserModule, AuthModule, AdminModule, TourneyModule],
   controllers: [AppController, DefiController, AuthController, AdminController],
-  providers: [AppService, DefiGateway, DefiService, PrismaService, UserService, AuthService, AdminService],
+  providers: [AppService, DefiGateway, DefiService, PrismaService, UserService, AuthService, AdminService, TourneyModule],
 })
 export class AppModule { }

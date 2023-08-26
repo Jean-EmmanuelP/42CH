@@ -87,8 +87,6 @@ export class TourneyService {
             });
         }
 
-
-
         // If every match of the column is finished column++
         const matches = await this.prismaService.matches.findMany({
             where: {
@@ -107,7 +105,30 @@ export class TourneyService {
     }
 
     async getTourney(tourneyTitle: string) {
+        // Check if tourney exists
+        const tourney = await this.prismaService.tourney.findUnique({ where: { title: tourneyTitle } });
+        if (!tourney)
+            return { success: false, error: 'Could not find tourney' }
 
+        // Get matches ordered by column from 0 to n then rowPosition from 0 to n
+        const matches = await this.prismaService.matches.findMany({
+            where: { tourneyId: tourney.id },
+            orderBy: [{ column: 'asc' }, { rowPosition: 'asc' }]
+        });
+        if (!matches)
+            return { success: false, error: 'Could not find matches' }
+
+        let retTourney = [];
+        for (let i = 0; i < matches.length; i++) {
+            retTourney.push({
+                firstTeam: matches[i].firstTeam,
+                secondTeam: matches[i].secondTeam,
+                winner: matches[i].winner,
+                rowPosition: matches[i].rowPosition,
+                column: matches[i].column,
+            })
+        }
+        return { success: true, tourney: retTourney }
     }
 
 

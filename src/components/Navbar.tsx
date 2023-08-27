@@ -80,6 +80,9 @@ export default function Navbar() {
         <Link href="/classement" className="hidden sm:block button text-[10px] sm:text-[20px] sm:mr-7 sm:p-5">
           Classement
         </Link>
+        <Link href="/tournoi" className="hidden sm:block button text-[10px] sm:text-[20px] sm:mr-7 sm:p-5">
+          Tournoi
+        </Link>
         {/* <input
           type="text"
           placeholder="Rechercher un challenger"

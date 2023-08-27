@@ -4,6 +4,7 @@ export default function Admin() {
 
     return (
         <div>
+            bonjour
         </div>
     )
 }

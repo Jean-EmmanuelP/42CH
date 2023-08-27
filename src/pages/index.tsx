@@ -516,7 +516,11 @@ export default function HomePage() {
                       style={{ borderColor: getColorFromLabel(event.label) }}
                       onClick={() => {
                         setEventToSend(event);
-                        setShowModal(true);
+                        if (event.isEventOfTheWeek) {
+                          setShowBigModal(true);
+                        } else {
+                          setShowModal(true);
+                        }
                       }}
                     >
                       <div

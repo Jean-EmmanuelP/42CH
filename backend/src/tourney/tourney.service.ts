@@ -5,6 +5,102 @@ import { PrismaService } from 'src/prisma/prisma.service';
 export class TourneyService {
     constructor(private prismaService: PrismaService) { }
 
+    async randomize(tourneyTitle: string) {
+        // Check if tourney exists
+        const tourney = await this.prismaService.tourney.findUnique({ where: { title: tourneyTitle } });
+        if (!tourney)
+            return { success: false, error: 'Could not find tourney' }
+
+        // Find all the matches
+        const matches = await this.prismaService.matches.findMany({
+            where: { tourneyId: tourney.id },
+            orderBy: [{ column: 'asc' }, { rowPosition: 'asc' }]
+        });
+        // Check if the match at rowPosition: 0 and column: 0 is finished
+        if (matches[0].winner != 'none') // todo vérifier que c'est bien ça
+            return { success: false, error: 'Tourney already started' }
+
+        // Randomize again all the teams
+        const teams = tourney.participantsUsernames;
+        for (let i = teams.length - 1; i > 0; i--) {
+            const j = Math.floor(Math.random() * (i + 1));
+            [teams[i], teams[j]] = [teams[j], teams[i]];
+        }
+
+        // Update participants
+        const updatedTourney = await this.prismaService.tourney.update({
+            where: { title: tourneyTitle },
+            data: { participantsUsernames: { set: teams } }
+        });
+
+        for (let i = 0; i < matches.length; i++) {
+            const deletedMatch = await this.prismaService.matches.delete({ where: { id: matches[i].id } });
+            if (!deletedMatch)
+                return { success: false, error: 'Could not delete match' }
+        }
+
+        // Create of the matches of the first round
+        let j = 0;
+        for (let i = 0; i < teams.length; i += 2) {
+            if (i != teams.length - 1) {
+                const match = await this.prismaService.matches.create({
+                    data: {
+                        tourneyId: tourney.id,
+                        firstTeam: teams[i],
+                        secondTeam: teams[i + 1],
+                        winner: 'none',
+                        rowPosition: j,
+                        column: 0,
+                    }
+                });
+                if (!match)
+                    return { success: false, error: 'Could not create match' }
+                // Add match to the tourney
+                const updatedTourney = await this.prismaService.tourney.update({
+                    where: { title: tourneyTitle },
+                    data: { matches: { connect: { id: match.id } } }
+                });
+                if (!updatedTourney)
+                    return { success: false, error: 'Could not add match to tourney' }
+            }
+            else {
+                const match = await this.prismaService.matches.create({
+                    data: {
+                        tourneyId: tourney.id,
+                        firstTeam: teams[i],
+                        secondTeam: 'none',
+                        winner: teams[i],
+                        rowPosition: j,
+                        column: 0,
+                    }
+                });
+                if (!match)
+                    return { success: false, error: 'Could not create match' }
+                let newRowPosition = Math.floor(j / 2);
+                // Add new match to the next column with the winner of the previous match
+                const match2 = await this.prismaService.matches.create({
+                    data: {
+                        tourneyId: tourney.id,
+                        firstTeam: teams[i],
+                        secondTeam: 'none',
+                        winner: 'none',
+                        rowPosition: newRowPosition,
+                        column: 1,
+                    }
+                });
+                // Add match to the tourney
+                const updatedTourney = await this.prismaService.tourney.update({
+                    where: { title: tourneyTitle },
+                    data: { matches: { connect: { id: match.id } } }
+                });
+                if (!updatedTourney)
+                    return { success: false, error: 'Could not add match to tourney' }
+            }
+            j++;
+        }
+
+    }
+
     async getNotOngoingTourneys() {
         const tourneys = await this.prismaService.tourney.findMany({ where: { started: false } });
         let tourney: String[] = [];
@@ -223,6 +319,7 @@ export class TourneyService {
                 });
                 if (!match)
                     return { success: false, error: 'Could not create match' }
+                let newRowPosition = Math.floor(j / 2);
                 // Add new match to the next column with the winner of the previous match
                 const match2 = await this.prismaService.matches.create({
                     data: {
@@ -230,7 +327,7 @@ export class TourneyService {
                         firstTeam: teams[i],
                         secondTeam: 'none',
                         winner: 'none',
-                        rowPosition: j, // todo pas ça
+                        rowPosition: newRowPosition,
                         column: 1,
                     }
                 });

@@ -40,4 +40,9 @@ export class TourneyController {
     async getNotOngoingTourneys() {
         return this.tourneyService.getNotOngoingTourneys();
     }
+
+    @Post('randomize')
+    async randomize(@Body() data: { tourneyTitle: string }) {
+        return this.tourneyService.randomize(data.tourneyTitle);
+    }
 }

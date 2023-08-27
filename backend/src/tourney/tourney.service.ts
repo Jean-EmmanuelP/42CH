@@ -5,6 +5,19 @@ import { PrismaService } from 'src/prisma/prisma.service';
 export class TourneyService {
     constructor(private prismaService: PrismaService) { }
 
+    async getNotOngoingTourneys() {
+        const tourneys = await this.prismaService.tourney.findMany({ where: { started: false } });
+        let tourney: String[] = [];
+        for (let i = 0; i < tourneys.length; i++) {
+            tourney.push(tourneys[i].title)
+        }
+        if (!tourneys)
+            return { success: false, error: 'Could not find tourneys' }
+        return {
+            success: true, tourneys: tourney
+        }
+    }
+
     async getOngoingTourneys() {
         const tourneys = await this.prismaService.tourney.findMany({ where: { started: true } });
         let tourney: String[] = [];

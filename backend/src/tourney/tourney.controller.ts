@@ -35,4 +35,9 @@ export class TourneyController {
     async getOngoingTourneys() {
         return this.tourneyService.getOngoingTourneys();
     }
+
+    @Get('not_ongoing')
+    async getNotOngoingTourneys() {
+        return this.tourneyService.getNotOngoingTourneys();
+    }
 }

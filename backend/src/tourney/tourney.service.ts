@@ -5,6 +5,60 @@ import { PrismaService } from 'src/prisma/prisma.service';
 export class TourneyService {
     constructor(private prismaService: PrismaService) { }
 
+    async changeTeam(adminUsername: string, tourneyTitle: string, oldTeam: string, newTeam: string) {
+        // Check if admin exists and is admin
+        const admin = await this.prismaService.user.findUnique({ where: { name: adminUsername } });
+        if (!admin || (admin.name != process.env.ADMIN1 && admin.name != process.env.ADMIN2))
+            return { success: false, error: 'You are not admin' }
+
+        // Check if tourney exists
+        const tourney = await this.prismaService.tourney.findUnique({ where: { title: tourneyTitle } });
+        if (!tourney)
+            return { success: false, error: 'Could not find tourney' }
+
+        // Check if oldTeam exists
+        const teams = tourney.participantsUsernames;
+        if (!teams.includes(oldTeam))
+            return { success: false, error: 'Could not find old team. Probably wrong format (\"user1 & user2\")' }
+
+        // Check if newTeam exists
+        if (teams.includes(newTeam))
+            return { success: false, error: 'New team already exists' }
+
+        // Check if user1 and user2 exist
+        const users = oldTeam.split(' & ');
+        const user1 = await this.prismaService.user.findUnique({ where: { name: users[0] } });
+        const user2 = await this.prismaService.user.findUnique({ where: { name: users[1] } });
+        if (!user1 || !user2)
+            return { success: false, error: 'Could not find users' }
+
+        // Update tourney
+        const updatedTourney = await this.prismaService.tourney.update({
+            where: { title: tourneyTitle },
+            data: { participantsUsernames: { set: teams.map(team => team == oldTeam ? newTeam : team) } }
+        });
+
+        // Update matches
+        const matches = await this.prismaService.matches.findMany({
+            where: { tourneyId: tourney.id }
+        });
+        for (let i = 0; i < matches.length; i++) {
+            if (matches[i].firstTeam == oldTeam) {
+                const updatedMatch = await this.prismaService.matches.update({
+                    where: { id: matches[i].id },
+                    data: { firstTeam: newTeam }
+                });
+            }
+            else if (matches[i].secondTeam == oldTeam) {
+                const updatedMatch = await this.prismaService.matches.update({
+                    where: { id: matches[i].id },
+                    data: { secondTeam: newTeam }
+                });
+            }
+        }
+        return { success: true }
+    }
+
     async randomize(tourneyTitle: string) {
         // Check if tourney exists
         const tourney = await this.prismaService.tourney.findUnique({ where: { title: tourneyTitle } });

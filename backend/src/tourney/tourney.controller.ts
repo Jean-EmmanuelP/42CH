@@ -45,4 +45,9 @@ export class TourneyController {
     async randomize(@Body() data: { tourneyTitle: string }) {
         return this.tourneyService.randomize(data.tourneyTitle);
     }
+
+    @Post('change_team')
+    async changeTeam(@Body() data: { adminUsername: string, tourneyTitle: string, oldTeam: string, newTeam: string }) {
+        return this.tourneyService.changeTeam(data.adminUsername, data.tourneyTitle, data.oldTeam, data.newTeam);
+    }
 }

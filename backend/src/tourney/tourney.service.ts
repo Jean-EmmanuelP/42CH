@@ -59,7 +59,12 @@ export class TourneyService {
         return { success: true }
     }
 
-    async randomize(tourneyTitle: string) {
+    async randomize(adminUsername: string, tourneyTitle: string) {
+        // Check if admin exists and is admin
+        const admin = await this.prismaService.user.findUnique({ where: { name: adminUsername } });
+        if (!admin || (admin.name != process.env.ADMIN1 && admin.name != process.env.ADMIN2))
+            return { success: false, error: 'You are not admin' }
+
         // Check if tourney exists
         const tourney = await this.prismaService.tourney.findUnique({ where: { title: tourneyTitle } });
         if (!tourney)

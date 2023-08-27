@@ -3,6 +3,7 @@ import { PrismaService } from 'src/prisma/prisma.service';
 
 @Injectable()
 export class TourneyService {
+
     constructor(private prismaService: PrismaService) { }
 
     async changeTeam(adminUsername: string, tourneyTitle: string, oldTeam: string, newTeam: string) {
@@ -401,7 +402,6 @@ export class TourneyService {
             j++;
         }
     }
-
 
     async addTeam(firstMember: string, secondMember: string, tourneyTitle: string) {
         // Check if both members exist

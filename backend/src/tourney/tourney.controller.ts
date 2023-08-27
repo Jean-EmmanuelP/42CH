@@ -5,6 +5,7 @@ import { TourneyService } from './tourney.service';
 export class TourneyController {
     constructor(private tourneyService: TourneyService) { }
 
+
     @Post('create')
     async createTourney(@Body() data: { title: string, description: string }) {
         return this.tourneyService.createTourney(data.title, data.description);

@@ -184,7 +184,8 @@ model Matches {
     rowPosition Int
     column      Int
 
-    isFinal Boolean @default(false)
+    isFinal   Boolean @default(false)
+    isStarted Boolean @default(false)
 
     Tourney   Tourney? @relation(fields: [tourneyId], references: [id])
     tourneyId String?

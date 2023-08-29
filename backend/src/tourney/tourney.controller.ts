@@ -5,6 +5,7 @@ import { TourneyService } from './tourney.service';
 export class TourneyController {
     constructor(private tourneyService: TourneyService) { }
 
+
     @Post('create')
     async createTourney(@Body() data: { title: string, description: string }) {
         return this.tourneyService.createTourney(data.title, data.description);
@@ -34,5 +35,20 @@ export class TourneyController {
     @Get('get_ongoing')
     async getOngoingTourneys() {
         return this.tourneyService.getOngoingTourneys();
+    }
+
+    @Get('not_ongoing')
+    async getNotOngoingTourneys() {
+        return this.tourneyService.getNotOngoingTourneys();
+    }
+
+    @Post('randomize')
+    async randomize(@Body() data: { adminUsername: string, tourneyTitle: string }) {
+        return this.tourneyService.randomize(data.adminUsername, data.tourneyTitle);
+    }
+
+    @Post('change_team')
+    async changeTeam(@Body() data: { adminUsername: string, tourneyTitle: string, oldTeam: string, newTeam: string }) {
+        return this.tourneyService.changeTeam(data.adminUsername, data.tourneyTitle, data.oldTeam, data.newTeam);
     }
 }

@@ -3,7 +3,6 @@
 import { useSearchParams } from 'next/navigation';
 import { useEffect, useState } from 'react';
 import axios from 'axios';
-import { divide, set } from 'lodash';
 
 export default function TornamentTreePage() {
     const searchParams = useSearchParams();
@@ -106,6 +105,31 @@ export default function TornamentTreePage() {
     function getPaddingForColumn(columnIndex: number): number {
         return (columnIndex * 2);
     }
+    async function parseName(input: string): Promise<string[]> {
+        const Teamboard = input.split(' & ').map(name => name.trim());
+
+        try {
+            const request_firstPlayer = await axios.post(process.env.NEXT_PUBLIC_API_URL + "/user/get_user_infos/", { username: Teamboard[0] });
+            const request_secondPlayer = await axios.post(process.env.NEXT_PUBLIC_API_URL + "/user/get_user_infos/", { username: Teamboard[1] });
+            return [request_firstPlayer.data.user.image, request_secondPlayer.data.user.image];
+        } catch (error) {
+            console.error("Error fetching user info:", error);
+            return ["", ""];
+        }
+    }
+    const [images, setImages] = useState<any[]>([]);
+    useEffect(() => {
+        const fetchData = async () => {
+            const firstTeamImages = await parseName(tourneyData[0].firstTeam);
+            const secondTeamImages = await parseName(tourneyData[0].secondTeam);
+                if (images.length === 0) {
+                    setImages([firstTeamImages, secondTeamImages]);
+                }
+        }
+    
+        fetchData();
+        console.log(`les images:`, images);
+    }, [tourneyData])
     return (
         console.log(marginTopArray),
 
@@ -134,8 +158,8 @@ export default function TornamentTreePage() {
                     <>
                         <div className='w-full h-full flex-row'>
                             <div className='h-[25%] w-full flex flex-col justify-center items-center'>
-                                <p className='w-[65%] bg border border-red-500'>{tourneyData[0].firstTeam}</p>
-                                <p className='w-[65%] bg border border-red-500 mt-4'>{tourneyData[0].secondTeam}</p>
+                                <p className='w-[65%] bg border border-red-500 rounded-md'>{images[0]}</p>
+                                <p className='w-[65%] bg border border-red-500 mt-4'>{images[1]}</p>
                             </div>
                             <div className='h-[25%] w-full flex flex-col justify-center items-center'>
                                 <p className='w-[65%] bg border border-red-500'>{tourneyData[1].firstTeam}</p>

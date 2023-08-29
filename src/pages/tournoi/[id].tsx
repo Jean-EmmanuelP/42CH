@@ -30,16 +30,17 @@ export default function TornamentTreePage() {
     }, [tournoiName])
     const numOfColumns = rounds;
     function getPaddingForColumn(columnIndex: number) : number {
+        console.log(`paddingforcolumn`, columnIndex * 2);
         return (columnIndex * 2);
     }
     return (
         <div className='bg-white rounded-md shadow-md h-full w-full'>
             <div className='h-[3%] w-full'></div>
-            <div className='h-[97%] w-full border border-red-500'>
+            <div className='h-[97%] w-full'>
                 <p className='text-center text-[26px] w-full h-[5%]'>{tournoiName}</p>
                 <div className={`w-full h-[95%] grid ${columns} ${rows} border border-green-500`}>
                     {Array.from({ length: numOfColumns }).map((_, columnIndex) => {
-                    const padding = getPaddingForColumn(columnIndex);
+                    let padding = getPaddingForColumn(columnIndex);
                     return (
                         <div key={columnIndex} className={`h-full w-full py-${padding}`}>
                             {Array.from({ length: numOfDivs/numOfColumns }).map((_, rowIndex) => {

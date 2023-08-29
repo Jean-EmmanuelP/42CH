@@ -47,7 +47,7 @@ export default function TornamentTreePage() {
             };
             fetchData();
         }
-    }, [])
+    }, [tournoiName])
 
 
     async function setRoundsNumber(num: number) {
@@ -97,7 +97,6 @@ export default function TornamentTreePage() {
                 else
                     doubleDimensionArray[i][j] = { firstTeam: "none", secondTeam: "none", winner: "", rowPosition: 0, column: 0 };
             }
-
             teams = teams / 2;
         }
         setDoubleDimension(doubleDimensionArray);

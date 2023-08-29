@@ -306,16 +306,28 @@ export class TourneyService {
             let userTwo = matches[i].firstTeam.split(' & ')[1];
             let userThree = matches[i].secondTeam.split(' & ')[0];
             let userFour = matches[i].secondTeam.split(' & ')[1];
+            let prismaOne = { image: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQTiXjldHhFIVdvZDCeoq6sSzSzxg95OvLCxQ&usqp=CAU" };
+            let prismaTwo = { image: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQTiXjldHhFIVdvZDCeoq6sSzSzxg95OvLCxQ&usqp=CAU" };
+            let prismaThree = { image: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQTiXjldHhFIVdvZDCeoq6sSzSzxg95OvLCxQ&usqp=CAU" };
+            let prismaFour = { image: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQTiXjldHhFIVdvZDCeoq6sSzSzxg95OvLCxQ&usqp=CAU" };
+            if (matches[i].firstTeam != "none") {
+                prismaOne = await this.prismaService.user.findUnique({ where: { name: userOne } });
+                prismaTwo = await this.prismaService.user.findUnique({ where: { name: userTwo } });
+            }
+            if (matches[i].secondTeam != "none") {
+                prismaThree = await this.prismaService.user.findUnique({ where: { name: userThree } });
+                prismaFour = await this.prismaService.user.findUnique({ where: { name: userFour } });
+            }
             retTourney.push({
                 firstTeam: matches[i].firstTeam,
                 secondTeam: matches[i].secondTeam,
                 winner: matches[i].winner,
                 rowPosition: matches[i].rowPosition,
                 column: matches[i].column,
-                imgOne: (await this.prismaService.user.findUnique({ where: { name: userOne } })).image,
-                imgTwo: (await this.prismaService.user.findUnique({ where: { name: userTwo } })).image,
-                imgThree: (await this.prismaService.user.findUnique({ where: { name: userThree } })).image,
-                imgFour: (await this.prismaService.user.findUnique({ where: { name: userFour } })).image,
+                imgOne: prismaOne.image,
+                imgTwo: prismaTwo.image,
+                imgThree: prismaThree.image,
+                imgFour: prismaFour.image,
             })
         }
         return { success: true, tourney: retTourney }

@@ -95,7 +95,7 @@ export default function TornamentTreePage() {
                 if (found)
                     doubleDimensionArray[i][j] = found;
                 else
-                    doubleDimensionArray[i][j] = { firstTeam: "none", secondTeam: "none", winner: "", rowPosition: 0, column: 0 };
+                    doubleDimensionArray[i][j] = { firstTeam: "none", secondTeam: "none", winner: "", rowPosition: 0, column: 0, imgOne: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQTiXjldHhFIVdvZDCeoq6sSzSzxg95OvLCxQ&usqp=CAU", imgTwo: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQTiXjldHhFIVdvZDCeoq6sSzSzxg95OvLCxQ&usqp=CAU", imgThree: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQTiXjldHhFIVdvZDCeoq6sSzSzxg95OvLCxQ&usqp=CAU", imgFour: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQTiXjldHhFIVdvZDCeoq6sSzSzxg95OvLCxQ&usqp=CAU" };
             }
             teams = teams / 2;
         }
@@ -204,6 +204,7 @@ export default function TornamentTreePage() {
                                 </div>
                                 <div className={`w-full h-[87.5%] flex-row`}>
                                     <div className='h-[12.5%] w-full flex flex-col justify-center items-center'>
+                                        <img src={`${doubleDimension?.[1]?.[0]?.imgFour}`} />
                                         <p className='w-[65%] bg border border-red-500'>{doubleDimension?.[1]?.[0].firstTeam}</p>
                                         <p className='w-[65%] bg border border-red-500 mt-4'>{doubleDimension?.[1]?.[0].secondTeam}</p>
                                     </div>

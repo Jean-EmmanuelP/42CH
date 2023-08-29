@@ -1,9 +1,7 @@
 'use client'
-
 import { useSearchParams } from 'next/navigation';
 import { useEffect, useState } from 'react';
 import axios from 'axios';
-import { divide, set } from 'lodash';
 
 export default function TornamentTreePage() {
     const searchParams = useSearchParams();
@@ -25,16 +23,10 @@ export default function TornamentTreePage() {
         { firstTeam: "none", secondTeam: "none", winner: "", rowPosition: 0, column: 0 },
         { firstTeam: "none", secondTeam: "none", winner: "", rowPosition: 0, column: 0 },
     ]);
-    // const [tourneyData, setTourneyData] = useState<any[]>([]);
+
+    const [doubleDimension, setDoubleDimension] = useState<any[][]>()
     const [participants, setParticipants] = useState<number>(0);
     const [rounds, setRounds] = useState<number>(0);
-    const [columns, setColumns] = useState<string>('');
-    const [rows, setRows] = useState<string>('');
-    // const columns = `grid-cols-${rounds}`
-    // const rows = `grid-rows-${participants / 2}`
-    // const numOfDivs = rounds * (participants / 2);
-    // const numOfRows = participants / 2;
-    const [marginTopArray, setMarginTopArray] = useState<number[]>([]);
 
     useEffect(() => {
         if (tournoiName) {
@@ -48,7 +40,6 @@ export default function TornamentTreePage() {
                         }
                         return newTourneyData;
                     });
-                    console.log("tourney", response.data.tourney)
                 }
                 else {
                     console.log(response.data.error);
@@ -58,23 +49,17 @@ export default function TornamentTreePage() {
         }
     }, [])
 
-    function nextTerm(a1: any, a_last: any, n: any) {
-        if (n == 1)
-            return a1 / 2;
-        else {
-            return a_last + Math.pow(2, n - 3) * a1;
-        }
-    }
 
     async function setRoundsNumber(num: number) {
-        if (num <= 4)
-            setRounds(2);
-        else if (num <= 8)
-            setRounds(3);
-        else if (num <= 16)
-            setRounds(4);
-        else if (num <= 32)
-            setRounds(5);
+        let newRounds = 2;
+        if (num > 4 && num <= 8)
+            newRounds = 3;
+        else if (num > 8 && num <= 16)
+            newRounds = 4;
+        else if (num > 16 && num <= 32)
+            newRounds = 5;
+
+        setRounds(newRounds);
     }
 
     useEffect(() => {
@@ -85,161 +70,177 @@ export default function TornamentTreePage() {
             return acc;
         }, 0);
         setParticipants(count * 2);
-        setRoundsNumber(count * 2)
-        setRoundsNumber(count / 2)
-
-        let a1 = (100 / count);
-        let a_last = 0;
-        let marginTopArray: number[] = [];
-
-    }, []);
-    // }, [tourneyData])
+        setRoundsNumber(count + 1 / 2)
+    }, [tourneyData]);
 
     useEffect(() => {
-        if (rounds == 3) {
-            setMarginTopArray([12.5, 37.5])
+        const doubleDimensionArray = new Array(rounds);
+        let teams = 0;
+        if (rounds === 2) {
+            teams = 2;
         }
-    }, [rounds])
+        else if (rounds === 3) {
+            teams = 4;
+        }
+        else if (rounds === 4) {
+            teams = 8;
+        }
+        else if (rounds === 5) {
+            teams = 16;
+        }
+        for (let i = 0; i < rounds; i++) {
+            doubleDimensionArray[i] = new Array(teams);
+            for (let j = 0; j < teams; j++) {
+                const found = tourneyData.find(element => element.rowPosition === j && element.column === i);
+                if (found)
+                    doubleDimensionArray[i][j] = found;
+                else
+                    doubleDimensionArray[i][j] = { firstTeam: "none", secondTeam: "none", winner: "", rowPosition: 0, column: 0 };
+            }
 
+            teams = teams / 2;
+        }
+        setDoubleDimension(doubleDimensionArray);
+    }, [rounds, tourneyData])
 
-    const numOfColumns = rounds;
-    function getPaddingForColumn(columnIndex: number): number {
-        return (columnIndex * 2);
-    }
+    useEffect(() => { console.log(doubleDimension) }, [doubleDimension])
+
     return (
-        console.log(marginTopArray),
-
         <div className='bg-white rounded-md shadow-md h-full w-full'>
             <div className={`w-full h-full border border-green-500 flex items-center`}>
-                {rounds === 2 ? (
+                {doubleDimension !== undefined ? (
                     <>
-                        <div className='w-full h-full flex-row'>
-                            <div className='h-[50%] w-full flex flex-col justify-center items-center'>
-                                <p className='w-[65%] bg border border-red-500'>{tourneyData[0].firstTeam}</p>
-                                <p className='w-[65%] bg border border-red-500 mt-4'>{tourneyData[0].secondTeam}</p>
-                            </div>
-                            <div className='h-[50%] w-full flex flex-col justify-center items-center'>
-                                <p className='w-[65%] bg border border-red-500'>{tourneyData[1].firstTeam}</p>
-                                <p className='w-[65%] bg border border-red-500 mt-4'>{tourneyData[1].secondTeam}</p>
-                            </div>
-                        </div>
-                        <div className={`w-full h-[50%]`}>
-                            <div className='h-full w-full flex flex-col justify-center items-center'>
-                                <p className='w-[65%] bg border border-red-500'>{tourneyData[2].firstTeam}</p>
-                                <p className='w-[65%] bg border border-red-500 mt-4'>{tourneyData[2].secondTeam}</p>
-                            </div>
-                        </div>
-                    </>) : null}
-                {rounds === 3 ? (
-                    <>
-                        <div className='w-full h-full flex-row'>
-                            <div className='h-[25%] w-full flex flex-col justify-center items-center'>
-                                <p className='w-[65%] bg border border-red-500'>{tourneyData[0].firstTeam}</p>
-                                <p className='w-[65%] bg border border-red-500 mt-4'>{tourneyData[0].secondTeam}</p>
-                            </div>
-                            <div className='h-[25%] w-full flex flex-col justify-center items-center'>
-                                <p className='w-[65%] bg border border-red-500'>{tourneyData[1].firstTeam}</p>
-                                <p className='w-[65%] bg border border-red-500 mt-4'>{tourneyData[1].secondTeam}</p>
-                            </div>
-                            <div className='h-[25%] w-full flex flex-col justify-center items-center'>
-                                <p className='w-[65%] bg border border-red-500'>{tourneyData[2].firstTeam}</p>
-                                <p className='w-[65%] bg border border-red-500 mt-4'>{tourneyData[2].secondTeam}</p>
-                            </div>
-                            <div className='h-[25%] w-full flex flex-col justify-center items-center'>
-                                <p className='w-[65%] bg border border-red-500'>{tourneyData[3].firstTeam}ou</p>
-                                <p className='w-[65%] bg border border-red-500 mt-4'>{tourneyData[3].secondTeam}</p>
-                            </div>
-                        </div>
-                        <div className={`w-full h-[75%]`}>
-                            <div className='h-[33.33%] w-full flex flex-col justify-center items-center'>
-                                <p className='w-[65%] bg border border-red-500'>{tourneyData[4].firstTeam}</p>
-                                <p className='w-[65%] bg border border-red-500 mt-4'>{tourneyData[4].secondTeam}</p>
-                            </div>
-                            <div className='h-[33.33%] w-full mt-[50%] flex flex-col justify-center items-center'>
-                                <p className='w-[65%] bg border border-red-500'>{tourneyData[5].firstTeam}</p>
-                                <p className='w-[65%] bg border border-red-500 mt-4'>{tourneyData[5].secondTeam}</p>
-                            </div>
-                        </div>
-                        <div className={`w-full h-[25%]`}>
-                            <div className='h-[98%] w-full flex flex-col justify-center items-center'>
-                                <p className='w-[65%] bg border border-red-500'>{tourneyData[6].firstTeam}</p>
-                                <p className='w-[65%] bg border border-red-500 mt-4'>{tourneyData[6].secondTeam}</p>
-                            </div>
-                        </div>
-                    </>) : null}
-                {rounds === 4 ? (
-                    <>
-                        <div className='w-full h-full flex-row'>
-                            <div className='h-[12.5%] w-full flex flex-col justify-center items-center'>
-                                <p className='w-[65%] bg border border-red-500'>{tourneyData[0].firstTeam}</p>
-                                <p className='w-[65%] bg border border-red-500 mt-4'>{tourneyData[0].secondTeam}</p>
-                            </div>
-                            <div className='h-[12.5%] w-full flex flex-col justify-center items-center'>
-                                <p className='w-[65%] bg border border-red-500'>{tourneyData[1].firstTeam}</p>
-                                <p className='w-[65%] bg border border-red-500 mt-4'>{tourneyData[1].secondTeam}</p>
-                            </div>
-                            <div className='h-[12.5%] w-full flex flex-col justify-center items-center'>
-                                <p className='w-[65%] bg border border-red-500'>{tourneyData[2].firstTeam}</p>
-                                <p className='w-[65%] bg border border-red-500 mt-4'>{tourneyData[2].secondTeam}</p>
-                            </div>
-                            <div className='h-[12.5%] w-full flex flex-col justify-center items-center'>
-                                <p className='w-[65%] bg border border-red-500'>{tourneyData[3].firstTeam}</p>
-                                <p className='w-[65%] bg border border-red-500 mt-4'>{tourneyData[3].secondTeam}</p>
-                            </div>
-                            <div className='h-[12.5%] w-full flex flex-col justify-center items-center'>
-                                <p className='w-[65%] bg border border-red-500'>{tourneyData[4].firstTeam}</p>
-                                <p className='w-[65%] bg border border-red-500 mt-4'>{tourneyData[4].secondTeam}</p>
-                            </div>
-                            <div className='h-[12.5%] w-full flex flex-col justify-center items-center'>
-                                <p className='w-[65%] bg border border-red-500'>{tourneyData[5].firstTeam}</p>
-                                <p className='w-[65%] bg border border-red-500 mt-4'>{tourneyData[5].secondTeam}</p>
-                            </div>
-                            <div className='h-[12.5%] w-full flex flex-col justify-center items-center'>
-                                <p className='w-[65%] bg border border-red-500'>{tourneyData[6].firstTeam}</p>
-                                <p className='w-[65%] bg border border-red-500 mt-4'>{tourneyData[6].secondTeam}</p>
-                            </div>
-                            <div className='h-[12.5%] w-full flex flex-col justify-center items-center'>
-                                <p className='w-[65%] bg border border-red-500'>{tourneyData[7].firstTeam}</p>
-                                <p className='w-[65%] bg border border-red-500 mt-4'>{tourneyData[7].secondTeam}</p>
-                            </div>
-                        </div>
-                        <div className={`w-full h-[87.5%] flex-row`}>
-                            <div className='h-[12.5%] w-full flex flex-col justify-center items-center'>
-                                <p className='w-[65%] bg border border-red-500'>{tourneyData[8].firstTeam}</p>
-                                <p className='w-[65%] bg border border-red-500 mt-4'>{tourneyData[8].secondTeam}</p>
-                            </div>
-                            <div className='h-[12.5%] w-full flex mt-[41%] flex-col justify-center items-center'>
-                                <p className='w-[65%] bg border border-red-500'>{tourneyData[9].firstTeam}</p>
-                                <p className='w-[65%] bg border border-red-500 mt-4'>{tourneyData[9].secondTeam}</p>
-                            </div>
-                            <div className='h-[12.5%] w-full flex mt-[41%] flex-col justify-center items-center'>
-                                <p className='w-[65%] bg border border-red-500'>{tourneyData[10].firstTeam}</p>
-                                <p className='w-[65%] bg border border-red-500 mt-4'>{tourneyData[10].secondTeam}</p>
-                            </div>
-                            <div className='h-[12.5%] w-full flex mt-[41%] flex-col justify-center items-center'>
-                                <p className='w-[65%] bg border border-red-500'>{tourneyData[11].firstTeam}</p>
-                                <p className='w-[65%] bg border border-red-500 mt-4'>{tourneyData[11].secondTeam}</p>
-                            </div>
-                        </div>
-                        <div className={`w-full h-[75%]`}>
+                        {rounds === 2 ? (
+                            <>
+                                <div className='w-full h-full flex-row'>
+                                    <div className='h-[50%] w-full flex flex-col justify-center items-center'>
+                                        <p className='w-[65%] bg border border-red-500'>{doubleDimension?.[0]?.[0]?.firstTeam}</p>
+                                        <p className='w-[65%] bg border border-red-500 mt-4'>{doubleDimension?.[0]?.[0].secondTeam}</p>
+                                    </div>
+                                    <div className='h-[50%] w-full flex flex-col justify-center items-center'>
+                                        <p className='w-[65%] bg border border-red-500'>{doubleDimension?.[0]?.[1].firstTeam}</p>
+                                        <p className='w-[65%] bg border border-red-500 mt-4'>{doubleDimension?.[0]?.[1].secondTeam}</p>
+                                    </div>
+                                </div>
+                                <div className={`w-full h-[50%]`}>
+                                    <div className='h-full w-full flex flex-col justify-center items-center'>
+                                        <p className='w-[65%] bg border border-red-500'>{doubleDimension?.[1]?.[0].firstTeam}</p>
+                                        <p className='w-[65%] bg border border-red-500 mt-4'>{doubleDimension?.[1]?.[0].secondTeam}</p>
+                                    </div>
+                                </div>
+                            </>) : null}
+                        {rounds === 3 ? (
+                            <>
+                                <div className='w-full h-full flex-row'>
+                                    <div className='h-[25%] w-full flex flex-col justify-center items-center'>
+                                        <p className='w-[65%] bg border border-red-500'>{doubleDimension?.[0]?.[0].firstTeam}</p>
+                                        <p className='w-[65%] bg border border-red-500 mt-4'>{doubleDimension?.[0]?.[0].secondTeam}</p>
+                                    </div>
+                                    <div className='h-[25%] w-full flex flex-col justify-center items-center'>
+                                        <p className='w-[65%] bg border border-red-500'>{doubleDimension?.[0]?.[1].firstTeam}</p>
+                                        <p className='w-[65%] bg border border-red-500 mt-4'>{doubleDimension?.[0]?.[1].secondTeam}</p>
+                                    </div>
+                                    <div className='h-[25%] w-full flex flex-col justify-center items-center'>
+                                        <p className='w-[65%] bg border border-red-500'>{doubleDimension?.[0]?.[2].firstTeam}</p>
+                                        <p className='w-[65%] bg border border-red-500 mt-4'>{doubleDimension?.[0]?.[2].secondTeam}</p>
+                                    </div>
+                                    <div className='h-[25%] w-full flex flex-col justify-center items-center'>
+                                        <p className='w-[65%] bg border border-red-500'>{doubleDimension?.[0]?.[3].firstTeam}ou</p>
+                                        <p className='w-[65%] bg border border-red-500 mt-4'>{doubleDimension?.[0]?.[3].secondTeam}</p>
+                                    </div>
+                                </div>
+                                <div className={`w-full h-[75%]`}>
+                                    <div className='h-[33.33%] w-full flex flex-col justify-center items-center'>
+                                        <p className='w-[65%] bg border border-red-500'>{doubleDimension?.[1]?.[0].firstTeam}</p>
+                                        <p className='w-[65%] bg border border-red-500 mt-4'>{doubleDimension?.[1]?.[0].secondTeam}</p>
+                                    </div>
+                                    <div className='h-[33.33%] w-full mt-[50%] flex flex-col justify-center items-center'>
+                                        <p className='w-[65%] bg border border-red-500'>{doubleDimension?.[1]?.[1].firstTeam}</p>
+                                        <p className='w-[65%] bg border border-red-500 mt-4'>{doubleDimension?.[1]?.[1].secondTeam}</p>
+                                    </div>
+                                </div>
+                                <div className={`w-full h-[25%]`}>
+                                    <div className='h-[98%] w-full flex flex-col justify-center items-center'>
+                                        <p className='w-[65%] bg border border-red-500'>{doubleDimension?.[2]?.[0].firstTeam}</p>
+                                        <p className='w-[65%] bg border border-red-500 mt-4'>{doubleDimension?.[2]?.[0].secondTeam}</p>
+                                    </div>
+                                </div>
+                            </>) : null}
+                        {rounds === 4 ? (
+                            <>
+                                <div className='w-full h-full flex-row'>
+                                    <div className='h-[12.5%] w-full flex flex-col justify-center items-center'>
+                                        <p className='w-[65%] bg border border-red-500'>{doubleDimension?.[0]?.[0].firstTeam}</p>
+                                        <p className='w-[65%] bg border border-red-500 mt-4'>{doubleDimension?.[0]?.[0].secondTeam}</p>
+                                    </div>
 
-                            <div className='h-[12.5%] w-full mt-[17.5%] flex flex-col justify-center items-center'>
-                                <p className='w-[65%] bg border border-red-500'>{tourneyData[12].firstTeam}</p>
-                                <p className='w-[65%] bg border border-red-500 mt-4'>{tourneyData[12].secondTeam}</p>
-                            </div>
-                            <div className='h-[12.5%] w-full mt-[122.5%] flex flex-col justify-center items-center'>
-                                <p className='w-[65%] bg border border-red-500'>{tourneyData[13].firstTeam}</p>
-                                <p className='w-[65%] bg border border-red-500 mt-4'>{tourneyData[13].secondTeam}</p>
-                            </div>
-                        </div>
-                        <div className={`w-full h-full`}>
-                            <div className='h-[12.5%] w-full flex flex-col mt-[122.5%] justify-center items-center'>
-                                <p className='w-[65%] bg border border-red-500'>{tourneyData[14].firstTeam}</p>
-                                <p className='w-[65%] bg border border-red-500 mt-4'>{tourneyData[14].secondTeam}</p>
-                            </div>
-                        </div>
-                    </>
-                ) : null}
+                                    <div className='h-[12.5%] w-full flex flex-col justify-center items-center'>
+                                        <p className='w-[65%] bg border border-red-500'>{doubleDimension?.[0]?.[1].firstTeam}</p>
+                                        <p className='w-[65%] bg border border-red-500 mt-4'>{doubleDimension?.[0]?.[1].secondTeam}</p>
+                                    </div>
+                                    <div className='h-[12.5%] w-full flex flex-col justify-center items-center'>
+                                        <p className='w-[65%] bg border border-red-500'>{doubleDimension?.[0]?.[2].firstTeam}</p>
+                                        <p className='w-[65%] bg border border-red-500 mt-4'>{doubleDimension?.[0]?.[2].secondTeam}</p>
+                                    </div>
+                                    <div className='h-[12.5%] w-full flex flex-col justify-center items-center'>
+                                        <p className='w-[65%] bg border border-red-500'>{doubleDimension?.[0]?.[3].firstTeam}</p>
+                                        <p className='w-[65%] bg border border-red-500 mt-4'>{doubleDimension?.[0]?.[3].secondTeam}</p>
+                                    </div>
+                                    <div className='h-[12.5%] w-full flex flex-col justify-center items-center'>
+                                        <p className='w-[65%] bg border border-red-500'>{doubleDimension?.[0]?.[4].firstTeam}</p>
+                                        <p className='w-[65%] bg border border-red-500 mt-4'>{doubleDimension?.[0]?.[4].secondTeam}</p>
+                                    </div>
+                                    <div className='h-[12.5%] w-full flex flex-col justify-center items-center'>
+                                        <p className='w-[65%] bg border border-red-500'>{doubleDimension?.[0]?.[5].firstTeam}</p>
+                                        <p className='w-[65%] bg border border-red-500 mt-4'>{doubleDimension?.[0]?.[5].secondTeam}</p>
+                                    </div>
+                                    <div className='h-[12.5%] w-full flex flex-col justify-center items-center'>
+                                        <p className='w-[65%] bg border border-red-500'>{doubleDimension?.[0]?.[6].firstTeam}</p>
+                                        <p className='w-[65%] bg border border-red-500 mt-4'>{doubleDimension?.[0]?.[6].secondTeam}</p>
+                                    </div>
+                                    <div className='h-[12.5%] w-full flex flex-col justify-center items-center'>
+                                        <p className='w-[65%] bg border border-red-500'>{doubleDimension?.[0]?.[7].firstTeam}</p>
+                                        <p className='w-[65%] bg border border-red-500 mt-4'>{doubleDimension?.[0]?.[7].secondTeam}</p>
+                                    </div>
+                                </div>
+                                <div className={`w-full h-[87.5%] flex-row`}>
+                                    <div className='h-[12.5%] w-full flex flex-col justify-center items-center'>
+                                        <p className='w-[65%] bg border border-red-500'>{doubleDimension?.[1]?.[0].firstTeam}</p>
+                                        <p className='w-[65%] bg border border-red-500 mt-4'>{doubleDimension?.[1]?.[0].secondTeam}</p>
+                                    </div>
+                                    <div className='h-[12.5%] w-full flex mt-[41%] flex-col justify-center items-center'>
+                                        <p className='w-[65%] bg border border-red-500'>{doubleDimension?.[1]?.[1].firstTeam}</p>
+                                        <p className='w-[65%] bg border border-red-500 mt-4'>{doubleDimension?.[1]?.[1].secondTeam}</p>
+                                    </div>
+                                    <div className='h-[12.5%] w-full flex mt-[41%] flex-col justify-center items-center'>
+                                        <p className='w-[65%] bg border border-red-500'>{doubleDimension?.[1]?.[2].firstTeam}</p>
+                                        <p className='w-[65%] bg border border-red-500 mt-4'>{doubleDimension?.[1]?.[2].secondTeam}</p>
+                                    </div>
+                                    <div className='h-[12.5%] w-full flex mt-[41%] flex-col justify-center items-center'>
+                                        <p className='w-[65%] bg border border-red-500'>{doubleDimension?.[1]?.[3].firstTeam}</p>
+                                        <p className='w-[65%] bg border border-red-500 mt-4'>{doubleDimension?.[1]?.[3].secondTeam}</p>
+                                    </div>
+                                </div>
+                                <div className={`w-full h-[75%]`}>
+
+                                    <div className='h-[12.5%] w-full mt-[17.5%] flex flex-col justify-center items-center'>
+                                        <p className='w-[65%] bg border border-red-500'>{doubleDimension?.[2]?.[0].firstTeam}</p>
+                                        <p className='w-[65%] bg border border-red-500 mt-4'>{doubleDimension?.[2]?.[0].secondTeam}</p>
+                                    </div>
+                                    <div className='h-[12.5%] w-full mt-[122.5%] flex flex-col justify-center items-center'>
+                                        <p className='w-[65%] bg border border-red-500'>{doubleDimension?.[2]?.[1].firstTeam}</p>
+                                        <p className='w-[65%] bg border border-red-500 mt-4'>{doubleDimension?.[2]?.[1].secondTeam}</p>
+                                    </div>
+                                </div>
+                                <div className={`w-full h-full`}>
+                                    <div className='h-[12.5%] w-full flex flex-col mt-[122.5%] justify-center items-center'>
+                                        <p className='w-[65%] bg border border-red-500'>{doubleDimension?.[3]?.[0].firstTeam}</p>
+                                        <p className='w-[65%] bg border border-red-500 mt-4'>{doubleDimension?.[3]?.[0].secondTeam}</p>
+                                    </div>
+                                </div>
+                            </>
+                        ) : null}
+                    </>) : null}
             </div>
         </div>
         // </div>

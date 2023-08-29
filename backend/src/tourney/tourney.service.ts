@@ -436,7 +436,7 @@ export class TourneyService {
     async createTourney(title: string, description: string) {
         const tourney = await this.prismaService.tourney.create({ data: { title: title, description: description } });
         console.log(`title`, title);
-        
+
         if (!tourney)
             return { success: false, error: 'Could not create tourney' }
         return { success: true }

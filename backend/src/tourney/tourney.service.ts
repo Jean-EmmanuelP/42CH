@@ -302,12 +302,20 @@ export class TourneyService {
 
         let retTourney = [];
         for (let i = 0; i < matches.length; i++) {
+            let userOne = matches[i].firstTeam.split(' & ')[0];
+            let userTwo = matches[i].firstTeam.split(' & ')[1];
+            let userThree = matches[i].secondTeam.split(' & ')[0];
+            let userFour = matches[i].secondTeam.split(' & ')[1];
             retTourney.push({
                 firstTeam: matches[i].firstTeam,
                 secondTeam: matches[i].secondTeam,
                 winner: matches[i].winner,
                 rowPosition: matches[i].rowPosition,
                 column: matches[i].column,
+                imgOne: (await this.prismaService.user.findUnique({ where: { name: userOne } })).image,
+                imgTwo: (await this.prismaService.user.findUnique({ where: { name: userTwo } })).image,
+                imgThree: (await this.prismaService.user.findUnique({ where: { name: userThree } })).image,
+                imgFour: (await this.prismaService.user.findUnique({ where: { name: userFour } })).image,
             })
         }
         return { success: true, tourney: retTourney }

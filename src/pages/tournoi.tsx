@@ -11,9 +11,9 @@ export default function tournoi() {
         const fetchTournois = async () => {
             try {
                 const response  = await axios.get(process.env.NEXT_PUBLIC_API_URL + '/tourney/get_ongoing');
-                console.log(`voici a quoi ressemble la reponse`, response.data); // 404 response we must fix this
-                if (response.data && Array.isArray(response.data)) {
-                    setTournois(response.data);
+                console.log(`voici a quoi ressemble la reponse`, response.data);
+                if (response.data && Array.isArray(response.data.tourneys)) {
+                    setTournois(response.data.tourneys);
                 }
             } catch(error) {
                 console.log("Erreur lors de la recuperation des donnees de tournois...:", error);
@@ -26,7 +26,7 @@ export default function tournoi() {
         <h1 className="items-center justify-center flex pt-2">Tournoi en cours :</h1>
         <ul>
             {tournois.map((tournoi, index) => (
-                <Link href={{pathname: `/tournoi`, query: {id: tournoi.id}}}><li key={index}>tournoi.title</li></Link>
+                <Link href={`/tournoi/${tournoi}`}><li key={index}>{tournoi}</li></Link>
             ))}
         </ul>
     </div>

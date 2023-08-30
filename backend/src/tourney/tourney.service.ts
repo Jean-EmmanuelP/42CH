@@ -302,12 +302,32 @@ export class TourneyService {
 
         let retTourney = [];
         for (let i = 0; i < matches.length; i++) {
+            let userOne = matches[i].firstTeam.split(' & ')[0];
+            let userTwo = matches[i].firstTeam.split(' & ')[1];
+            let userThree = matches[i].secondTeam.split(' & ')[0];
+            let userFour = matches[i].secondTeam.split(' & ')[1];
+            let prismaOne = { image: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQTiXjldHhFIVdvZDCeoq6sSzSzxg95OvLCxQ&usqp=CAU" };
+            let prismaTwo = { image: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQTiXjldHhFIVdvZDCeoq6sSzSzxg95OvLCxQ&usqp=CAU" };
+            let prismaThree = { image: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQTiXjldHhFIVdvZDCeoq6sSzSzxg95OvLCxQ&usqp=CAU" };
+            let prismaFour = { image: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQTiXjldHhFIVdvZDCeoq6sSzSzxg95OvLCxQ&usqp=CAU" };
+            if (matches[i].firstTeam != "none") {
+                prismaOne = await this.prismaService.user.findUnique({ where: { name: userOne } });
+                prismaTwo = await this.prismaService.user.findUnique({ where: { name: userTwo } });
+            }
+            if (matches[i].secondTeam != "none") {
+                prismaThree = await this.prismaService.user.findUnique({ where: { name: userThree } });
+                prismaFour = await this.prismaService.user.findUnique({ where: { name: userFour } });
+            }
             retTourney.push({
                 firstTeam: matches[i].firstTeam,
                 secondTeam: matches[i].secondTeam,
                 winner: matches[i].winner,
                 rowPosition: matches[i].rowPosition,
                 column: matches[i].column,
+                imgOne: prismaOne.image,
+                imgTwo: prismaTwo.image,
+                imgThree: prismaThree.image,
+                imgFour: prismaFour.image,
             })
         }
         return { success: true, tourney: retTourney }
@@ -435,6 +455,8 @@ export class TourneyService {
 
     async createTourney(title: string, description: string) {
         const tourney = await this.prismaService.tourney.create({ data: { title: title, description: description } });
+        console.log(`title`, title);
+
         if (!tourney)
             return { success: false, error: 'Could not create tourney' }
         return { success: true }
